@@ -1,0 +1,19 @@
+<% if(isProfileCreated){ %>
+<a class="lateral-menu-link" href="/users/editprofile">
+    Edit profile
+</a>
+<%}%>
+
+<% if(registrationMethod==="email"){ %>
+<a class="lateral-menu-link" href="/changepassword">
+    Change password
+</a>
+<%}%>
+
+<!-- if reg method email -->
+<% if(registrationMethod==="email"){ %>
+    <a class="lateral-menu-link" href="/delete-account">Delete account</a>
+<!-- if reg method google facebook -->
+<%} else{ %>
+    <a class="lateral-menu-link" href="/delete-account-gf">Delete account</a>
+<%}%>

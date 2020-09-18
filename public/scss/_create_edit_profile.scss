@@ -1,0 +1,127 @@
+/* create/edit profile form */
+
+.form-group {
+  margin: 20px 5px;
+  // padding: 8px;
+  // background-color: #aaa;
+  // border-radius: 4px;
+  border: 1px solid black;
+}
+
+.form-group-header {
+  background-color: burlywood;
+  border-bottom: 1px solid black;
+  padding-top: 2px;
+  padding-bottom: 4px;
+}
+
+.form-group-data {
+  padding: 5px;
+}
+
+img#img {
+  width: 300px;
+  height: 400px;
+}
+
+/* Image upload */
+/* No deformar */
+/* #pic-preview {
+   width: 300px;
+    height: 200px; 
+  }*/
+
+#image-limits {
+  font-family: "Lucida Sans", "Lucida Sans Regular", Geneva, Verdana, sans-serif;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+/* svg edit profile*/
+.svg-icon {
+  width: 1em;
+  height: 1em;
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: black;
+}
+
+.svg-icon circle {
+  stroke: #4691f6;
+  stroke-width: 1;
+}
+
+#delete-img {
+  display: none;
+}
+
+#img-show {
+  width: 150px;
+  height: 150px;
+  display: none;
+}
+
+#img-form-group {
+  display: flex;
+  flex-direction: column;
+}
+#img-form-group-img-selector {
+  display: flex;
+}
+
+/*modal*/
+#modal-img-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#btnModalImg {
+  margin-top: 10px;
+  padding: 4px 7px;
+}
+
+#modal-img-container {
+  margin-top: 10px;
+}
+
+/*remove dotted outline from range input element in firefox*/
+input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+
+/*select image button*/
+#pic-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+}
+
+#pic {
+  display: none; /*hidde this button*/
+}
+
+/*submit form button*/
+.btn1 {
+  margin: 10px 0 10px 10px;
+  padding: 5px 10px;
+}
+
+//change password
+#change-password-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 20px;
+}
+
+//delete account
+#delete-account-container,
+#delete-account-gf-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 20px;
+}

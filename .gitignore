@@ -1,0 +1,6 @@
+# Dependency directories
+node_modules/
+# config file
+config/keys.js
+#logs
+/npm-debug.log

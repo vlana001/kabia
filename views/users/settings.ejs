@@ -1,0 +1,73 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <%- include('../includes/navigation.ejs') %>
+    <div class="content">
+
+        <div id="container-page">
+
+            <div id="lateral-menu">
+                <%- include('../includes/lateral-menu-settings.ejs') %>
+            </div>
+
+
+            <div id="page-content">
+
+                <% if (errorMessage) { %>
+                <div class="msg msg-error">
+                    <% for (let error of errorMessage) { %>
+                    <p class="msg-indiv"><%= error %></p>
+                    <% } %>
+                </div>
+                <% } %>
+
+                <% if (option === "send") { %>
+
+                <% if (friendshipRequestsSent.length===0) { %>
+                <p class="friendship-requests-empty">No tienes solicitudes de amistad pendientes de aceptacion</p>
+                <% }else { %>
+                <div>
+                    <% for (let r of friendshipRequestsSent) { %>
+                    <div class="friendship-sent-card">
+                        <p id="<%= r.usernameNormalized %>"><%= r.username %></p>
+                        <button class="friendship-sent-cancel" id="csfr-btn">Cancelar</button>
+                    </div>
+                    <% } %>
+                </div>
+                <% } %>
+
+
+
+
+
+                <%} %>
+
+                <% if (option === "received") { %>
+
+                <% if (friendshipRequestsReceived.length===0) { %>
+                <p class="friendship-requests-empty">No tienes nuevas solicitudes de amistad</p>
+                <% }else { %>
+                <div>
+                    <% for (let r of friendshipRequestsReceived) { %>
+                    <div class="friendship-received-card">
+                        <p id="<%= r.usernameNormalized %>"><%= r.username %></p>
+                        <button class="friendship-received-accept" id="afr-btn">Aceptar</button>
+                        <button class="friendship-received-reject" id="rfr-btn">Rechazar</button>
+                    </div>
+                    <% } %>
+                </div>
+                <% } %>
+
+            </div>
+
+            <%} %>
+
+
+        </div>
+    </div>
+
+    </div>
+    <%- include('../includes/end.ejs') %>

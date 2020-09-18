@@ -1,0 +1,220 @@
+/* login */
+#login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#login-container {
+  display: flex;
+  width: 60%;
+  height: 360px;
+  border: 1px solid #484848;
+  border-radius: 7px;
+  text-align: center;
+  /* margin: auto; */
+  justify-content: center;
+  /* align-items: center; */
+  align-self: stretch;
+  /* margin: 20px; */
+  /* padding-left:30px; */
+  margin-top: 40px;
+  background-color: #fff;
+}
+
+#social-login {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px;
+  /* padding-left: 40px; */
+  /* height: 100%; */
+}
+
+#email-login,
+#email-login-admin {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  /* height: 100%; */
+  padding: 40px;
+}
+
+#email-login{
+  border-left: 1px solid #484848;
+}
+
+#form-login-email {
+  display: flex;
+  /* flex: 1; */
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+/* #form-login-email input[type="password"] {
+    margin-bottom: 0px;
+  } */
+
+.form-social-login {
+  width: 77%;
+}
+
+.btn-social-login {
+  border: 0;
+  height: 40px;
+  width: 100%;
+  margin: 12px;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+#btn-google {
+  background-color: #df4930;
+  /* border-color: #2d4373; */
+}
+
+#btn-facebook {
+  background-color: #3b5998;
+  /* border-color: #2d4373; */
+}
+
+#btn-google:hover,
+#btn-facebook:hover {
+  opacity: 0.85;
+}
+
+.link-login {
+  /* float: left; */
+  align-self: flex-start;
+  display: block;
+  padding-top: 5px;
+  margin-top: 0;
+  /* margin-left: 10px; */
+}
+
+.link-login:hover {
+  text-decoration: underline;
+}
+
+/* #password-field {
+    width: 400px;
+    padding: 5px 15px;
+  } */
+
+#forgotPassword {
+  margin-top: 0;
+  float: left;
+}
+
+#login-email-btn,
+#forgot-password-btn,
+#register-btn {
+  display: block;
+  border: none;
+  background-color: #333;
+  color: #eee;
+  width: 10em;
+  height: 3em;
+  font-size: 15px;
+  margin: 10px;
+}
+
+#login-email-btn:hover {
+  opacity: 0.85;
+}
+
+#accept-register-conditions {
+  color: #181b19;
+  font-size: 13px;
+}
+
+.title-login {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  /* float: left; */
+}
+
+#register.link-login {
+  margin-right: 0px;
+}
+
+.link-err-msg{
+  color: red;
+  text-decoration: underline;
+}
+
+//admin
+#form-login-email-admin {
+  border: 1px solid black;
+  padding: 40px;
+  width: 500px;
+  border-radius: 7px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+//media queries
+@media (max-width: 1000px) {
+  #login-container {
+    //width: 98%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  // #login-page{
+  //   height: 100%;
+
+  // }
+  #login-container {
+    height: 550px;//calc (30vh - 3em)
+    width: 92%;
+    flex-direction: column;
+
+    border: none;
+    border-radius: none;
+    margin-top: 0;
+  }
+
+  #social-login,
+  #email-login {
+    height: 50%;
+    padding: 12px 30px 0px 30px;
+  }
+
+  #email-login {
+    border-left: none;
+    border-top: 1px solid black;
+  }
+
+  .form-social-login {
+    width: 95%;
+  }
+
+  //Admin login form
+  #email-login-admin {
+    padding: 50px 20px 0px 20px;
+  }
+  #form-login-email-admin {
+    width: 98%;
+    padding: 20px;
+  }
+}
+
+

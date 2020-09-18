@@ -1,0 +1,19 @@
+  /* register */
+
+  #register-page {
+    display: flex;
+    justify-content: center;
+  }
+
+  #register-container{
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  #register-form {
+    margin-top: 70px;
+    width: 450px;
+  }
+  #register-form button {
+    margin: 10px auto;
+  }

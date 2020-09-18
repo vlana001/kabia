@@ -1,0 +1,34 @@
+<%- include('../includes/head-admin.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <%- include('../includes/navigation-admin.ejs') %>
+
+    <div class="content">
+        <div id="container-page">
+
+            <div id="lateral-menu">
+                <%- include('./lateral-menu-messages-admin.ejs', {optionSelected: optionSelected}) %>
+            </div>
+
+            <div id="page-content" class="flex">
+                    <% switch (optionSelected) {
+                        case "pending": %>
+                            <%- include('./messages-pending-admin.ejs') %>
+                        <% break;
+                        case "replied":  %>
+                            <%- include('./messages-replied-admin.ejs') %>
+                        <% break;
+                        case "ignored":  %>
+                            <%- include('./messages-ignored-admin.ejs') %>
+                        <% break;
+                        default:  %>
+                            <%- include('../includes/not-valid-option.ejs') %>
+                    <% }  %>
+            </div>
+
+        </div>
+    </div>
+    <%- include('../includes/end-admin.ejs') %>

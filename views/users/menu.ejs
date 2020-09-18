@@ -1,0 +1,100 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <%- include('../includes/navigation.ejs') %>
+    <div class="content">
+        <div id="container-page">
+
+            <div id="lateral-menu">
+                <a class="lateral-menu-link" href="/users/online-users">Usuarios online</a>
+                <a class="lateral-menu-link" href="/users/all-users">Todos los usuarios</a>
+                <a class="lateral-menu-link" href="/users/searchusers">Busqueda filtrada de usuarios</a>
+                <a class="lateral-menu-link" href="/users/searchusers">Buscar usuario por nombre</a>
+            </div>
+
+            <div id="page-content">
+
+                <% if (errorMessage) { %>
+                <div class="msg msg-error">
+                    <% for (let error of errorMessage) { %>
+                    <p class="msg-indiv"><%= error %></p>
+                    <% } %>
+                </div>
+                <% } %>
+
+                <% if (successMessage) { %>
+                <div class="msg msg-success">
+                    <% for (let success of successMessage) { %>
+                    <p class="msg-indiv"><%= success %></p>
+                    <% } %>
+                </div>
+                <% } %>
+
+
+
+                <% if (usersList.length > 0) { %>
+                <div class="grid">
+                    <% for (let user of usersList) { %>
+
+                    <% if (user.usernameNormalized != usernameNormalized) { %>
+
+                    <% let isFriend = false %>
+                    <%  userFriendships.friends.forEach( f => { %>
+                    <% if (user.usernameNormalized === f.usernameNormalized){ %>
+                    <% isFriend = true %>
+                    <% } %>
+                    <% }); %>
+
+                    <% let isBlocked = false %>
+                    <%  userFriendships.blockedUsers.forEach( b => { %>
+                    <% if (user.usernameNormalized === b.usernameNormalized){ %>
+                    <% isBlocked = true %>
+                    <% } %>
+                    <% }); %>
+
+                    <% if (isFriend){ %>
+                    <% if (isBlocked){ %>
+                    <div class="user-card blocked-friend-user">
+                        <% } else {%>
+                        <div class="user-card friend-user">
+                            <% } %>
+                            <% }else if(isBlocked){ %>
+                            <div class="user-card blocked-user">
+                                <% }else{ %>
+                                <div class="user-card">
+                                    <% } %>
+
+                                    <% } else{ %>
+                                    <!--A un user le muestro a el mismo en una card,
+                pero no puede ser su propio amigo, por lo que no muestro el boton en el perfil-->
+                                    <div class="user-card same-user">
+                                        <% } %>
+
+                                        <img class="img-card-1" src="/uploads/<%= user.imageURL %>" alt="">
+                                        <div class="username-status">
+                                            <p class="card-username"> <%= user.username %> </p>
+                                            <% if(user.status === "online"){ %>
+                                            <div class="user-status user-status-online"></div>
+                                            <% } %>
+
+                                        </div>
+                                        <!-- <button>Ver perfil</button> -->
+                                        <a class="see-profile-btn" href="/users/u/<%= user.usernameNormalized %>">Ver
+                                            perfil</a>
+
+                                    </div>
+
+                                    <% } %>
+                                </div>
+                                <% } else { %>
+                                <h1>No Users Found!</h1>
+                                <% } %>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%- include('../includes/end.ejs') %>

@@ -1,0 +1,160 @@
+<%- include('./includes/head-admin.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <%- include('./includes/navigation-admin.ejs') %>
+
+    <div class="content">
+        <div id="container-page">
+            <div id="page-content" class="flex">
+
+                <% if (successMessage) { %>
+                <div class="msg msg-success">
+                    <% for (let success of successMessage) { %>
+                    <p class="msg-indiv"><%= success %></p>
+                    <% } %>
+                </div>
+                <% } %>
+
+                <div id="last-login-container">
+                    <div id="email-last-login">
+                        <div class="last-login-header">
+                            Email
+                        </div>
+                        <div class="last-login-data">
+                            <%= email %>
+                        </div>
+                    </div>
+                    <div id="date-last-login">
+                        <div class="last-login-header">
+                            Last login
+                        </div>
+                        <div class="last-login-data">
+                            <%= lastLoginDate %>
+                            <p id="last-login-text">(<%= lastLoginText %>)</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="stats-container">
+                    <div id="stats-header">Estadisticas de hoy</div>
+
+                    <div id="stats-data">
+
+                        <div id="responsive-b1">
+                            <div id="stats1" class="stats-card">
+                                <div class="stats-card-header">
+                                    <div class="stats-card-img">
+                                        <svg class="svg-icon-stats-home" viewBox="0 0 20 20" version="1.1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <path
+                                                d="M12.2928932,3.70710678 L0,16 L0,20 L4,20 L16.2928932,7.70710678 L12.2928932,3.70710678 Z M13.7071068,2.29289322 L16,0 L20,4 L17.7071068,6.29289322 L13.7071068,2.29289322 Z"
+                                                id="Combined-Shape"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="stats-card-name">
+                                        <p>Users registered</p>
+                                    </div>
+                                </div>
+                                <div class="stats-card-data">
+                                    <p><%= userRegistrationToday %></p>
+                                </div>
+                            </div>
+
+
+                            <div id="stats2" class="stats-card">
+                                <div class="stats-card-header">
+                                    <div class="stats-card-img">
+                                        <svg class="svg-icon-stats-home" viewBox="0 0 20 20" version="1.1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <path
+                                                d="M2,2 L18,2 L18,4 L2,4 L2,2 Z M8,0 L12,0 L14,2 L6,2 L8,0 Z M3,6 L17,6 L16,20 L4,20 L3,6 Z M8,8 L9,8 L9,18 L8,18 L8,8 Z M11,8 L12,8 L12,18 L11,18 L11,8 Z"
+                                                id="Combined-Shape"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="stats-card-name">
+                                        <p>Accounts deleted</p>
+                                    </div>
+                                </div>
+                                <div class="stats-card-data">
+                                    <p><%= accounDeletionToday %></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="responsive-b2">
+                            <div id="stats3" class="stats-card">
+                                <div class="stats-card-header">
+                                    <div class="stats-card-img">
+                                        <svg class="svg-icon-stats-home" viewBox="0 0 20 20" version="1.1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <path
+                                                d="M4.99999861,5.00218626 C4.99999861,2.23955507 7.24419318,0 9.99999722,0 C12.7614202,0 14.9999958,2.22898489 14.9999958,5.00218626 L14.9999958,6.99781374 C14.9999958,9.76044493 12.7558013,12 9.99999722,12 C7.23857424,12 4.99999861,9.77101511 4.99999861,6.99781374 L4.99999861,5.00218626 Z M1.11022272e-16,16.6756439 C2.94172855,14.9739441 6.3571245,14 9.99999722,14 C13.6428699,14 17.0582659,14.9739441 20,16.6756471 L19.9999944,20 L0,20 L1.11022272e-16,16.6756439 Z"
+                                                id="Combined-Shape"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="stats-card-name">
+                                        <p>Users logged in</p>
+                                    </div>
+                                </div>
+                                <div class="stats-card-data">
+                                    <p><%= userSigningInToday %></p>
+                                </div>
+                            </div>
+
+
+                            <div id="stats4" class="stats-card">
+                                <div class="stats-card-header">
+
+                                    <div class="stats-card-img">
+                                        <svg class="svg-icon-stats-home" viewBox="0 0 20 20" version="1.1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <polygon id="Rectangle-535" points="0 0 20 8 12 12 10 20"></polygon>
+                                        </svg>
+                                    </div>
+                                    <div class="stats-card-name">
+                                        <p>Friendship requests</p>
+                                    </div>
+                                </div>
+                                <div class="stats-card-data">
+                                    <p><%= friendshipRequestSentToday %></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="banned-users-container">
+                    <div id="total-banned-users">
+                        <div class="banned-header">
+                            Total de usuarios baneados
+                        </div>
+                        <div class="banned-data">
+                            <%= totalBannedUsers %>
+                        </div>
+                    </div>
+                    <div id="tomorrow-unbanned-users">
+                        <div class="banned-header">
+                            Usuarios se desbanearan mañana
+                        </div>
+                        <div class="banned-data">
+                            <%= totalUnBanTomorrow %>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <%- include('./includes/end-admin.ejs') %>

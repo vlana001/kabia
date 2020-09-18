@@ -1,0 +1,74 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <%- include('../includes/navigation.ejs') %>
+    <div class="content">
+
+        <div id="container-page">
+
+            <div id="lateral-menu">
+                <%- include('../includes/lateral-menu-friends.ejs', {currentLink: 3}) %>
+            </div>
+
+            <div id="page-content">
+
+                <div id="message-blocked-users" class="msg <%= blockedUsers.length === 0 ? 'msg-empty' : ''  %>">
+                    <% if (blockedUsers.length !== 0) { %>
+                    <p id="msg-blocked-users" class="msg-hide msg-indiv"></p>
+                    <% } %>
+                    <p id="no-msg" class="msg-indiv <%= blockedUsers.length === 0 ? 'msg-show' : 'msg-hide' %>">
+                        No tienes usuarios bloqueados
+                    </p>
+                </div>
+
+
+                <%if(blockedUsers.length !== 0){%>
+
+                <div class="blocked-users-cards">
+
+                    <% let i = 1 %>
+                    <% for (let bu of blockedUsers) { %>
+
+                    <% let isFriend = false %>
+                    <%  friends.forEach( f => { %>
+                    <% if (bu.usernameNormalized === f.usernameNormalized){ %>
+                        <% isFriend = true %>
+                    <% } %>
+                    <% }); %>
+
+                    <% if (isFriend){ %>
+                    <div id="user-<%= i %>" class="user-card blocked-friend-user">
+                        <% }else { %>
+                        <div id="user-<%= i %>" class="user-card blocked-user">
+                            <% } %>
+
+                            <% i++ %>
+
+                            <img class="img-card-1" src="/uploads/<%= bu.imageURL %>"" alt="">
+                            <div class=" username-status">
+
+                                <p id="<%= bu.usernameNormalized %>" class="card-username">
+                                    <a href="/users/u/<%= bu.usernameNormalized %>">
+                                        <%= bu.username %>
+                                    </a>
+                                </p>
+                                <div class="user-status user-status-not-online"></div>
+                            </div>
+
+                            <button id="unblock-bu-btn" class="unblock-btn">
+                                <span class="btn-text">Unblock user</span>
+                                <span id="btn-uu-spinner" class=""></span>
+                            </button>
+                        </div>
+
+                        <% } %>
+                    </div>
+                    <%}%>
+        </div>
+    </div>
+
+    </div>
+    <%- include('../includes/end.ejs') %>

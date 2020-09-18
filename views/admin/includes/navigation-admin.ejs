@@ -1,0 +1,112 @@
+<header id="main-header" class="main-header">
+    <nav class="main-header-nav">
+
+        <!-- Home logo -->
+        <!-- Voy directo a la pagina sin abrir menu lateral -->
+        <div class="<%= isAuthenticated === true ? 'dropdown' : 'dropdown-notlogged' %>" id="home-link">
+            <button class="dropbtn">
+                <div id="logo-hamburger-div">
+                    <% if (isAuthenticated) { %>
+                    <svg class="" id="hamburger-icon" viewBox="0 0 20 20" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path id="hamburgerIcon"
+                            d="M0,3 L20,3 L20,5 L0,5 L0,3 Z M0,9 L20,9 L20,11 L0,11 L0,9 Z M0,15 L20,15 L20,17 L0,17 L0,15 Z">
+                        </path>
+                        <polygon id="closeHamburgerIcon"
+                            points="10 8.58578644 2.92893219 1.51471863 1.51471863 2.92893219 8.58578644 10 1.51471863 17.0710678 2.92893219 18.4852814 10 11.4142136 17.0710678 18.4852814 18.4852814 17.0710678 11.4142136 10 18.4852814 2.92893219 17.0710678 1.51471863 10 8.58578644">
+                        </polygon>
+                    </svg>
+                    <% } %>
+
+                    <a id="home-link-button" href=" <%= isAuthenticated === true ? '/admin/' : '/admin-login' %>">
+                        Kabia
+                        <svg class="navbar-svg-icon" xmlns="http://www.w3.org/2000/svg" version="1.0"
+                            viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet"
+                            class="svg social-link replaced-svg" id="svg-navbar-home-icon">
+                            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
+                                <path
+                                    d="M2370 5101 c-151 -34 -256 -78 -375 -155 -276 -180 -458 -474 -494 -799 -7 -56 -11 -317 -11 -627 l0 -530 1070 0 1070 0 2 187 3 188 304 177 c168 98 308 181 313 186 5 5 -123 86 -307 193 -175 101 -318 189 -320 194 -1 6 -8 49 -14 97 -54 412 -375 768 -789 874 -136 35 -333 42 -452 15z m288 -860 c129 -66 152 -242 45 -343 -132 -125 -353 -30 -353 152 0 165 162 266 308 191z">
+                                </path>
+                                <path
+                                    d="M213 2542 c-98 -35 -170 -111 -200 -211 -12 -44 -14 -79 -9 -170 22 -358 133 -697 332 -1007 l52 -82 -118 -4 c-110 -4 -122 -6 -166 -34 -70 -43 -108 -117 -101 -197 6 -70 39 -125 99 -164 l41 -28 314 -3 c172 -2 313 -4 313 -5 0 -2 -29 -90 -65 -197 -36 -107 -65 -208 -65 -224 0 -55 24 -111 66 -153 67 -67 151 -80 241 -39 68 32 93 72 144 226 23 69 43 127 45 129 2 2 74 -32 161 -77 259 -131 504 -213 783 -261 608 -106 1271 -3 1808 279 52 27 96 50 98 50 1 0 21 -55 43 -123 50 -150 74 -187 143 -221 113 -56 237 -14 289 99 29 62 23 106 -41 305 -33 101 -60 190 -60 197 0 9 74 13 308 15 l309 3 41 28 c60 39 93 94 99 164 7 79 -31 154 -100 197 -41 25 -59 30 -151 35 l-105 6 54 84 c109 170 192 365 243 567 44 176 55 262 56 439 1 156 0 162 -27 217 -32 65 -89 121 -156 152 l-46 21 -2310 2 c-2197 2 -2313 2 -2362 -15z">
+                                </path>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+            </button>
+        </div>
+
+        <% if (isAuthenticated) { %>
+
+        <!-- Stats -->
+        <div class="dropdown not-home-tabs" id="dropdown-stats">
+            <button class="dropbtn" id="dropbtn-stats">
+                <a class="navbar-link" data-url="/admin/stats" data-number="tab-2">
+                    <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path
+                            d="M1,10 L4,10 L4,20 L1,20 L1,10 Z M6,0 L9,0 L9,20 L6,20 L6,0 Z M11,8 L14,8 L14,20 L11,20 L11,8 Z M16,4 L19,4 L19,20 L16,20 L16,4 Z"
+                            id="Combined-Shape"></path>
+                    </svg>
+                    <div class="navbar-text">Stats</div>
+                </a>
+            </button>
+        </div>
+
+        <!-- Ban/delete -->
+        <div class="dropdown not-home-tabs" id="dropdown-user-account-action">
+            <button class="dropbtn" id="dropbtn-user-account-action">
+                <a class="navbar-link" data-url="/admin/user-account-action/action" data-number="tab-3">
+                    <svg class="navbar-svg-icon" fill-rule="evenodd" viewBox="0 0 20 20" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path
+                            d="M0 10a10 10 0 1 1 20 0 10 10 0 0 1-20 0zm16.32-4.9L5.09 16.31A8 8 0 0 0 16.32 5.09zm-1.41-1.42A8 8 0 0 0 3.68 14.91L14.91 3.68z">
+                        </path>
+                    </svg>
+                    <div class="navbar-text">Ban/delete user account</div>
+                </a>
+            </button>
+        </div>
+
+        <!-- Messages -->
+        <!-- <div class="dropdown not-home-tabs" id="dropdown-users-messages">
+            <button class="dropbtn" id="dropbtn-users-messages">
+                <a class="navbar-link" data-url="/admin/users-messages/pending" data-number="tab-4">
+                    <svg class="navbar-svg-icon" fill-rule="evenodd" viewBox="0 0 20 20" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path
+                            d="M14.8780488,10.097561 L20,14 L20,16 L13.627451,11.0980392 L10,14 L6.37254902,11.0980392 L0,16 L0,14 L5.12195122,10.097561 L0,6 L0,4 L10,12 L20,4 L20,6 L14.8780488,10.097561 Z M18.0092049,2 C19.1086907,2 20,2.89451376 20,3.99406028 L20,16.0059397 C20,17.1072288 19.1017876,18 18.0092049,18 L1.99079514,18 C0.891309342,18 0,17.1054862 0,16.0059397 L0,3.99406028 C0,2.8927712 0.898212381,2 1.99079514,2 L18.0092049,2 Z"
+                            id="Combined-Shape"></path>
+                    </svg>
+                    <div class="navbar-text">Messages from users</div>
+                    <div class="notify-event" id="users-messages-icon">0</div>
+                </a>
+            </button>
+        </div> -->
+
+        <!-- My account -->
+        <div class="dropdown not-home-tabs" id="dropdown-myaccount">
+            <button class="dropbtn navbar-link" id="dropbtn-myaccount" data-url="" data-number="tab-5">
+                <div id="div-dropbtn-myaccount">
+                    <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path
+                            d="M4.99999861,5.00218626 C4.99999861,2.23955507 7.24419318,0 9.99999722,0 C12.7614202,0 14.9999958,2.22898489 14.9999958,5.00218626 L14.9999958,6.99781374 C14.9999958,9.76044493 12.7558013,12 9.99999722,12 C7.23857424,12 4.99999861,9.77101511 4.99999861,6.99781374 L4.99999861,5.00218626 Z M1.11022272e-16,16.6756439 C2.94172855,14.9739441 6.3571245,14 9.99999722,14 C13.6428699,14 17.0582659,14.9739441 20,16.6756471 L19.9999944,20 L0,20 L1.11022272e-16,16.6756439 Z"
+                            id="Combined-Shape"></path>
+                    </svg>
+                    <div class="navbar-text">My account</div>
+                </div>
+            </button>
+
+            <div class="dropdown-content" id="dropdown-content">
+                <a href="/admin/lastlogins">Last logins</a>
+                <a href="/admin/changepassword">Change password</a>
+                <a class="logout-link" href="/admin/logout">Logout</a>
+            </div>
+        </div>
+
+        <!--side nav (hamburger)-->
+        <%- include('./lateral-menu-admin.ejs') %> <% } %>
+    </nav>
+</header>

@@ -1,0 +1,169 @@
+<div id="side-navigation" class="side-navigation">
+
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" id="tab-1">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 512 512"
+                    preserveAspectRatio="xMidYMid meet" class="svg social-link replaced-svg">
+                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                        <path
+                            d="M2370 5101 c-151 -34 -256 -78 -375 -155 -276 -180 -458 -474 -494 -799 -7 -56 -11 -317 -11 -627 l0 -530 1070 0 1070 0 2 187 3 188 304 177 c168 98 308 181 313 186 5 5 -123 86 -307 193 -175 101 -318 189 -320 194 -1 6 -8 49 -14 97 -54 412 -375 768 -789 874 -136 35 -333 42 -452 15z m288 -860 c129 -66 152 -242 45 -343 -132 -125 -353 -30 -353 152 0 165 162 266 308 191z">
+                        </path>
+                        <path
+                            d="M213 2542 c-98 -35 -170 -111 -200 -211 -12 -44 -14 -79 -9 -170 22 -358 133 -697 332 -1007 l52 -82 -118 -4 c-110 -4 -122 -6 -166 -34 -70 -43 -108 -117 -101 -197 6 -70 39 -125 99 -164 l41 -28 314 -3 c172 -2 313 -4 313 -5 0 -2 -29 -90 -65 -197 -36 -107 -65 -208 -65 -224 0 -55 24 -111 66 -153 67 -67 151 -80 241 -39 68 32 93 72 144 226 23 69 43 127 45 129 2 2 74 -32 161 -77 259 -131 504 -213 783 -261 608 -106 1271 -3 1808 279 52 27 96 50 98 50 1 0 21 -55 43 -123 50 -150 74 -187 143 -221 113 -56 237 -14 289 99 29 62 23 106 -41 305 -33 101 -60 190 -60 197 0 9 74 13 308 15 l309 3 41 28 c60 39 93 94 99 164 7 79 -31 154 -100 197 -41 25 -59 30 -151 35 l-105 6 54 84 c109 170 192 365 243 567 44 176 55 262 56 439 1 156 0 162 -27 217 -32 65 -89 121 -156 152 l-46 21 -2310 2 c-2197 2 -2313 2 -2362 -15z">
+                        </path>
+                    </g>
+                </svg>
+                <span class="text-one-line">Home</span>
+                <% if (isProfileCreated) { %>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="9.29289322 12.9497475 10 13.6568542 15.6568542 8 14.2426407 6.58578644 10 10.8284271 5.75735931 6.58578644 4.34314575 8">
+                    </polygon>
+                </svg>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="10.7071068 7.05025253 10 6.34314575 4.34314575 12 5.75735931 13.4142136 10 9.17157288 14.2426407 13.4142136 15.6568542 12">
+                    </polygon>
+                </svg>
+                <% } %>
+            </div>
+        </button>
+        <% if (isProfileCreated) { %>
+        <div class="dropdown-container">
+            <a class="text-one-line" href="/users/menu">Todos los usuarios</a>
+            <a class="text-one-line" href="#">Usuarios online</a>
+            <a class="text-one-line" href="/users/searchusers">Busqueda filtrada de usuarios</a>
+            <a class="text-one-line" href="/users/searchusers">Buscar usuario por nombre</a>
+        </div>
+        <% } %>
+    </div>
+
+    <% if (isProfileCreated) { %>
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" id="tab-2">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path
+                        d="M7,8 C9.209139,8 11,6.209139 11,4 C11,1.790861 9.209139,0 7,0 C4.790861,0 3,1.790861 3,4 C3,6.209139 4.790861,8 7,8 Z M7,9 C4.852,9 2.801,9.396 0.891,10.086 L2,16 L3.25,16 L4,20 L10,20 L10.75,16 L12,16 L13.109,10.086 C11.199,9.396 9.148,9 7,9 Z M15.315,9.171 L13.66,18 L12.41,18 L12.035,20 L16,20 L16.75,16 L18,16 L19.109,10.086 C17.899,9.648 16.627,9.346 15.315,9.171 Z M13,0 C12.532,0 12.089,0.096 11.671,0.243 C12.501,1.272 13,2.578 13,4 C13,5.422 12.501,6.728 11.671,7.757 C12.089,7.904 12.531,8 13,8 C15.209,8 17,6.209 17,4 C17,1.791 15.209,0 13,0 Z"
+                        id="Combined-Shape"></path>
+                </svg>
+                <span class="text-one-line">Friends</span>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="9.29289322 12.9497475 10 13.6568542 15.6568542 8 14.2426407 6.58578644 10 10.8284271 5.75735931 6.58578644 4.34314575 8">
+                    </polygon>
+                </svg>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="10.7071068 7.05025253 10 6.34314575 4.34314575 12 5.75735931 13.4142136 10 9.17157288 14.2426407 13.4142136 15.6568542 12">
+                    </polygon>
+                </svg>
+            </div>
+        </button>
+        <div class="dropdown-container">
+            <a class="text-one-line" href="/users/myfriends">Todos mis amigos</a>
+            <a class="text-one-line" href="#">Amigos online</a>
+            <a class="text-one-line" href="#">Usuarios bloqueados</a>
+            <a class="text-one-line" href="#">Buscar amigo</a>
+        </div>
+    </div>
+
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" id="tab-3">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Rectangle-535" points="0 0 20 8 12 12 10 20"></polygon>
+                </svg>
+                <span class="text-one-line">Friendship requests</span>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="9.29289322 12.9497475 10 13.6568542 15.6568542 8 14.2426407 6.58578644 10 10.8284271 5.75735931 6.58578644 4.34314575 8">
+                    </polygon>
+                </svg>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="10.7071068 7.05025253 10 6.34314575 4.34314575 12 5.75735931 13.4142136 10 9.17157288 14.2426407 13.4142136 15.6568542 12">
+                    </polygon>
+                </svg>
+            </div>
+        </button>
+        <div class="dropdown-container">
+            <a class="text-one-line" href="/users/friendship-requests/received">Received</a>
+            <a class="text-one-line" href="/users/friendship-requests/send">Send</a>
+        </div>
+    </div>
+
+
+
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" onclick="location.href='/users/chat'" type="button" id="tab-4">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path
+                        d="M10,15 L18.0092049,15 C19.1017876,15 20,14.1019465 20,12.9941413 L20,3.00585866 C20,1.89706013 19.1086907,1 18.0092049,1 L1.99079514,1 C0.898212381,1 0,1.89805351 0,3.00585866 L0,12.9941413 C0,14.1029399 0.891309342,15 1.99079514,15 L6,15 L6,19 L10,15 Z M5,7 L7,7 L7,9 L5,9 L5,7 Z M9,7 L11,7 L11,9 L9,9 L9,7 Z M13,7 L15,7 L15,9 L13,9 L13,7 Z"
+                        id="Combined-Shape"></path>
+                </svg>
+                <span class="text-one-line">Chats</span>
+            </div>
+        </button>
+    </div>
+    <% } %>
+
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" onclick="location.href='/users/notifications'" type="button" id="tab-5">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path
+                        d="M14,8 C14,5.790861 12.209139,4 10,4 C7.790861,4 6,5.790861 6,8 L6,15 L14,15 L14,8 Z M8.02739671,2.33180314 C5.68271203,3.14769073 4,5.37733614 4,8 L4,14 L1,16 L1,17 L19,17 L19,16 L16,14 L16,8 C16,5.37733614 14.317288,3.14769073 11.9726033,2.33180314 C11.9906226,2.22388264 12,2.11303643 12,2 C12,0.8954305 11.1045695,0 10,0 C8.8954305,0 8,0.8954305 8,2 C8,2.11303643 8.0093774,2.22388264 8.02739671,2.33180314 L8.02739671,2.33180314 Z M12,18 C12,19.1045695 11.1045695,20 10,20 C8.8954305,20 8,19.1045695 8,18 L12,18 L12,18 Z"
+                        id="Combined-Shape"></path>
+                </svg>
+                <span class="text-one-line">Notifications</span>
+            </div>
+        </button>
+    </div>
+
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" id="tab-6">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path
+                        d="M4.99999861,5.00218626 C4.99999861,2.23955507 7.24419318,0 9.99999722,0 C12.7614202,0 14.9999958,2.22898489 14.9999958,5.00218626 L14.9999958,6.99781374 C14.9999958,9.76044493 12.7558013,12 9.99999722,12 C7.23857424,12 4.99999861,9.77101511 4.99999861,6.99781374 L4.99999861,5.00218626 Z M1.11022272e-16,16.6756439 C2.94172855,14.9739441 6.3571245,14 9.99999722,14 C13.6428699,14 17.0582659,14.9739441 20,16.6756471 L19.9999944,20 L0,20 L1.11022272e-16,16.6756439 Z"
+                        id="Combined-Shape"></path>
+                </svg>
+                <span class="text-one-line">My account</span>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="9.29289322 12.9497475 10 13.6568542 15.6568542 8 14.2426407 6.58578644 10 10.8284271 5.75735931 6.58578644 4.34314575 8">
+                    </polygon>
+                </svg>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="10.7071068 7.05025253 10 6.34314575 4.34314575 12 5.75735931 13.4142136 10 9.17157288 14.2426407 13.4142136 15.6568542 12">
+                    </polygon>
+                </svg>
+            </div>
+        </button>
+        <div class="dropdown-container">
+            <%if (isProfileCreated) { %>
+            <a class="text-one-line" href="/users/myprofile">My profile</a>
+            <% } %>
+            <a class="text-one-line" href="/users/editprofile">Settings</a>
+            <a class="text-one-line" href="/logout">Logout</a>
+
+        </div>
+    </div>
+</div>

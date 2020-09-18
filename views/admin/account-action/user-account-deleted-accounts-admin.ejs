@@ -1,0 +1,20 @@
+<% if (accountsDeleted.length === 0) { %>
+<p>No hay ninguna cuenta eliminada por el administrador</p>
+<% } else {%>
+
+<table class="table-list">
+    <tr class="table-header">
+        <th id="col1-d">Username</th>
+        <th id="col2-d">Action doer</th>
+        <th id="col3-d">Deleting date</th>
+    </tr>
+    <% for (let aDeleted of accountsDeleted) { %>
+    <tr class="table-row">
+        <td><%= aDeleted.username %></td>
+        <td><%= aDeleted.actionDoer %></td>
+        <td><%= aDeleted.deletingDate%></td>
+    </tr>
+    <% } %>
+</table>
+
+<% } %>

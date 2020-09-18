@@ -1,0 +1,232 @@
+/* profile */
+#profile-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.underline {
+  background-color: #808080;
+  display: block;
+  border: 1px solid black;
+  /* border-bottom: 1px solid black; */
+  margin-right: 40px;
+  margin-bottom: 5px;
+}
+
+#user-username {
+  margin-bottom: 10px;
+}
+
+//page layout
+#user-profile-top {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: row;
+  margin: 10px;
+  /* position: relative; */
+  // max-height: 250px;
+  height: 250px;
+}
+
+#user-profile-bottom {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: row;
+  padding-top: 25px;
+  margin: 10px;
+  position: relative;
+}
+
+//layout top
+#user-photo {
+  /* flex-basis: 10%; */
+  /* width: 40%; */
+  flex: 1;
+  /* flex-grow: 1; */
+  /* flex-basis: 100px; */
+  margin: 0 10px;
+  /*min-width: auto;
+    max-width: auto; */
+  height: 100%;
+}
+
+#user-profile-top-data {
+  flex: 2;
+  /* flex-grow: 2;
+      flex-basis: 0; */
+  /* margin-top: 10px;
+      margin-bottom: 10px; */
+  /* overflow: auto; */
+}
+
+//layout bottom
+#user-bio {
+  flex: 1;
+}
+#user-friends {
+  flex: 1;
+}
+
+//profile top
+#photo {
+  display: block;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  width: 240px;
+  height: 240px;
+  // max-width: 100%;
+  // max-height: 100%; /*200px;*/
+  border: 1px solid rgb(184, 184, 184);
+}
+
+/* #user-photo button a {
+    display: block;
+    max-width: 100%;
+  } */
+
+#user-aboutme {
+  overflow-y: auto;
+  /* overflow-y: auto; */
+  /* max-width: 400px; */
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /* margin-top: 0;
+      padding: 0; */
+
+  white-space: pre-line;
+  word-break: break-all;
+  word-wrap: break-word;
+  height: calc(100% - 100px); /*(100% container - height h1) /* 85%;*/
+}
+
+.aboutme-empty {
+  font-style: italic;
+}
+
+/* .message-profile {
+    display: none;
+  } */
+
+/* #message-blocked-users,
+  #message-friendship-user {
+    /* width: 80%; 
+    margin: 20px 120px;
+    padding: 0px;
+    height: 60px;
+    /* visibility: visible; 
+  } */
+
+/* .message-user-unblocked,
+  .message-user-friendship-action {
+    background-color: green;
+  } */
+
+//profile bottom
+
+// .user-data {
+//   padding: 5px;
+//   margin: 2px 2px;
+// }
+
+.user-data strong {
+  margin-right: 5px;
+}
+
+.user-data-flex-container {
+  display: flex;
+  flex-direction: column;
+
+  height: 130px;
+}
+.user-data-flex-container div {
+  flex: 1;
+  //border: 1px solid black;
+  display: flex;
+  align-items: flex-end;
+}
+
+//btn
+#editprofile-btn {
+  display: inline-block;
+  width: 170px;
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#editprofile-btn a {
+  color: black;
+  width: 100%; /*asi aunque hagas click en un lado del boton y no en el texto funciona*/
+}
+
+//svg icons
+.language-level {
+  width: 40px;
+  height: 30px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.no-location-icon {
+  width: 25px;
+  height: 27px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.no-location-icon2 {
+  width: 37px;
+  height: 22px;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+@media only screen and (max-width: 600px) {
+  //cambiar layout
+  #user-profile-top,
+  #user-profile-bottom {
+    flex-direction: column;
+  }
+
+  #photo {
+    width: 150px;
+    height: 150px;
+  }
+
+  //para centrar h1
+  #user-profile-top-data {
+    //height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  //alinear a la izquierda
+  #user-profile-top-data h2 {
+    align-self: flex-start;
+  }
+
+  #user-aboutme {
+    height: 100px;
+    align-self: flex-start;
+    word-wrap: normal;
+  }
+
+  //llegue hasta la derecha
+  .underline,
+  .aboutme-empty {
+    width: 97%;
+  }
+
+  #user-bio {
+    margin-bottom: 10px;
+  }
+}

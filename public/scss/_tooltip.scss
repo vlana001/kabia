@@ -1,0 +1,57 @@
+/* password rules tooltip */
+[data-tip] {
+  position: relative;
+}
+
+[data-tip]:before {
+  content: "";
+  display: none;   /* hides the tooltip when not hovered */
+  content: "";
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #1a1a1a;
+  position: absolute;
+  top: 50px;
+  left: 35px;
+  z-index: 8;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+
+[data-tip]:after {
+  display: none;
+  content: attr(data-tip);
+  position: absolute;
+  top: 55px;
+  left: 0px;
+  padding: 5px 8px;
+  background: #1a1a1a;
+  color: #fff;
+  z-index: 9;
+  font-size: 0.75em;
+  height: 18px;
+  line-height: 18px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+  display: inline-block;
+  content: attr(data-tip);
+  white-space: pre;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 2em;
+}
+
+.div-tooltip {
+  display: inline-block;
+  width: 100%; /*Para que password y confirm password ocupen lo mismo, si no el tooltip hace ser al input de password la mitad*/
+}

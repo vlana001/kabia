@@ -1,0 +1,132 @@
+<div id="side-navigation" class="side-navigation">
+    <!-- Home -->
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" onclick="location.href='/admin/'" type="button" id="tab-1">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 512 512"
+                    preserveAspectRatio="xMidYMid meet" class="svg social-link replaced-svg">
+                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="white" stroke="none">
+                        <path
+                            d="M2370 5101 c-151 -34 -256 -78 -375 -155 -276 -180 -458 -474 -494 -799 -7 -56 -11 -317 -11 -627 l0 -530 1070 0 1070 0 2 187 3 188 304 177 c168 98 308 181 313 186 5 5 -123 86 -307 193 -175 101 -318 189 -320 194 -1 6 -8 49 -14 97 -54 412 -375 768 -789 874 -136 35 -333 42 -452 15z m288 -860 c129 -66 152 -242 45 -343 -132 -125 -353 -30 -353 152 0 165 162 266 308 191z">
+                        </path>
+                        <path
+                            d="M213 2542 c-98 -35 -170 -111 -200 -211 -12 -44 -14 -79 -9 -170 22 -358 133 -697 332 -1007 l52 -82 -118 -4 c-110 -4 -122 -6 -166 -34 -70 -43 -108 -117 -101 -197 6 -70 39 -125 99 -164 l41 -28 314 -3 c172 -2 313 -4 313 -5 0 -2 -29 -90 -65 -197 -36 -107 -65 -208 -65 -224 0 -55 24 -111 66 -153 67 -67 151 -80 241 -39 68 32 93 72 144 226 23 69 43 127 45 129 2 2 74 -32 161 -77 259 -131 504 -213 783 -261 608 -106 1271 -3 1808 279 52 27 96 50 98 50 1 0 21 -55 43 -123 50 -150 74 -187 143 -221 113 -56 237 -14 289 99 29 62 23 106 -41 305 -33 101 -60 190 -60 197 0 9 74 13 308 15 l309 3 41 28 c60 39 93 94 99 164 7 79 -31 154 -100 197 -41 25 -59 30 -151 35 l-105 6 54 84 c109 170 192 365 243 567 44 176 55 262 56 439 1 156 0 162 -27 217 -32 65 -89 121 -156 152 l-46 21 -2310 2 c-2197 2 -2313 2 -2362 -15z">
+                        </path>
+                    </g>
+                </svg>
+                <span class="text-one-line">Home</span>
+            </div>
+        </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" onclick="location.href='/admin/stats'" type="button" id="tab-2">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path
+                        d="M1,10 L4,10 L4,20 L1,20 L1,10 Z M6,0 L9,0 L9,20 L6,20 L6,0 Z M11,8 L14,8 L14,20 L11,20 L11,8 Z M16,4 L19,4 L19,20 L16,20 L16,4 Z"
+                        id="Combined-Shape"></path>
+                </svg>
+                <span class="text-one-line">Stats</span>
+            </div>
+        </button>
+    </div>
+
+    <!-- Ban/delete user account -->
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" id="tab-3">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" fill-rule="evenodd" viewBox="0 0 20 20" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path
+                        d="M0 10a10 10 0 1 1 20 0 10 10 0 0 1-20 0zm16.32-4.9L5.09 16.31A8 8 0 0 0 16.32 5.09zm-1.41-1.42A8 8 0 0 0 3.68 14.91L14.91 3.68z">
+                    </path>
+                </svg>
+                <span class="text-one-line">Ban/delete user account</span>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="9.29289322 12.9497475 10 13.6568542 15.6568542 8 14.2426407 6.58578644 10 10.8284271 5.75735931 6.58578644 4.34314575 8">
+                    </polygon>
+                </svg>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="10.7071068 7.05025253 10 6.34314575 4.34314575 12 5.75735931 13.4142136 10 9.17157288 14.2426407 13.4142136 15.6568542 12">
+                    </polygon>
+                </svg>
+            </div>
+        </button>
+        <div class="dropdown-container">
+            <a class="text-one-line" href="/admin/user-account-action/action">Ban, unban or delete</a>
+            <a class="text-one-line" href="/admin/user-account-action/see-banned-users">Banned users</a>
+            <a class="text-one-line" href="/admin/user-account-action/see-accounts-deleted">Deleted users</a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <!-- <div class="tab-container">
+        <button class="dropdown-btn-side-nav" id="tab-4">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" fill-rule="evenodd" viewBox="0 0 20 20" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path
+                        d="M14.8780488,10.097561 L20,14 L20,16 L13.627451,11.0980392 L10,14 L6.37254902,11.0980392 L0,16 L0,14 L5.12195122,10.097561 L0,6 L0,4 L10,12 L20,4 L20,6 L14.8780488,10.097561 Z M18.0092049,2 C19.1086907,2 20,2.89451376 20,3.99406028 L20,16.0059397 C20,17.1072288 19.1017876,18 18.0092049,18 L1.99079514,18 C0.891309342,18 0,17.1054862 0,16.0059397 L0,3.99406028 C0,2.8927712 0.898212381,2 1.99079514,2 L18.0092049,2 Z"
+                        id="Combined-Shape"></path>
+                </svg>
+                <span class="text-one-line">Messages</span>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="9.29289322 12.9497475 10 13.6568542 15.6568542 8 14.2426407 6.58578644 10 10.8284271 5.75735931 6.58578644 4.34314575 8">
+                    </polygon>
+                </svg>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="10.7071068 7.05025253 10 6.34314575 4.34314575 12 5.75735931 13.4142136 10 9.17157288 14.2426407 13.4142136 15.6568542 12">
+                    </polygon>
+                </svg>
+            </div>
+        </button>
+        <div class="dropdown-container">
+            <a class="text-one-line" href="/admin/user-messages/pending">Mensajes pendientes</a>
+            <a class="text-one-line" href="/admin/user-messages/replied">Mensajes respondidos</a>
+            <a class="text-one-line" href="/admin/user-messages/ignored">Mensajes ignorados</a>
+        </div>
+    </div> -->
+
+    <!-- My account -->
+    <div class="tab-container">
+        <button class="dropdown-btn-side-nav" id="tab-5">
+            <div class="btn-container">
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path
+                        d="M4.99999861,5.00218626 C4.99999861,2.23955507 7.24419318,0 9.99999722,0 C12.7614202,0 14.9999958,2.22898489 14.9999958,5.00218626 L14.9999958,6.99781374 C14.9999958,9.76044493 12.7558013,12 9.99999722,12 C7.23857424,12 4.99999861,9.77101511 4.99999861,6.99781374 L4.99999861,5.00218626 Z M1.11022272e-16,16.6756439 C2.94172855,14.9739441 6.3571245,14 9.99999722,14 C13.6428699,14 17.0582659,14.9739441 20,16.6756471 L19.9999944,20 L0,20 L1.11022272e-16,16.6756439 Z"
+                        id="Combined-Shape"></path>
+                </svg>
+                <span class="text-one-line">My account</span>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="9.29289322 12.9497475 10 13.6568542 15.6568542 8 14.2426407 6.58578644 10 10.8284271 5.75735931 6.58578644 4.34314575 8">
+                    </polygon>
+                </svg>
+                <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <polygon id="Combined-Shape"
+                        points="10.7071068 7.05025253 10 6.34314575 4.34314575 12 5.75735931 13.4142136 10 9.17157288 14.2426407 13.4142136 15.6568542 12">
+                    </polygon>
+                </svg>
+            </div>
+        </button>
+        <div class="dropdown-container">
+            <a class="text-one-line" href="/admin/lastlogins">Last logins</a>
+            <a class="text-one-line" href="/admin/changepassword">Change password</a>
+            <a class="text-one-line" href="/admin/logout">Logout</a>
+        </div>
+    </div>
+</div>

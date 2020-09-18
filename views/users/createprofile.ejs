@@ -1,0 +1,133 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+  <%- include('../includes/navigation.ejs') %>
+  <div class="content">
+
+    <% if (errorMessage) { %>
+    <div class="msg msg-error">
+      <% for (let error of errorMessage) { %>
+      <p class="msg-indiv"><%= error %></p>
+      <% } %>
+    </div>
+    <% } %>
+
+
+    <div>
+      <form action="/users/createprofile" method="POST">
+
+        <!-- mandatory data -->
+        <div class="form-group">
+          <div class="form-group-header">
+            <p>
+              Obligatory data
+            </p>
+          </div>
+
+          <div class="form-group-data">
+            <label for="username"><b>Username</b></label>
+            <input type="text" name="username" id="username" maxlength="35" value="<%=oldInput.username%>"><br>
+
+            <label for="gender"><b>Gender</b></label>
+            <input type="radio" name="gender" value="male"
+              <%= (oldInput.gender==="male") ? 'checked=checked' : '' %>>Male
+            <input type="radio" name="gender" value="female"
+              <%= (oldInput.gender==="female") ? 'checked=checked' : '' %>>Female<br>
+
+            <label for="euskLevel"><b>Euskara Level</b></label>
+            <select name="euskLevel" id="euskLevel">
+              <option hidden disabled selected value> -- select an option -- </option>
+              <option value="1" <%= (oldInput.euskLevel==="1") ? 'selected=selected' : '' %>>1-Beginner </option>
+              <option value="2" <%= (oldInput.euskLevel==="2") ? 'selected=selected' : '' %>>2-Elementary</option>
+              <option value="3" <%= (oldInput.euskLevel==="3") ? 'selected=selected' : '' %>>3-Intermediate</option>
+              <option value="4" <%= (oldInput.euskLevel==="4") ? 'selected=selected' : '' %>>4-Advanced</option>
+              <option value="5" <%= (oldInput.euskLevel==="5") ? 'selected=selected' : '' %>>5-Expert</option>
+            </select><br>
+
+            <label for="birthdate"><b>Birthdate</b></label>
+            <input type="date" name="birthdate" id="birthdate" max="<%= todayDate %>"
+              value="<%=oldInput.birthdate%>"><br>
+          </div>
+        </div>
+
+        <!-- optiona data -->
+        <div class="form-group">
+          <div class="form-group-header">
+            <p>
+              Optional data
+            </p>
+          </div>
+
+          <div class="form-group-data">
+            <label for="birthplace"><b>Birth place</b></label>
+            <input type="text" name="birthplace" id="birthplace" maxlength="40" value="<%=oldInput.birthplace%>"><br>
+
+            <label for="livingplace"><b>Living place</b></label>
+            <svg onclick="copyPastePlace()" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+              viewBox="0 0 34 34">
+              <path d="M22 6v16h-16v-16h16zm2-2h-20v20h20v-20zm-24 17v-21h21v2h-19v19h-2z" />
+            </svg>
+            <input type="text" name="livingplace" id="livingplace" maxlength="40" value="<%=oldInput.livingplace%>"><br>
+
+            <label for="aboutme"><b>About me</b></label><br>
+            <textarea name="aboutme" id="aboutme" cols="60" rows="10"
+              maxlength="400"><%=oldInput.aboutme%></textarea><br>
+          </div>
+        </div>
+
+        <!-- mandatory data -->
+        <div id="img-form-group" class="form-group">
+          <div class="form-group-header">
+            <p>
+              Obligatory data
+            </p>
+          </div>
+
+          <div id="img-form-group-img-selector" class="form-group-data">
+            <div>
+              <label for="pic"><b>Profile image <span id="image-limits">(jpeg/jpg/png, Max: 1Mb)</span></b></label>
+              <svg id="delete-img" class="svg-icon" onclick="changeImg()" viewBox="0 0 20 20">
+                <path fill="none"
+                  d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z">
+                </path>
+              </svg>
+              <br>
+
+              <button id="pic-btn">Select image</button>
+              <input type="file" id="pic" accept=".jpeg, .jpg, .png"><br>
+              <input type="hidden" name="picBase64" id="picBase64" value="<%=oldInput.imageProfile%>">
+
+            </div>
+            <div>
+              <img id="img-show" src="<%=oldInput.imageProfile%>" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="submitProfileData" class="btn1">Create profile</button>
+      </form>
+      <!-- <img id="img" src="" alt=" " onerror="this.style.display='none'" /> -->
+    </div>
+
+    <!-- Modal -->
+    <div id="imgModal" class="modal">
+      <div class="modal-content">
+        <span id="closeImg" class="close">&times;</span>
+        <div id="modal-img-container">
+          <div>
+            <img id="imguser" class="my-image" src="" />
+          </div>
+          <div>
+            <button id="btnModalImg">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/image.js"></script>
+  <%- include('../includes/end.ejs') %>

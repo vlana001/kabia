@@ -1,0 +1,54 @@
+<%- include('../includes/head-admin.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <%- include('../includes/navigation-admin.ejs') %>
+
+    <div class="content">
+        <div id="container-page">
+
+            <div id="page-content" class="flex">
+                <div id="stats-search-box">
+
+                    <select name="type" id="type">
+                        <option value="user_registration">Users registered</option>
+                        <option value="account_deletion">Account deletion</option>
+                        <option value="user_signingin">User sign in</option>
+                        <option value="friendship_request_sent">Friendship request sent</option>
+                        <!-- <option value="message_sent_to_admin">Message sent to admin</option> -->
+                    </select>
+
+                    <select name="time" id="time">
+                        <option value="today">Today</option>
+                        <option value="last_week">Last week</option>
+                        <option value="last_month">Last month</option>
+                        <option value="last_year">Last year</option>
+                        <option value="all_time">All time</option>
+                    </select>
+
+                    <button id="stats-search-button">Search</button>
+                </div>
+
+                <div id="msg-no-options-selected">
+                    <p>Selecciona unas opciones para ver sus estadisticas</p>
+                </div>
+
+                <div id="msg-err-options">
+                    <p>Invalid options</p>
+                </div>
+
+                <div id="spinner-loading-stats">
+                    <span id="spinner-loading-stats-span" class="lds-dual-ring-stats"></span>
+                </div>
+
+                <!-- canvas container -->
+                <div class="chart-container" id="chart-container">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <%- include('../includes/end-admin.ejs') %>

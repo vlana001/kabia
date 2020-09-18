@@ -1,0 +1,1937 @@
+/* resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+a {
+  text-decoration: none; }
+
+li {
+  list-style-type: none; }
+
+/* utilities */
+.hide {
+  /*visibility: hidden;*/
+  /*ocupa espacio pero no se muestra*/
+  display: none;
+  /*no ocupa espacio y no se muestra*/ }
+
+html,
+body {
+  overscroll-behavior-y: contain; }
+
+/* Layout */
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-height: 100vh; }
+
+.content {
+  flex: 1; }
+
+.footer {
+  /* flex-shrink: 0; */
+  padding: 20px;
+  /* height: 40px; */
+  background-color: #b45354; }
+
+.footer-link {
+  color: black;
+  display: inline;
+  /*block*/
+  padding: 0 20px; }
+
+/* page container*/
+#container-page {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: flex-start; }
+
+#page-content {
+  flex: 5;
+  margin-top: 20px; }
+
+/* noscript msg */
+#noscript-msg,
+#noscript-msg2 {
+  background-color: yellow; }
+
+@media only screen and (max-width: 600px) {
+  .footer {
+    display: none; } }
+
+:root {
+  --open: 1; }
+
+/* header/navbar */
+.main-header {
+  background-color: #333;
+  height: 3em !important;
+  overflow: hidden;
+  display: flex;
+  z-index: 3; }
+
+.main-header-nav {
+  height: inherit;
+  background-color: inherit;
+  position: fixed;
+  top: 0;
+  /* Position the navbar at the top of the page */
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; }
+
+.dropdown {
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+  border-right: 1px solid white; }
+
+#dropdown-myaccount {
+  border-right: inherit; }
+
+.dropdown-notlogged {
+  height: 100%;
+  flex: 1;
+  overflow: hidden; }
+
+.dropdown button.dropbtn,
+.dropdown-notlogged button.dropbtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  line-height: 100%;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Times New Roman", Times, serif;
+  color: white; }
+
+.dropdown:hover button.dropbtn {
+  background-color: #91433d; }
+
+/*Remove extra button spacing/padding in Firefox*/
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0; }
+
+.dropdown button.dropbtn a,
+.dropdown button.dropbtn div#div-dropbtn-myaccount,
+.dropdown-notlogged button.dropbtn a {
+  flex: 1;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Times New Roman", Times, serif;
+  color: white;
+  outline: none;
+  align-items: center;
+  padding-top: 15px;
+  /*center vertically: 15px+18px+15px = 3em*/
+  padding-left: 6px;
+  display: inline-block;
+  height: 100%; }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  top: calc(3em + 1px);
+  /* un poco mas abajo que la navabr*/
+  border: 1px solid #e58787; }
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left; }
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+  color: black; }
+
+#notification-icon,
+#chat-icon,
+#friendship-icon,
+#users-messages-icon {
+  display: inline-block;
+  /* inline-block para mostrar nuevos msg*/
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  margin-left: 5px;
+  text-align: center;
+  background-color: #f45566; }
+
+#home-link-button {
+  color: white;
+  font-size: 25px;
+  font-weight: 800; }
+
+.logout-link {
+  border-top: 1px solid #e58787; }
+
+.navbar-text {
+  display: inline; }
+
+.navbar-svg-icon {
+  width: 20px;
+  height: 20px;
+  fill: white;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 3px; }
+
+/*Lateral menu navigation (no hamburger)*/
+#lateral-menu {
+  flex: 1;
+  margin-top: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  min-width: 210px; }
+
+#lateral-menu a {
+  display: block;
+  padding: 10px 4px;
+  background-color: #f0e68c;
+  color: black;
+  border-top: 1px solid grey;
+  border-right: 1px solid grey;
+  border-left: 1px solid grey;
+  /* border-bottom: 1px solid grey; */ }
+
+.lateral-menu-link:last-child {
+  border-bottom: 1px solid grey; }
+
+#lateral-menu a.lateral-menu-current-link {
+  background-color: seagreen; }
+
+#lateral-menu a:hover {
+  /* background-color: #545734; */
+  opacity: 0.5; }
+
+#hamburger-icon {
+  width: 27px;
+  height: 27px;
+  fill: white;
+  margin: 0px 4px;
+  display: none; }
+
+#logo-hamburger-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; }
+
+#closeHamburgerIcon {
+  display: none; }
+
+.side-navigation {
+  display: flex;
+  flex-direction: column;
+  width: 0;
+  position: absolute;
+  top: 3em;
+  background-color: black;
+  overflow-x: hidden;
+  transition: 0.3s; }
+
+.side-navigation button,
+.side-navigation a {
+  padding: 6px 5px;
+  text-decoration: none;
+  text-align: left;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  border: 1px solid black;
+  width: 100%; }
+
+.side-navigation button:hover {
+  opacity: 0.7; }
+
+.side-navigation a:hover {
+  opacity: 0.7; }
+
+.dropdown-btn-side-nav {
+  background-color: #f0e68c; }
+
+.dropdown-btn-side-nav div.btn-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap; }
+
+.dropdown-container {
+  display: none;
+  background-color: ivory; }
+
+.text-one-line {
+  white-space: nowrap; }
+
+.dropdown-btn-side-nav .navbar-svg-icon:last-child {
+  display: none; }
+
+@media only screen and (max-width: 1220px) {
+  .dropdown-content {
+    right: 1px; } }
+
+@media only screen and (max-width: 600px) {
+  #lateral-menu {
+    display: none; }
+  #hamburger-icon {
+    display: inline-block; }
+  /*el logo ocupara toda la navbar, por lo que si clickas en cualquier parte
+  de la navbar, salvo la hamburger, ira a home, pero esta bien asi*/
+  .navbar-text {
+    display: none; }
+  #home-link {
+    flex: 5; }
+  .not-home-tabs {
+    flex: 2; }
+  .dropdown:hover button.dropbtn {
+    background-color: inherit; } }
+
+@media only screen and (min-width: 601px) {
+  #hamburger-icon,
+  #side-navigation {
+    display: none; } }
+
+/* chat */
+#chat {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 3em - 40px);
+  /*viewport h - nav header - footer*/
+  overflow-y: hidden;
+  position: relative; }
+
+#friends {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */ }
+
+#messages {
+  flex: 5;
+  display: flex;
+  visibility: hidden;
+  flex-direction: column;
+  /* border: 1px solid black; */
+  position: relative; }
+
+#container-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-end;
+  /*no tenga en cuenta la scrollbar para coger la width*/
+  width: 57px;
+  /*calc(100% * (2 / 7)); */
+  /*misma anchura que container friend*/
+  height: 50px;
+  border-radius: 50%;
+  bottom: calc(40px + 7px);
+  /*poner abajo, distancia con el viewport*/
+  position: fixed;
+  z-index: 2; }
+
+#search-friend-div {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin-right: 7px;
+  /*para que no este pegando con la scrollbar*/
+  background-color: red;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+/* #search-friend-div:after {
+    content: "\0020";
+    width: 20px;
+    height: 20px;
+  } */
+#friendslist {
+  /* flex-grow: 9; */
+  flex: 9;
+  border: 1px solid black;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column; }
+
+/* Para que el border del ultimo elemento no sea mayor que el del resto */
+#friendslist:last-child {
+  border-bottom: 0; }
+
+.friend {
+  display: flex;
+  /* height: 100px; */
+  min-height: 100px;
+  /* para que se ponga scroll */
+  border-bottom: 2px solid black;
+  background-color: white;
+  z-index: 1; }
+
+.no-friend {
+  /* for "disabled" effect */
+  opacity: 0.5;
+  background: #ccc; }
+
+.blocked {
+  /* for "disabled" effect */
+  opacity: 0.5;
+  background: red; }
+
+.friend-photo {
+  flex: 2;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.chat-user-img {
+  height: 84px;
+  width: 84px;
+  border-radius: 50%;
+  border: 1px solid #b8b8b8; }
+
+.friend-username {
+  flex: 3;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 6px; }
+
+.unread-msg-number {
+  flex: 2;
+  display: flex;
+  justify-content: left;
+  align-items: center; }
+
+.unread-msg-number #user-unread-msg-number {
+  display: none;
+  /* inline-block */
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #f45566; }
+
+#user-unread-msg-status {
+  display: none;
+  /* inline-block */
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: blue; }
+
+#emptyspace {
+  /* height: 100%; */
+  flex: 1 1 auto;
+  /*remaining space until footer*/
+  background-color: rosybrown; }
+
+#nofriendschat {
+  text-align: center;
+  padding-top: 20px;
+  background-color: rosybrown;
+  display: block; }
+
+#msg-select-chat-div {
+  visibility: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; }
+
+#msg-select-chat-div p {
+  color: gray; }
+
+#chat-header {
+  visibility: inherit;
+  width: 100%;
+  flex: 1;
+  background-color: blue;
+  display: flex;
+  align-items: center; }
+
+#current-chat-user-image {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 1px solid #b8b8b8;
+  margin-left: 20px; }
+
+#current-chat-user-username {
+  margin-left: 40px;
+  font-weight: 600; }
+
+#chatmessages {
+  /* flex-grow: 5; */
+  flex: 6;
+  /* border: 1px solid black; */
+  /* padding-bottom: 20px; */
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column; }
+
+/* para que en firefox se quede margin depues del ultimo mensaje*/
+#chatmessages:after {
+  content: " ";
+  min-height: 1px; }
+
+.chat-message {
+  /*background-color: #6495ed;*/
+  /*#32cd32;*/
+  margin: 10px;
+  padding: 6px;
+  border-radius: 5px;
+  /* align-self: flex-start; */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+  /*normal*/
+  min-width: 200px;
+  max-width: 600px;
+  /* si el msg es muy largo se pone en varias lineas*/
+  /*si pongo max-width 80% y una palabra es muy larga se hace un scroll x*/
+  display: flex;
+  flex-direction: column; }
+
+.chat-message-send {
+  background-color: #32cd32;
+  align-self: flex-end; }
+
+.chat-message-received {
+  background-color: #6495ed;
+  align-self: flex-start; }
+
+.chat-message-info {
+  background-color: DarkKhaki;
+  align-self: center;
+  width: 120px;
+  text-align: center;
+  padding: 10px 6px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif; }
+
+.chat-message-text {
+  padding-bottom: 3px; }
+
+.chat-message-text span {
+  font-size: 16px; }
+
+.chat-message-hour {
+  text-align: right; }
+
+.chat-message-hour span {
+  font-size: 12px;
+  /* float: right; */
+  /* text-align: right; */ }
+
+.chat-beginning-message {
+  text-align: center;
+  background-color: blue;
+  border-radius: 5px;
+  align-self: center;
+  margin: 20px;
+  width: 300px; }
+
+.msg-status-unread {
+  background-color: blue;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  margin-left: 5px;
+  display: inline-block; }
+
+#spinner-loading-chat {
+  width: 50px;
+  height: 50px;
+  display: none;
+  position: absolute;
+  top: 70px;
+  align-self: center; }
+
+#spinner-loading-chat-span {
+  width: 100%;
+  height: 100%;
+  z-index: 1; }
+
+#writemessage {
+  flex: 1;
+  border-top: 2px solid black; }
+
+#formchat {
+  height: 100%; }
+
+#msgtext {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 2px solid black;
+  line-height: 1.1;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-bottom: 4px;
+  resize: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none; }
+
+textarea#msgtext:focus {
+  outline: none; }
+
+#msgtext::-webkit-scrollbar {
+  display: none; }
+
+#msgtext::placeholder {
+  font-size: 18px;
+  line-height: 50px; }
+
+#msgtext:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  font-size: 18px;
+  line-height: 50px; }
+
+#msgtext::-ms-input-placeholder {
+  /* Microsoft Edge */
+  font-size: 18px;
+  line-height: 50px; }
+
+msgtext::-webkit-input-placeholder {
+  font-size: 18px;
+  line-height: 50px; }
+
+#msgtext:-moz-placeholder {
+  /* Firefox 18- */
+  font-size: 18px;
+  line-height: 50px; }
+
+#msgtext::-moz-placeholder {
+  /* Firefox 19+ */
+  font-size: 18px;
+  line-height: 50px; }
+
+#container-input-send-msg {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+#send-msg-icon {
+  width: 45px;
+  height: 45px;
+  border: 0;
+  fill: blueviolet;
+  padding: 0 4px;
+  opacity: 0.3; }
+
+#msgsend {
+  border: none;
+  background-color: #333;
+  color: #eee;
+  width: 8em;
+  height: 3em;
+  opacity: 0.5;
+  margin-left: 5px;
+  margin-bottom: 10px; }
+
+#chat-help {
+  background-color: red;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  text-align: center; }
+
+.autocomplete {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  /*400px*/
+  height: 100%; }
+
+.modal-content2 form {
+  height: 100%; }
+
+.search {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 1.2em;
+  width: 100%; }
+
+.friend-card {
+  height: 80px;
+  display: flex;
+  align-items: center; }
+
+.search-friend-img {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 1px solid #b8b8b8; }
+
+.friends-list {
+  /* position: absolute; */
+  border: 1px solid #d4d4d4;
+  top: 100%;
+  /*calc(100% - 5px);*/
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 250px;
+  /*calc(100% - 100px)*/ }
+
+.friends-list div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; }
+
+/*when hovering an item:*/
+.friends-list div:hover {
+  background-color: #e9e9e9; }
+
+.friends-list div:hover .search-friend-username {
+  background-color: #e9e9e9; }
+
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important;
+  color: #ffffff; }
+
+#show-users {
+  width: 100%;
+  height: 50px;
+  z-index: 1;
+  background-color: #aaddff;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  position: fixed;
+  right: 0;
+  display: none; }
+
+#show-users div {
+  height: 100%;
+  width: 50px;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+#show-users div svg {
+  width: 36px;
+  height: 30px; }
+
+@media only screen and (max-width: 440px) {
+  .content {
+    /* flex:1; */
+    height: calc(100% - 3em);
+    top: 3em;
+    position: absolute;
+    width: 100%; }
+  #show-users {
+    display: flex;
+    visibility: visible;
+    top: 3em; }
+  #chat {
+    height: 100%;
+    top: 50px; }
+  #messages {
+    height: calc(100% - 50px - 80px);
+    /*100% - show-users - footer*/
+    /* top: 3em; */
+    position: relative; }
+  #chat-header {
+    height: 60px;
+    position: fixed;
+    top: calc(3em + 50px); }
+  #chatmessages {
+    /* //top: 50px;
+    //flex: 1; */
+    /* height: calc(100% - 400px); */
+    margin-top: 60px;
+    flex: 1;
+    /* margin-bottom: 100px; */ }
+  #writemessage {
+    height: 80px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    bottom: 0;
+    position: fixed;
+    width: 100%; }
+  .chat-message {
+    max-width: 70vw; }
+  #msg-select-chat-div {
+    margin-top: 50px;
+    position: fixed;
+    width: 100%; }
+  #spinner-loading-chat {
+    top: calc(3em + 50px + 30px); }
+  #friends {
+    position: absolute;
+    right: 0;
+    width: 0px;
+    height: calc(100% - 50px);
+    transition: 0.2s;
+    border: 0px;
+    overflow-x: hidden;
+    z-index: 1; }
+  #container-icon {
+    display: none; }
+  #send-msg-icon {
+    padding: 0 6px; } }
+
+/* login */
+#login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+#login-container {
+  display: flex;
+  width: 60%;
+  height: 360px;
+  border: 1px solid #484848;
+  border-radius: 7px;
+  text-align: center;
+  /* margin: auto; */
+  justify-content: center;
+  /* align-items: center; */
+  align-self: stretch;
+  /* margin: 20px; */
+  /* padding-left:30px; */
+  margin-top: 40px;
+  background-color: #fff; }
+
+#social-login {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px;
+  /* padding-left: 40px; */
+  /* height: 100%; */ }
+
+#email-login,
+#email-login-admin {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  /* height: 100%; */
+  padding: 40px; }
+
+#email-login {
+  border-left: 1px solid #484848; }
+
+#form-login-email {
+  display: flex;
+  /* flex: 1; */
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%; }
+
+/* #form-login-email input[type="password"] {
+    margin-bottom: 0px;
+  } */
+.form-social-login {
+  width: 77%; }
+
+.btn-social-login {
+  border: 0;
+  height: 40px;
+  width: 100%;
+  margin: 12px;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: 600;
+  color: white; }
+
+#btn-google {
+  background-color: #df4930;
+  /* border-color: #2d4373; */ }
+
+#btn-facebook {
+  background-color: #3b5998;
+  /* border-color: #2d4373; */ }
+
+#btn-google:hover,
+#btn-facebook:hover {
+  opacity: 0.85; }
+
+.link-login {
+  /* float: left; */
+  align-self: flex-start;
+  display: block;
+  padding-top: 5px;
+  margin-top: 0;
+  /* margin-left: 10px; */ }
+
+.link-login:hover {
+  text-decoration: underline; }
+
+/* #password-field {
+    width: 400px;
+    padding: 5px 15px;
+  } */
+#forgotPassword {
+  margin-top: 0;
+  float: left; }
+
+#login-email-btn,
+#forgot-password-btn,
+#register-btn {
+  display: block;
+  border: none;
+  background-color: #333;
+  color: #eee;
+  width: 10em;
+  height: 3em;
+  font-size: 15px;
+  margin: 10px; }
+
+#login-email-btn:hover {
+  opacity: 0.85; }
+
+#accept-register-conditions {
+  color: #181b19;
+  font-size: 13px; }
+
+.title-login {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  /* float: left; */ }
+
+#register.link-login {
+  margin-right: 0px; }
+
+.link-err-msg {
+  color: red;
+  text-decoration: underline; }
+
+#form-login-email-admin {
+  border: 1px solid black;
+  padding: 40px;
+  width: 500px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+@media only screen and (max-width: 600px) {
+  #login-container {
+    height: 550px;
+    width: 92%;
+    flex-direction: column;
+    border: none;
+    border-radius: none;
+    margin-top: 0; }
+  #social-login,
+  #email-login {
+    height: 50%;
+    padding: 12px 30px 0px 30px; }
+  #email-login {
+    border-left: none;
+    border-top: 1px solid black; }
+  .form-social-login {
+    width: 95%; }
+  #email-login-admin {
+    padding: 50px 20px 0px 20px; }
+  #form-login-email-admin {
+    width: 98%;
+    padding: 20px; } }
+
+/* register */
+#register-page {
+  display: flex;
+  justify-content: center; }
+
+#register-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 10px; }
+
+#register-form {
+  margin-top: 70px;
+  width: 450px; }
+
+#register-form button {
+  margin: 10px auto; }
+
+/* forgot password */
+/* #forgot-password {
+    height: 100%;
+  } */
+#forgot-password-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 70px;
+  /* height: 100%; */ }
+
+#forgot-password-form #email {
+  width: 450px; }
+
+#forgot-password-form #forgotpassword-btn {
+  width: 100px; }
+
+/* create/edit profile form */
+.form-group {
+  margin: 20px 5px;
+  border: 1px solid black; }
+
+.form-group-header {
+  background-color: burlywood;
+  border-bottom: 1px solid black;
+  padding-top: 2px;
+  padding-bottom: 4px; }
+
+.form-group-data {
+  padding: 5px; }
+
+img#img {
+  width: 300px;
+  height: 400px; }
+
+/* Image upload */
+/* No deformar */
+/* #pic-preview {
+   width: 300px;
+    height: 200px; 
+  }*/
+#image-limits {
+  font-family: "Lucida Sans", "Lucida Sans Regular", Geneva, Verdana, sans-serif;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: normal; }
+
+/* svg edit profile*/
+.svg-icon {
+  width: 1em;
+  height: 1em; }
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: black; }
+
+.svg-icon circle {
+  stroke: #4691f6;
+  stroke-width: 1; }
+
+#delete-img {
+  display: none; }
+
+#img-show {
+  width: 150px;
+  height: 150px;
+  display: none; }
+
+#img-form-group {
+  display: flex;
+  flex-direction: column; }
+
+#img-form-group-img-selector {
+  display: flex; }
+
+/*modal*/
+#modal-img-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+#btnModalImg {
+  margin-top: 10px;
+  padding: 4px 7px; }
+
+#modal-img-container {
+  margin-top: 10px; }
+
+/*remove dotted outline from range input element in firefox*/
+input[type="range"]::-moz-focus-outer {
+  border: 0; }
+
+/*select image button*/
+#pic-btn {
+  margin-top: 10px;
+  padding: 5px 10px; }
+
+#pic {
+  display: none;
+  /*hidde this button*/ }
+
+/*submit form button*/
+.btn1 {
+  margin: 10px 0 10px 10px;
+  padding: 5px 10px; }
+
+#change-password-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 20px; }
+
+#delete-account-container,
+#delete-account-gf-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 20px; }
+
+/* friendships */
+#fr-sent-cards-list,
+#fr-received-cards-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center; }
+
+.friendship-sent-card,
+.friendship-received-card {
+  background-color: #888877;
+  border: 1px solid #88668877;
+  width: 90%;
+  height: 120px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center; }
+
+.friendship-sent-card div,
+.friendship-received-card div {
+  height: 100%;
+  display: flex;
+  align-items: center; }
+
+.img-cards-friendship-requests {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  border: 1px solid #b8b8b8; }
+
+.username-card {
+  padding-left: 30px;
+  font-size: 18px; }
+
+.username-card a {
+  color: black; }
+
+.div-cards-actions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; }
+
+.btn-text {
+  align-content: flex-end; }
+
+.friendship-actions-btn {
+  display: inline-block;
+  width: 170px;
+  height: 35px;
+  margin-right: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; }
+
+.unblock-btn {
+  display: inline-block;
+  width: 170px;
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; }
+
+@media only screen and (max-width: 600px) {
+  .friendship-sent-card,
+  .friendship-received-card {
+    width: 90%; }
+  .div-cards-actions {
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column; }
+  .username-card {
+    padding-top: 15px;
+    padding-left: 0px; }
+  .friendship-actions-btn {
+    margin-right: 0px;
+    margin-bottom: 5px;
+    width: 160px;
+    display: block; }
+  #btns-fr-received {
+    display: flex;
+    flex-direction: column; } }
+
+/* search users */
+h2#usernameTitle {
+  color: black;
+  font-size: 1.3em;
+  font-weight: bold; }
+
+/* profile */
+#profile-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; }
+
+.underline {
+  background-color: #808080;
+  display: block;
+  border: 1px solid black;
+  /* border-bottom: 1px solid black; */
+  margin-right: 40px;
+  margin-bottom: 5px; }
+
+#user-username {
+  margin-bottom: 10px; }
+
+#user-profile-top {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: row;
+  margin: 10px;
+  /* position: relative; */
+  height: 250px; }
+
+#user-profile-bottom {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: row;
+  padding-top: 25px;
+  margin: 10px;
+  position: relative; }
+
+#user-photo {
+  /* flex-basis: 10%; */
+  /* width: 40%; */
+  flex: 1;
+  /* flex-grow: 1; */
+  /* flex-basis: 100px; */
+  margin: 0 10px;
+  /*min-width: auto;
+    max-width: auto; */
+  height: 100%; }
+
+#user-profile-top-data {
+  flex: 2;
+  /* flex-grow: 2;
+      flex-basis: 0; */
+  /* margin-top: 10px;
+      margin-bottom: 10px; */
+  /* overflow: auto; */ }
+
+#user-bio {
+  flex: 1; }
+
+#user-friends {
+  flex: 1; }
+
+#photo {
+  display: block;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  width: 240px;
+  height: 240px;
+  border: 1px solid #b8b8b8; }
+
+/* #user-photo button a {
+    display: block;
+    max-width: 100%;
+  } */
+#user-aboutme {
+  overflow-y: auto;
+  /* overflow-y: auto; */
+  /* max-width: 400px; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /* margin-top: 0;
+      padding: 0; */
+  white-space: pre-line;
+  word-break: break-all;
+  word-wrap: break-word;
+  height: calc(100% - 100px);
+  /*(100% container - height h1) /* 85%;*/ }
+
+.aboutme-empty {
+  font-style: italic; }
+
+/* .message-profile {
+    display: none;
+  } */
+/* #message-blocked-users,
+  #message-friendship-user {
+    /* width: 80%; 
+    margin: 20px 120px;
+    padding: 0px;
+    height: 60px;
+    /* visibility: visible; 
+  } */
+/* .message-user-unblocked,
+  .message-user-friendship-action {
+    background-color: green;
+  } */
+.user-data strong {
+  margin-right: 5px; }
+
+.user-data-flex-container {
+  display: flex;
+  flex-direction: column;
+  height: 130px; }
+
+.user-data-flex-container div {
+  flex: 1;
+  display: flex;
+  align-items: flex-end; }
+
+#editprofile-btn {
+  display: inline-block;
+  width: 170px;
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; }
+
+#editprofile-btn a {
+  color: black;
+  width: 100%;
+  /*asi aunque hagas click en un lado del boton y no en el texto funciona*/ }
+
+.language-level {
+  width: 40px;
+  height: 30px;
+  display: inline-block;
+  vertical-align: bottom; }
+
+.no-location-icon {
+  width: 25px;
+  height: 27px;
+  display: inline-block;
+  vertical-align: bottom; }
+
+.no-location-icon2 {
+  width: 37px;
+  height: 22px;
+  display: inline-block;
+  vertical-align: bottom; }
+
+@media only screen and (max-width: 600px) {
+  #user-profile-top,
+  #user-profile-bottom {
+    flex-direction: column; }
+  #photo {
+    width: 150px;
+    height: 150px; }
+  #user-profile-top-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px; }
+  #user-profile-top-data h2 {
+    align-self: flex-start; }
+  #user-aboutme {
+    height: 100px;
+    align-self: flex-start;
+    word-wrap: normal; }
+  .underline,
+  .aboutme-empty {
+    width: 97%; }
+  #user-bio {
+    margin-bottom: 10px; } }
+
+/* error pages */
+/* center elements */
+.page-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+.main-error-msg {
+  padding: 40px 0px 20px 0px; }
+
+.secondary-error-msg {
+  padding: 10px 0px;
+  text-align: center; }
+
+#error-404-img {
+  max-width: 350px; }
+
+#error-500-img {
+  max-height: 300px; }
+
+.profile-img-error {
+  border: 1px solid #b8b8b8; }
+
+/* messsages */
+.msg {
+  width: 80%;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* position: fixed;
+    top: 20px;
+    z-index: 1; */ }
+
+.msg-error {
+  background-color: #ffb0b0;
+  /*rgb(255, 176, 176)*/
+  color: red;
+  /* color: black; */
+  /* border: 1px solid red; */ }
+
+.msg-success {
+  background-color: #85e085;
+  color: green;
+  /* color: black; */
+  /* border: 1px solid green; */ }
+
+.msg-empty {
+  background-color: #aaa;
+  border: 1px solid black; }
+
+.msg-show {
+  display: block; }
+
+.msg-hide {
+  display: none; }
+
+.msg-indiv {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 30px; }
+
+/* Form */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  border: 2px solid #aaa;
+  /*this*/
+  border-radius: 4px;
+  margin: 8px 0;
+  /*this*/
+  outline: none;
+  padding: 10px;
+  box-sizing: border-box;
+  /* transition: 0.3s; */ }
+
+/* .inputWithIcon input[type="text"],
+  .inputWithIcon input[type="password"] {
+    
+  } 
+  */
+.inputWithIcon {
+  position: relative;
+  width: 100%;
+  /*width password input*/ }
+
+.inputWithIcon svg {
+  position: absolute;
+  /* margin-right: 5px; */
+  right: 0;
+  /*cambiar esto left*/
+  top: 8px;
+  /*this*/
+  padding: 9px 4px;
+  width: 40px;
+  color: #aaa;
+  /*Puedo quitar el borde */
+  border-left: 1px solid #aaa;
+  /* black */
+  /* transition: 0.3s; */ }
+
+/* Con Ctrl + '+' hago zoom */
+/*Para que la barra lateral llegue hasta abajo*/
+/*hacerlo con calc()*/
+.inputWithIcon #open-eye,
+.inputWithIcon #open-eye-i {
+  /* TODO */
+  top: calc(8px + 2px);
+  /* margin_arriba + border_arriba del input */
+  height: calc(100% - 19px);
+  /* altura icon */
+  /*53 - 38 : 15px*/
+  /*(8+8+2+1)*2 = 38 (margin_arriba + border_arriba + padding_arriba + border_left_icon) * 2, lo de debajo)
+       border_left_icon coge 1 px de arriba y abajo*/ }
+
+.inputWithIcon input[type="text"]:focus + i {
+  color: dodgerBlue; }
+
+.inputWithIcon.inputIconBg i {
+  background-color: #aaa;
+  color: #fff;
+  padding: 9px 4px;
+  border-radius: 4px 0 0 4px; }
+
+.inputWithIcon.inputIconBg input[type="text"]:focus + i {
+  color: #fff;
+  background-color: dodgerBlue; }
+
+/* textarea not resizable */
+textarea {
+  resize: none; }
+
+.search-icon {
+  left: 0;
+  position: absolute;
+  top: 8px;
+  /*this*/
+  padding: 9px 4px;
+  width: 40px;
+  color: #aaa;
+  border-right: 1px solid #aaa;
+  /* black */
+  top: calc(8px + 2px);
+  /* margin_arriba + border_arriba del input */
+  height: calc(100% - 18px); }
+
+#friend-username {
+  padding-left: 45px; }
+
+#search-not-loading {
+  display: inline; }
+
+#search-loading {
+  display: none; }
+
+/* Terms modal */
+.modal-content {
+  padding: 0;
+  margin: 0;
+  min-height: 200px; }
+
+.modal-content li {
+  display: list-item;
+  list-style-position: inside;
+  list-style-type: decimal;
+  margin: 2px 0; }
+
+.terms-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  /* padding-top: 5px; */ }
+
+.terms {
+  margin-top: 7px; }
+
+.terms-title-2 {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1em; }
+
+.help-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 6px; }
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: black;
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */ }
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; }
+
+.modal-content2 {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  height: 400px; }
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold; }
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer; }
+
+/* user cards */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  justify-items: center;
+  align-items: center; }
+
+.user-card {
+  /*menu*/
+  width: 200px;
+  /* duda: vale 100%*/
+  height: 250px;
+  border: 1px solid black;
+  margin: 10px 5px;
+  display: inline-flex;
+  /*flex*/
+  flex-direction: column;
+  align-items: center; }
+
+/* blocked users */
+.user-card p a {
+  color: black; }
+
+.same-user {
+  background: #90ee90; }
+
+.friend-user {
+  background: darkturquoise; }
+
+.blocked-user {
+  background: indianred; }
+
+.blocked-friend-user {
+  background: crimson; }
+
+.user-card-searchuser {
+  width: 200px;
+  height: 310px;
+  /*para que entre el texto*/
+  border: 1px solid black;
+  margin: 10px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+
+/* .user-card img,*/
+.card-username {
+  font-weight: 600;
+  text-align: center;
+  /* display: inline; */ }
+
+.see-profile-btn {
+  display: block;
+  border: 1px solid black;
+  /*none*/
+  background-color: #333;
+  color: #eee;
+  width: 9em;
+  height: 32px;
+  font-size: 15px;
+  padding: 5px 25px;
+  margin: 10px;
+  margin-top: 15px;
+  text-align: center; }
+
+/* user status: online */
+.username-status {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; }
+
+.user-status {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  /* display: inline-block; */
+  margin-left: 5px; }
+
+.user-status-online {
+  background-color: green; }
+
+.user-status-not-online {
+  background-color: red; }
+
+.img-card-1 {
+  width: 130px;
+  height: 130px;
+  min-width: 120px;
+  min-height: 120px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #b8b8b8;
+  border-radius: 50%; }
+
+#img-card-2 {
+  width: 65%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #b8b8b8;
+  border-radius: 50%; }
+
+.svg-icon-card {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 7px; }
+
+.online-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: blue;
+  margin-left: 3px;
+  display: inline-block; }
+
+@media only screen and (max-width: 540px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr); }
+  .user-card {
+    width: 150px;
+    height: 240px; } }
+
+@media only screen and (max-width: 400px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr); }
+  .user-card {
+    width: 150px;
+    height: 240px; } }
+
+/* password rules tooltip */
+[data-tip] {
+  position: relative; }
+
+[data-tip]:before {
+  content: "";
+  display: none;
+  /* hides the tooltip when not hovered */
+  content: "";
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #1a1a1a;
+  position: absolute;
+  top: 50px;
+  left: 35px;
+  z-index: 8;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0; }
+
+[data-tip]:after {
+  display: none;
+  content: attr(data-tip);
+  position: absolute;
+  top: 55px;
+  left: 0px;
+  padding: 5px 8px;
+  background: #1a1a1a;
+  color: #fff;
+  z-index: 9;
+  font-size: 0.75em;
+  height: 18px;
+  line-height: 18px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  white-space: nowrap;
+  word-wrap: normal; }
+
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+  display: inline-block;
+  content: attr(data-tip);
+  white-space: pre;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 2em; }
+
+.div-tooltip {
+  display: inline-block;
+  width: 100%;
+  /*Para que password y confirm password ocupen lo mismo, si no el tooltip hace ser al input de password la mitad*/ }
+
+/*todas las scrollbar*/
+/* width */
+::-webkit-scrollbar {
+  width: 10px; }
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; }
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; }
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; }
+
+/* spinner */
+/* btns */
+.lds-dual-ring {
+  display: inline-block;
+  width: 15px;
+  height: 100%; }
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 15px;
+  height: 15px;
+  margin: 0px 5px;
+  border-radius: 50%;
+  border: 4px solid green;
+  border-color: green transparent green transparent;
+  animation: lds-dual-ring 1.2s linear infinite; }
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+/* chat */
+.lds-dual-ring-chat {
+  display: inline-block;
+  width: 30px;
+  height: 100%; }
+
+.lds-dual-ring-chat:after {
+  content: " ";
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0px 5px;
+  border-radius: 50%;
+  border: 6px solid green;
+  border-color: green transparent green transparent;
+  animation: lds-dual-ring 1.2s linear infinite; }
+
+/*input search icon*/
+.lds-dual-ring-input-icon {
+  display: inline-block;
+  width: 30px;
+  height: 44px;
+  position: absolute;
+  top: 13px;
+  left: 3px; }
+
+.lds-dual-ring-input-icon:after {
+  content: " ";
+  display: block;
+  width: 27px;
+  height: 27px;
+  margin: 0px 0px;
+  border-radius: 50%;
+  border: 4px solid green;
+  border-color: green transparent green transparent;
+  animation: lds-dual-ring 1.2s linear infinite; }
+
+.lds-dual-ring-btn-banunbandelete {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 0px;
+  right: 13px; }
+
+.lds-dual-ring-btn-banunbandelete:after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0px 0px;
+  border-radius: 50%;
+  border: 4px solid green;
+  border-color: green transparent green transparent;
+  animation: lds-dual-ring 1.2s linear infinite; }
+
+.lds-dual-ring-btn-unbanintable {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: -5px;
+  right: 35px; }
+
+.lds-dual-ring-btn-unbanintable:after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0px 0px;
+  border-radius: 50%;
+  border: 4px solid green;
+  border-color: green transparent green transparent;
+  animation: lds-dual-ring 1.2s linear infinite; }
+
+.lds-dual-ring-btn-deleteintable {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: -5px;
+  right: 10px; }
+
+.lds-dual-ring-btn-deleteintable:after {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0px 0px;
+  border-radius: 50%;
+  border: 4px solid green;
+  border-color: green transparent green transparent;
+  animation: lds-dual-ring 1.2s linear infinite; }

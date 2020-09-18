@@ -1,0 +1,31 @@
+/* resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+/* utilities */
+.hide {
+  /*visibility: hidden;*/ /*ocupa espacio pero no se muestra*/
+  display: none; /*no ocupa espacio y no se muestra*/
+}
+
+//mobile chrome (android) prevent page refresh on screen pull down
+html,
+body {
+  overscroll-behavior-y: contain;
+}
+
+// .chatscroll {
+//   overflow-y: hidden;
+//   height: 100vh;
+// }

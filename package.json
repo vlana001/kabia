@@ -1,0 +1,49 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build-scss": "node-sass  public/scss/ -o public/css",
+    "dev": "npm run watch-scss & npm run nodemon",
+    "watch-scss": "node-sass --watch public/scss/ -o public/css",
+    "nodemon": "nodemon index.js",
+    "test": "jest --verbose ./tests"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.503.0",
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "express-validator": "^6.1.1",
+    "file-type": "^13.1.1",
+    "image-size": "^0.8.3",
+    "is-base64": "^1.0.0",
+    "jsdom": "^15.1.1",
+    "lodash": "^4.17.15",
+    "moment-timezone": "^0.5.31",
+    "mongoose": "^5.6.6",
+    "multer": "^1.4.2",
+    "node-sass": "^4.13.0",
+    "nodemailer": "^6.3.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "password-validator": "^4.1.1",
+    "socket.io": "^2.2.0",
+    "validator": "^11.1.0",
+    "xregexp": "^4.2.4"
+  },
+  "devDependencies": {
+    "jest": "^26.4.2",
+    "node-mocks-http": "^1.9.0",
+    "nodemon": "^1.19.1",
+    "puppeteer": "^2.1.1"
+  }
+}

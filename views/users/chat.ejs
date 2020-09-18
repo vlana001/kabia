@@ -1,0 +1,153 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+    @media only screen and (max-width: 600px) {
+
+        /* In android chrome always show address bar */
+        html,
+        body {
+            /* overflow-y: hidden; */
+            /* height: 100vh; */
+            /* min-height: -webkit-fill-available; */
+            height: 100%;
+            position: fixed;
+            width: 100%;
+            min-height: 100%;
+            max-height: 100%;
+
+        }
+    }
+</style>
+</head>
+
+<body>
+
+    <%- include('../includes/navigation.ejs') %>
+    <div class="content">
+
+        <div id="chat">
+
+            <!-- friends: for both desktop lateral div and mobile lateral slide -->
+            <%- include('./friends-chat.ejs') %>
+
+            <!-- chat -->
+            <div id="messages">
+
+                <!-- for small screens -->
+                <div id="show-users">
+                    <div id="see-friends-chated">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            x="0px" y="0px" viewBox="0 0 468.873 468.873"
+                            style="enable-background:new 0 0 468.873 468.873;" xml:space="preserve" fill="#000000"
+                            stroke="#000000" stroke-width="0">
+                            <g id="IconsRepo_bgCarrier"></g>
+                            <path
+                                d="M369.992,10.059c-48.285,0-88.48,34.613-97.145,80.381H13.25C5.932,90.439,0,96.375,0,103.691v242.48 c0,7.32,5.932,13.252,13.25,13.252h202.674v86.138c0,5.359,3.226,10.192,8.18,12.244c1.639,0.678,3.361,1.009,5.068,1.009 c3.446,0,6.838-1.348,9.373-3.883l96.172-95.508h56.975c7.32,0,13.252-5.932,13.252-13.252V201.458 c37.361-14.121,63.93-50.215,63.93-92.52C468.875,54.33,424.604,10.059,369.992,10.059z M369.992,182.821 c-40.736,0-73.879-33.143-73.879-73.882c0-40.738,33.143-73.881,73.879-73.881c40.738,0,73.883,33.143,73.883,73.881 C443.875,149.679,410.73,182.821,369.992,182.821z">
+                            </path>
+                            <path
+                                d="M412.129,98.303H380.49V66.666c0-5.8-4.699-10.502-10.502-10.502c-5.801,0-10.502,4.702-10.502,10.502v31.637H327.85 c-5.801,0-10.502,4.702-10.502,10.502c0,5.8,4.701,10.502,10.502,10.502h31.637v31.637c0,5.8,4.701,10.502,10.502,10.502 c5.803,0,10.502-4.702,10.502-10.502v-31.637h31.639c5.801,0,10.502-4.702,10.502-10.502 C422.631,103.004,417.93,98.303,412.129,98.303z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div id="search-friend-div-top-chat-navbar">
+                        <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="black" fill-rule="evenodd"
+                                transform="scale(1.1, 1.2) translate(0, -1)">
+                                <g id="icon-shape">
+                                    <path
+                                        d="M2,6 L0,6 L0,8 L2,8 L2,10 L4,10 L4,8 L6,8 L6,6 L4,6 L4,4 L2,4 L2,6 L2,6 Z M8.99999861,6.00166547 C8.99999861,4.34389141 10.3465151,3 11.9999972,3 C13.6568507,3 14.9999958,4.33902013 14.9999958,6.00166547 L14.9999958,7.99833453 C14.9999958,9.65610859 13.6534793,11 11.9999972,11 C10.3431437,11 8.99999861,9.66097987 8.99999861,7.99833453 L8.99999861,6.00166547 L8.99999861,6.00166547 Z M20.0000045,15.1405177 C17.6466165,13.7791553 14.914299,13 12,13 C9.08570101,13 6.35338349,13.7791553 3.99999555,15.1405177 L4,18 L20,18 L20,15.1405151 L20.0000045,15.1405177 L20.0000045,15.1405177 Z"
+                                        id="Combined-Shape"></path>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+
+                <div id="msg-select-chat-div">
+                    <p id="msg-select-chat-p"> Selecciona un chat para comenzar </p>
+                </div>
+
+
+
+                <!-- <div id="chat-area"> -->
+                <div id="chat-header">
+                    <img id="current-chat-user-image" src="" alt="">
+                    <p id="current-chat-user-username"></p>
+                </div>
+
+
+                <div id="chatmessages">
+                    <div id="spinner-loading-chat">
+                        <span id="spinner-loading-chat-span"></span>
+                    </div>
+                </div>
+
+
+                <div id="writemessage">
+                    <form action="" id="formchat">
+
+                        <div id="container-input-send-msg">
+                            <textarea name="msgtext" id="msgtext" autocomplete="off" placeholder="Mensaje..."
+                                autofocus></textarea>
+                            <svg id="send-msg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g stroke="none" stroke-width="1" fill-rule="evenodd">
+                                    <g>
+                                        <path d="M0,0 L20,10 L0,20 L0,0 Z M0,8 L10,10 L0,12 L0,8 Z" id="Combined-Shape">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <input type="hidden" name="username-receiver" id="username-receiver" value="">
+                        <!-- start chat with -->
+                        <input type="hidden" id="start-chat-with-usernamenormalized"
+                            value="<%= startChatWithUserUsernameNormalized %>">
+                        <input type="hidden" id="start-chat-with-username" value="<%= startChatWithUserUsername %>">
+                        <input type="hidden" id="start-chat-with-imgurl" value="<%= startChatWithUserImageUrl %>">
+                        <!-- <button id="msgsend" disabled>Send</button>
+                        <div id="chat-help">
+                            <span id="chat-help-symbol">?</span>
+                        </div> -->
+                    </form>
+                </div>
+                <!-- </div> -->
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- Modal help -->
+    <!-- <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span id="close-help-modal" class="close">&times;</span>
+            <p class="help-title">Para cargar los mensajes anteriores de un chat tienes 2 opciones:</p>
+            <ol>
+                <li>Subir la barra de desplazamiento de la derecha hasta arriba</li>
+                <li>Pulsar la tecla "flecha arriba" despues de hacer click en la zona de los mensajes de chat
+                </li>
+            </ol>
+        </div>
+    </div>
+    </div> -->
+
+    <!-- Modal search friend -->
+    <div id="searchFriendModal" class="modal">
+        <div class="modal-content2">
+            <span id="close-search-friend-modal" class="close">&times;</span>
+            <p class="help-title">Buscar amigo:</p>
+            <!-- <input type="text" name="" id="searchtext" placeholder="Search friend..."> -->
+            <%- include('./search-friend-username.ejs', {userType: "Friend", userTypeL:"friend"}) %>
+        </div>
+    </div>
+    </div>
+
+    <%- include('../includes/end.ejs') %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <!-- <script src="/js/chat.js"></script> -->

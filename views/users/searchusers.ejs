@@ -1,0 +1,104 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+  <%- include('../includes/navigation.ejs') %>
+  <div class="content">
+
+    <% if (errorMessage) { %>
+    <div class="msg msg-error">
+      <% for (let error of errorMessage) { %>
+      <p class="msg-indiv"><%= error %></p>
+      <% } %>
+    </div>
+    <% } %>
+
+
+    <!--Poner boton de reset form-->
+    <form action="/users/searchusers" method="POST">
+      <h5>Busqueda por username</h5>
+      <label for="username"><b>Username</b></label>
+      <input type="text" name="username" id="username" value="<%=input.username%>"><br>
+
+
+      <h5>Busqueda por datos</h5>
+      <label for="gender"><b>Gender</b></label>
+      <input type="radio" name="gender" id="gender" value="male"
+        <%= (input.gender==="male") ? 'checked=checked' : '' %>>Male
+      <input type="radio" name="gender" id="gender" value="female"
+        <%= (input.gender==="female") ? 'checked=checked' : '' %>>Female<br>
+
+      <!--
+    <label for="euskLevel"><b>Euskara Level</b></label>
+    <input type="text" name="euskLevel" id="euskLevel" value="<%=input.euskLevel%>"><br>
+    -->
+
+      <label for="euskLevel"><b>Euskara Level</b></label>
+      <select name="euskLevel" id="euskLevel">
+        <option hidden disabled selected value> -- select an option -- </option>
+        <option value="1" <%= (input.euskLevel==="1") ? 'selected=selected' : '' %>>1-Beginner </option>
+        <option value="2" <%= (input.euskLevel==="2") ? 'selected=selected' : '' %>>2-Elementary</option>
+        <option value="3" <%= (input.euskLevel==="3") ? 'selected=selected' : '' %>>3-Intermediate</option>
+        <option value="4" <%= (input.euskLevel==="4") ? 'selected=selected' : '' %>>4-Advanced</option>
+        <option value="5" <%= (input.euskLevel==="5") ? 'selected=selected' : '' %>>5-Expert</option>
+      </select><br>
+
+      <label for="age1"><b>Edad</b></label>
+      <input type="number" min="0" placeholder="min" oninvalid="this.setCustomValidity('Please enter valid value')"
+        oninput="setCustomValidity('')" name="age1" id="age1" value="<%=input.age1%>">
+      <input type="number" min="0" placeholder="max" oninvalid="this.setCustomValidity('Please enter valid value')"
+        oninput="setCustomValidity('')" name="age2" id="age2" value="<%=input.age2%>"><br>
+
+      <!--
+    <label for="birthplace"><b>Birth place</b></label>
+    <input type="text" name="birthplace" id="birthplace" value="<%=input.birthplace%>"><br>
+
+    <label for="livingplace"><b>Living place</b></label>
+    <input type="text" name="livingplace" id="livingplace" value="<%=input.livingplace%>"><br>
+-->
+
+      <button type="submit" class="searchbtn">Search</button>
+    </form>
+
+
+    <!--Mostrar resultados-->
+    <% if (usersList.length > 0) { %>
+    <div class="grid">
+      <% for (let user of usersList) { %>
+      <!-- <div class="user-card">
+      <b><%= user.username %></b>
+
+    </div> -->
+
+      <% if (user.usernameNormalized != usernameNormalized) { %>
+      <div class="user-card-searchuser">
+        <% } else{ %>
+        <!--A un user le muestro a el mismo en una card,
+          pero no puede ser su propio amigo, por lo que no muestro el boton en el perfil-->
+        <div class="user-card-searchuser same-user">
+          <% } %>
+
+          <img class="img-card-1" src="/uploads/<%= user.imageURL %>" alt="">
+          <div class="container-user-data">
+            <!-- <a href="/users/u/<%= user.usernameNormalized %>"> -->
+            <p class="card-username" ><%= user.username %></p>
+            <!-- </a> -->
+            <a class="see-profile-btn" href="/users/u/<%= user.usernameNormalized %>">Ver perfil</a>
+
+            <p><b>Age: </b> <%= user.userAge %></p>
+            <p><b>Gender: </b> <%= user.gender %></p>
+            <p><b>Living in: </b> <%= user.livingPlace %></p>
+            <p><b>Born in: </b> <%= user.birthPlace %></p>
+          </div>
+        </div>
+
+        <% } %>
+      </div>
+      <% } else { %>
+      <h1><%= msgNoUsers %></h1>
+      <% } %>
+
+    </div>
+    <%- include('../includes/end.ejs') %>

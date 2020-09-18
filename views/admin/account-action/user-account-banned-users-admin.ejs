@@ -1,0 +1,69 @@
+<% if (usersBanned.length === 0) { %>
+<div id="top-msg" class="msg msg-empty msg-visibility-show">
+    <p class="msg-indiv" id="top-msg-text">No hay ningun usuario baneado</p>
+</div>
+<% } else {%>
+<div id="top-msg" class="msg msg-success msg-visibility-hide">
+    <p class="msg-indiv" id="top-msg-text"></p>
+</div>
+
+<table class="table-list" id="table-list">
+    <tr class="table-header">
+        <th id="col1">Username</th>
+        <th id="col2">Period (days)</th>
+        <th id="col3">Banning date</th>
+        <th id="col4">Unbanning date</th>
+    </tr>
+    <% for (let userBanned of usersBanned) { %>
+    <tr class="table-row">
+        <td>
+            <div class="username-container">
+                <div class="username-text">
+                    <p data-username-normalized="<%= userBanned.usernameNormalized %>"><%= userBanned.username %></p>
+                </div>
+                <div class="username-icons">
+                    <div class="unban-icon">
+                        <span id="" class="lds-dual-ring-btn-unbanintable hide-spinner"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="unban-icon-svg" version="1.0" width="40px"
+                            height="40px" viewBox="0 0 216.000000 233.000000" preserveAspectRatio="xMidYMid meet"
+                            onclick="unbanUser(event)">
+                            <g transform="translate(-66,300) scale(0.1500000,-0.1500000)" fill="#000000">
+                                <path
+                                    d="M1249 1877 c-32 -13 -68 -33 -82 -44 -108 -85 -152 -231 -107 -362 l21 -64 -305 -307 c-276 -276 -306 -309 -306 -338 0 -63 63 -99 124 -70 24 10 30 7 80 -40 60 -57 80 -62 120 -31 42 33 35 70 -26 135 l-51 54 23 25 c30 32 37 31 76 -6 37 -36 75 -41 104 -14 31 28 25 69 -14 113 l-35 38 163 163 163 162 64 -21 c92 -32 176 -25 261 22 231 126 221 464 -17 577 -75 36 -182 39 -256 8z m237 -45 c62 -32 97 -65 129 -124 26 -46 30 -63 30 -133 0 -70 -4 -87 -30 -133 -70 -127 -205 -180 -342 -133 -34 12 -70 21 -80 21 -25 0 -363 -339 -363 -365 0 -12 16 -36 35 -55 66 -64 36 -100 -32 -39 -24 22 -51 39 -62 39 -20 0 -101 -82 -101 -103 0 -7 25 -37 55 -67 58 -58 64 -70 40 -90 -13 -11 -25 -4 -74 44 -61 57 -89 68 -111 41 -23 -28 -70 -12 -70 24 0 9 137 153 305 321 196 197 305 313 305 325 -1 11 -9 45 -20 75 -23 66 -25 111 -6 174 27 90 92 158 183 192 53 20 157 13 209 -14z">
+                                </path>
+                                <path
+                                    d="M1313 1684 c-43 -22 -66 -60 -66 -109 0 -135 184 -167 232 -40 38 99 -71 197 -166 149z m115 -60 c27 -31 28 -63 2 -97 -59 -75 -172 -7 -134 81 23 57 88 64 132 16z">
+                                </path>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="delete-icon">
+                        <span id="" class="lds-dual-ring-btn-deleteintable hide-spinner"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 225.000000 225.000000"
+                            preserveAspectRatio="xMidYMid meet" onclick="deleteUser(event)">
+                            <g transform="translate(0.000000,225.000000) scale(0.100000,-0.100000)" fill="#000000"
+                                stroke="none">
+                                <path
+                                    d="M802 2164 c-21 -14 -22 -22 -22 -140 l0 -124 -260 0 -261 0 -24 -25 c-30 -30 -31 -54 -4 -89 l20 -26 874 0 874 0 20 26 c27 35 26 59 -4 89 l-24 25 -261 0 -260 0 0 124 c0 118 -1 126 -22 140 -19 14 -67 16 -323 16 -256 0 -304 -2 -323 -16z m538 -194 l0 -70 -215 0 -215 0 0 70 0 70 215 0 215 0 0 -70z" />
+                                <path
+                                    d="M393 1680 c-12 -5 -26 -18 -32 -29 -15 -26 -15 -1371 -1 -1422 16 -56 51 -101 100 -129 l45 -25 620 0 620 0 45 25 c49 28 84 73 100 129 6 22 10 293 10 722 0 640 -1 688 -17 707 -27 32 -64 37 -96 12 l-27 -21 0 -695 0 -695 -25 -24 -24 -25 -586 0 -586 0 -24 25 -25 24 0 695 0 695 -26 20 c-29 23 -38 24 -71 11z" />
+                                <path
+                                    d="M1110 1542 c-8 -2 -23 -11 -32 -20 -17 -14 -18 -52 -18 -538 0 -561 -2 -543 50 -559 20 -6 59 9 72 29 4 6 8 245 8 532 0 484 -1 522 -17 536 -23 19 -44 26 -63 20z" />
+                                <path
+                                    d="M733 1392 c-29 -18 -33 -70 -33 -412 0 -238 4 -357 11 -374 7 -13 25 -30 41 -37 25 -10 33 -9 56 8 l27 20 3 383 c2 346 1 385 -14 402 -17 18 -69 24 -91 10z" />
+                                <path
+                                    d="M1426 1382 c-15 -17 -16 -56 -14 -402 l3 -383 27 -20 c23 -17 31 -18 56 -8 16 7 34 24 41 37 7 17 11 136 11 374 0 342 -4 394 -33 412 -22 14 -74 8 -91 -10z" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td><%= userBanned.banned.banTotalDays%></td>
+        <td><%= userBanned.banned.banStartDate%></td>
+        <td><%= userBanned.banned.banEndDate%></td>
+    </tr>
+    <% } %>
+</table>
+
+<% } %>

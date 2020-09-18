@@ -1,0 +1,100 @@
+/* Form */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  border: 2px solid #aaa; /*this*/
+  border-radius: 4px;
+  margin: 8px 0; /*this*/
+  outline: none;
+  padding: 10px;
+  box-sizing: border-box;
+  /* transition: 0.3s; */
+}
+
+/* .inputWithIcon input[type="text"],
+  .inputWithIcon input[type="password"] {
+    
+  } 
+  */
+
+.inputWithIcon {
+  position: relative;
+  width: 100%; /*width password input*/
+}
+
+//.inputWithIcon i,
+.inputWithIcon svg {
+  position: absolute;
+  /* margin-right: 5px; */
+  right: 0; /*cambiar esto left*/
+  top: 8px; /*this*/
+  padding: 9px 4px;
+  width: 40px;
+  color: #aaa;
+  /*Puedo quitar el borde */
+  border-left: 1px solid #aaa; /* black */
+  /* transition: 0.3s; */
+}
+
+/* Con Ctrl + '+' hago zoom */
+/*Para que la barra lateral llegue hasta abajo*/
+/*hacerlo con calc()*/
+.inputWithIcon #open-eye,
+.inputWithIcon #open-eye-i {
+  /* TODO */
+  top: calc(8px + 2px); /* margin_arriba + border_arriba del input */
+  height: calc(100% - 19px); /* altura icon */ /*53 - 38 : 15px*/
+  /*(8+8+2+1)*2 = 38 (margin_arriba + border_arriba + padding_arriba + border_left_icon) * 2, lo de debajo)
+       border_left_icon coge 1 px de arriba y abajo*/
+}
+
+.inputWithIcon input[type="text"]:focus + i {
+  color: dodgerBlue;
+}
+
+.inputWithIcon.inputIconBg i {
+  background-color: #aaa;
+  color: #fff;
+  padding: 9px 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.inputWithIcon.inputIconBg input[type="text"]:focus + i {
+  color: #fff;
+  background-color: dodgerBlue;
+}
+
+/* textarea not resizable */
+textarea {
+  resize: none;
+}
+
+//search friend autocomplete
+//svg icono lupa
+.search-icon {
+  left: 0;
+
+  position: absolute;
+
+  top: 8px; /*this*/
+  padding: 9px 4px;
+  width: 40px;
+  color: #aaa;
+  border-right: 1px solid #aaa; /* black */
+  top: calc(8px + 2px); /* margin_arriba + border_arriba del input */
+  height: calc(100% - 18px);
+}
+
+
+//para que no se sobrepongan icono de la lupa y placeholder del input
+#friend-username {
+  padding-left: 45px;
+}
+
+#search-not-loading {
+  display: inline;
+}
+
+#search-loading {
+  display: none;
+}

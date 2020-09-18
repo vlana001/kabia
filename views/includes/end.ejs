@@ -1,0 +1,30 @@
+<script src="/js/script.js"></script>
+<script src="/js/script-user.js"></script>
+
+<% if(isAuthenticated){ %>
+<!-- polyfill for html5 date input -->
+<!-- cdn for modernizr, if you haven't included it already -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+<!-- polyfiller file to detect and load polyfills -->
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+<script>
+    webshims.setOptions('waitReady', false);
+    webshims.setOptions('forms-ext', { types: 'date' });
+    webshims.polyfill('forms forms-ext');
+</script>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>
+<% } %>
+
+<!-- footer -->
+<footer id="footer" class="footer">
+    <!-- <a class="footer-link" href="">about us</a>
+    <a class="footer-link" href="">compartir</a> -->
+</footer>
+
+</body>
+
+</html>

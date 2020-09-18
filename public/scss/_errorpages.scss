@@ -1,0 +1,30 @@
+/* error pages */
+
+/* center elements */
+.page-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-error-msg {
+  padding: 40px 0px 20px 0px;
+}
+.secondary-error-msg {
+  padding: 10px 0px;
+  text-align: center;
+}
+
+#error-404-img {
+  //height: 300px;
+  max-width: 350px;
+}
+
+#error-500-img {
+  max-height: 300px;
+}
+
+.profile-img-error{
+  border: 1px solid rgb(184,184,184);
+}
