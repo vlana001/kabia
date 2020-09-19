@@ -8,7 +8,7 @@ const { validateAllButUsername } = require("../helpers/validation");
 const { testExpressValidatorMiddleware } = require("../helpers/validatorUtils");
 
 describe("mock http request to pass different dates to express-validator middleware", () => {
-  test("should not contain object with birthdate value", async () => {
+  test("should not contain an object with birthdate value", async () => {
     const req = httpMocks.createRequest({
       method: "POST",
       url: "/createprofile",
@@ -31,7 +31,7 @@ describe("mock http request to pass different dates to express-validator middlew
     );
   });
 
-  test("should contain object with birthdate value", async () => {
+  test("should contain an object with birthdate value", async () => {
     const req = httpMocks.createRequest({
       method: "POST",
       url: "/createprofile",

@@ -8,7 +8,7 @@ const keys = require("../config/keys");
 
 describe("insert different values in the birthdate input[type='date'] element", () => {
   //insert invalid date
-  test("should create an element in DOM with certain text", async () => {
+  test("should create an element with certain text in the DOM ", async () => {
     const browser = await puppeteer.launch({
       headless: true
     });
@@ -62,7 +62,7 @@ describe("insert different values in the birthdate input[type='date'] element", 
   }, 40000); //timeout 40secs
 
   //insert valid date
-  test("should not create an element in DOM with certain text", async () => {
+  test("should not create an element with certain text in the DOM", async () => {
     const browser = await puppeteer.launch({
       headless: true
     });
