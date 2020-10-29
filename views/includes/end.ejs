@@ -1,3 +1,21 @@
+<% if(isAuthenticated){ %>
+<!-- popup call-->
+<div id="incoming-call-dialog" class="incoming-call-dialog">
+    <div id="call-canceled">The caller cancelled the call</div>
+    <div id="incoming-call-dialog-action">
+        <div id="dialog-header">
+            <img id="dialog-photo" src="" alt="">
+            <p id="dialog-username"></p>
+        </div>
+        <div class="incoming-call-dialog-question">Do you really want to accept the call?</div>
+        <div class="incoming-call-dialog-button-group">
+            <button id="accept-incoming-call-btn" class="dialog-button" type="button">Aceptar</button>
+            <button id="reject-incoming-call-btn" class="dialog-button" type="button">Cancelar</button>
+        </div>
+    </div>
+</div>
+<% } %>
+
 <script src="/js/script.js"></script>
 <script src="/js/script-user.js"></script>
 
@@ -17,6 +35,8 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/chat.js"></script>
+<script src="/js/call.js"></script>
+
 <% } %>
 
 <!-- footer -->

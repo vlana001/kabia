@@ -11,6 +11,42 @@ input[type="password"] {
   /* transition: 0.3s; */
 }
 
+#password-field,
+#password-field-confirm,
+#new-password-field,
+#new-password-field-confirm {
+  padding-right: 45px;
+}
+
+.searchuser-div {
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+}
+
+#searchuser-container {
+  width: 80%;
+  border: 1px solid black;
+  padding: 20px;
+  margin: auto;
+}
+
+// #searchusers div{
+//  margin-bottom: 20px;
+// }
+
+.input-number {
+  width: 60px;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  padding: 5px 4px;
+  margin-right: 5px;
+}
+
+.searchuser-btn {
+  padding: 5px 20px 5px 20px;
+}
+
 /* .inputWithIcon input[type="text"],
   .inputWithIcon input[type="password"] {
     
@@ -46,6 +82,7 @@ input[type="password"] {
   height: calc(100% - 19px); /* altura icon */ /*53 - 38 : 15px*/
   /*(8+8+2+1)*2 = 38 (margin_arriba + border_arriba + padding_arriba + border_left_icon) * 2, lo de debajo)
        border_left_icon coge 1 px de arriba y abajo*/
+  width: 45px;
 }
 
 .inputWithIcon input[type="text"]:focus + i {
@@ -85,7 +122,6 @@ textarea {
   height: calc(100% - 18px);
 }
 
-
 //para que no se sobrepongan icono de la lupa y placeholder del input
 #friend-username {
   padding-left: 45px;
@@ -97,4 +133,32 @@ textarea {
 
 #search-loading {
   display: none;
+}
+
+.form-first {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin-bottom: 20px;
+}
+
+.form-first .form-first1 {
+  width: 120px;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.form-first .form-first2 {
+  display: flex;
+  align-items: center;
+  min-height: 100%;
+}
+
+// .form-first2 #gender{
+//   margin-right: 3px;
+// }
+
+.form-first2 div {
+  margin-right: 10px;
 }

@@ -73,6 +73,39 @@ img#img {
   display: flex;
 }
 
+#aboutme{
+  width:100%;
+  border: 2px solid #aaa;
+    border-radius: 4px;
+}
+
+#birthdate, #euskLevel{
+  //margin-top: 10px;
+  padding: 5px 4px;
+  border: 2px solid #aaa;
+    border-radius: 4px;
+    width: 150px;
+    
+}
+input[name~="gender"]{
+  margin-top: 10px;
+  padding-left: 3px;
+}
+label[for~="gender"]{
+  margin-top: 10px;
+ // padding-left: 3px;
+}
+label{
+  font-size: 16px;
+}
+
+div#profile-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
 /*modal*/
 #modal-img-container {
   display: flex;
@@ -107,7 +140,7 @@ input[type="range"]::-moz-focus-outer {
 
 /*submit form button*/
 .btn1 {
-  margin: 10px 0 10px 10px;
+  margin: 0px 0 10px 10px;
   padding: 5px 10px;
 }
 

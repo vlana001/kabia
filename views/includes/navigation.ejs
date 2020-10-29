@@ -3,7 +3,8 @@
     <nav class="main-header-nav">
 
         <!-- Home logo -->
-        <div class="<%= isAuthenticated === true ? 'dropdown' : 'dropdown-notlogged' %>" id="home-link">
+        <div class="<%= isAuthenticated === true ? 'dropdown' : 'dropdown-notlogged' %> <%= isProfileCreated === false ? 'home-link-createprofile' : '' %>"
+            id="home-link">
             <button class="dropbtn">
                 <div id="logo-hamburger-div">
                     <% if (isAuthenticated) { %>
@@ -90,7 +91,7 @@
 
         <!-- Notifications -->
         <!-- Voy directo a la pagina sin abrir menu lateral -->
-        <div class="not-home-tabs dropdown" id="dropdown-notification">
+        <!-- <div class="not-home-tabs dropdown" id="dropdown-notification">
             <button class="dropbtn" id="dropbtn-notifications">
                 <a class="navbar-link" href="/users/notifications">
                     <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +104,7 @@
                     <div class="notify-event" id="notification-icon">0</div>
                 </a>
             </button>
-        </div>
+        </div> -->
 
         <!-- My profile -->
         <div class="not-home-tabs dropdown" id="dropdown-myaccount">
@@ -122,8 +123,17 @@
             <div class="not-home-tabs dropdown-content" id="dropdown-content">
                 <% if(isProfileCreated){ %>
                 <a href="/users/myprofile">My profile</a>
-                <% } %>
                 <a href="/users/editprofile">Settings</a>
+                <% } else {%>
+
+                <% if(registrationMethod==="email"){ %>
+                <a href="/changepassword">Change password</a>
+                <a href="/delete-account">Delete account</a>
+                <% } else  if(registrationMethod ==="google" || registrationMethod==="facebook"){%>
+                <a href="/delete-account-gf">Delete account</a>
+                <%}%>
+
+                <% } %>
                 <a class="logout-link" href="/logout">Logout</a>
             </div>
         </div>

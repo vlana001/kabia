@@ -4,3 +4,5 @@ node_modules/
 config/keys.js
 #logs
 /npm-debug.log
+#ssl certs
+ssl/

@@ -165,11 +165,12 @@ const userSchema = new Schema({
   chatConversationsList: [
     {
       _id: false,
+      userId: { type: Schema.Types.ObjectId, ref: "User" },
       usernameFriend: { type: String },
       usernameNormalizedFriend: { type: String },
       isFriendCurrently: { type: Boolean, default: true }, //podia haber si amigo, pero haber finalizado la amistad
-      isBlocked: { type: Boolean, default: false }
-      // hasDeletedAccount: { type: Boolean }
+      isBlocked: { type: Boolean, default: false },
+      isDeletedAccount: { type: Boolean, default: false }
     }
   ],
 

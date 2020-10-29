@@ -107,6 +107,9 @@
                             value="<%= startChatWithUserUsernameNormalized %>">
                         <input type="hidden" id="start-chat-with-username" value="<%= startChatWithUserUsername %>">
                         <input type="hidden" id="start-chat-with-imgurl" value="<%= startChatWithUserImageUrl %>">
+                        <% if(startChatWithUserStatus == "online"){%>
+                        <input type="hidden" id="start-chat-with-status" value="<%= startChatWithUserStatus %>">
+                        <% } %>
                         <!-- <button id="msgsend" disabled>Send</button>
                         <div id="chat-help">
                             <span id="chat-help-symbol">?</span>

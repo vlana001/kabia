@@ -54,16 +54,20 @@ module.exports = {
   },
 
   registrationMethod: function(req) {
-    if (req.user.password) {
-      return "email";
-    }
+    if (req.user) {
+      if (req.user.password) {
+        return "email";
+      }
 
-    if (req.user.googleID) {
-      return "google";
-    }
+      if (req.user.googleID) {
+        return "google";
+      }
 
-    if (req.user.facebookID) {
-      return "facebook";
+      if (req.user.facebookID) {
+        return "facebook";
+      }
+    } else {
+      return undefined;
     }
   },
   registrationMethodByUsername: async function(usernameNormalized) {

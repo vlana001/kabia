@@ -125,13 +125,17 @@ button::-moz-focus-inner {
 #chat-icon,
 #friendship-icon,
 #users-messages-icon {
-  display: inline-block; /* inline-block para mostrar nuevos msg*/
+  display: none; /* inline-block para mostrar nuevos msg*/
   height: 20px;
   width: 20px;
   border-radius: 50%;
   margin-left: 5px;
   text-align: center;
   background-color: #f45566;
+}
+
+.home-link-createprofile {
+  flex: 3;
 }
 
 #home-link-button {
@@ -275,13 +279,13 @@ button::-moz-focus-inner {
   display: none;
 }
 
+
 //media query
 @media only screen and (max-width: 1220px) {
   .dropdown-content {
     right: 1px;
   }
 }
-
 
 @media only screen and (max-width: 600px) {
   //hide lateral menu (navigation)
@@ -293,6 +297,23 @@ button::-moz-focus-inner {
   #hamburger-icon {
     display: inline-block;
   }
+
+  //align new msg icon (chat or frienship request) in small screens
+  #dropbtn-friendship-requests a.navbar-link, 
+  #dropbtn-chats a.navbar-link {
+    display: flex;
+    min-height: 100%;
+    align-items: flex-start;
+  }
+
+  #dropbtn-friendship-requests #friendship-icon,
+  #dropbtn-chats #chat-icon{
+    margin-right: 3px;
+  }
+
+  // #dropdown-content{
+  //   display: none;
+  // }
 
   //hide tabs
   /*el logo ocupara toda la navbar, por lo que si clickas en cualquier parte
@@ -316,6 +337,14 @@ button::-moz-focus-inner {
   //navbar quitar hover
   .dropdown:hover button.dropbtn {
     background-color: inherit;
+  }
+}
+
+
+
+@media only screen and (max-width: 360px) {
+  .dropdown #home-link-button .navbar-svg-icon {
+    display: none;
   }
 }
 

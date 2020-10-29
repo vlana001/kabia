@@ -34,9 +34,9 @@
         <% if (isProfileCreated) { %>
         <div class="dropdown-container">
             <a class="text-one-line" href="/users/menu">Todos los usuarios</a>
-            <a class="text-one-line" href="#">Usuarios online</a>
-            <a class="text-one-line" href="/users/searchusers">Busqueda filtrada de usuarios</a>
-            <a class="text-one-line" href="/users/searchusers">Buscar usuario por nombre</a>
+            <a class="text-one-line" href="/users/online-users">Usuarios online</a>
+            <a class="text-one-line" href="/users/searchusersbyusername">Buscar usuario por nombre</a>
+            <a class="text-one-line" href="/users/searchusers"> Busqueda filtrada de usuarios</a>
         </div>
         <% } %>
     </div>
@@ -68,9 +68,9 @@
         </button>
         <div class="dropdown-container">
             <a class="text-one-line" href="/users/myfriends">Todos mis amigos</a>
-            <a class="text-one-line" href="#">Amigos online</a>
-            <a class="text-one-line" href="#">Usuarios bloqueados</a>
-            <a class="text-one-line" href="#">Buscar amigo</a>
+            <a class="text-one-line" href="/users/myfriends-online">Amigos online</a>
+            <a class="text-one-line" href="/users/blocked-users">Usuarios bloqueados</a>
+            <a class="text-one-line" href="/users/searchfriend">Buscar amigo</a>
         </div>
     </div>
 
@@ -119,7 +119,7 @@
     </div>
     <% } %>
 
-    <div class="tab-container">
+    <!-- <div class="tab-container">
         <button class="dropdown-btn-side-nav" onclick="location.href='/users/notifications'" type="button" id="tab-5">
             <div class="btn-container">
                 <svg class="navbar-svg-icon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +131,7 @@
                 <span class="text-one-line">Notifications</span>
             </div>
         </button>
-    </div>
+    </div> -->
 
     <div class="tab-container">
         <button class="dropdown-btn-side-nav" id="tab-6">
@@ -157,13 +157,20 @@
                 </svg>
             </div>
         </button>
-        <div class="dropdown-container">
-            <%if (isProfileCreated) { %>
-            <a class="text-one-line" href="/users/myprofile">My profile</a>
-            <% } %>
-            <a class="text-one-line" href="/users/editprofile">Settings</a>
-            <a class="text-one-line" href="/logout">Logout</a>
 
+        <div class="dropdown-container">
+            <% if(isProfileCreated){ %>
+            <a class="text-one-line" href="/users/myprofile">My profile</a>
+            <a class="text-one-line" href="/users/editprofile">Edit profile</a>
+            <% } %>
+
+            <% if(registrationMethod==="email"){ %>
+            <a class="text-one-line" href="/changepassword">Change password</a>
+            <a class="text-one-line" href="/delete-account">Delete account</a>
+            <% } else if(registrationMethod ==="google" || registrationMethod==="facebook") {%>
+            <a class="text-one-line" href="/delete-account-gf">Delete account</a>
+            <%}%>
+            <a class="text-one-line" href="/logout">Logout</a>
         </div>
     </div>
 </div>

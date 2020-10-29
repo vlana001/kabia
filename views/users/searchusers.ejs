@@ -6,52 +6,86 @@
 
   <%- include('../includes/navigation.ejs') %>
   <div class="content">
+    <div id="container-page">
 
-    <% if (errorMessage) { %>
-    <div class="msg msg-error">
-      <% for (let error of errorMessage) { %>
-      <p class="msg-indiv"><%= error %></p>
-      <% } %>
-    </div>
-    <% } %>
+      <div id="lateral-menu">
+        <%- include('../includes/lateral-menu-users.ejs', {currentLink: 4}) %>
+      </div>
+
+      <div id="page-content" class="searchuser-div">
+
+        <% if (errorMessage) { %>
+        <div class="msg msg-error">
+          <% for (let error of errorMessage) { %>
+          <p class="msg-indiv"><%= error %></p>
+          <% } %>
+        </div>
+        <% } %>
+
+        <% if (msgNoUsers !== "") { %>
+        <div id="message-search-user" class="msg msg-empty">
+          <p id="no-msg" class="msg-indiv msg-show">
+            <%= msgNoUsers %>
+          </p>
+        </div>
+        <% } %>
 
 
-    <!--Poner boton de reset form-->
-    <form action="/users/searchusers" method="POST">
-      <h5>Busqueda por username</h5>
-      <label for="username"><b>Username</b></label>
-      <input type="text" name="username" id="username" value="<%=input.username%>"><br>
+        <div id="searchuser-container">
+          <!--Poner boton de reset form-->
+          <form id="searchusers" action="/users/searchusers" method="POST">
+
+            <!-- <h5>Busqueda por datos</h5> -->
+            <div class="form-first">
+              <div class="form-first1">
+                <label for="gender"><b>Gender</b></label>
+              </div>
+              <div class="form-first2">
+                <div>
+                <input type="radio" name="gender" id="gender" value="male"
+                  <%= (input.gender==="male") ? 'checked=checked' : '' %>>Male
+                </div>
+                <div>
+                <input type="radio" name="gender" id="gender" value="female"
+                  <%= (input.gender==="female") ? 'checked=checked' : '' %>>Female
+                </div>
+              </div>
+            </div>
+
+            <div class="form-first">
+              <div class="form-first1">
+                <label for="euskLevel"><b>Euskara Level</b></label>
+              </div>
+              <div class="form-first2">
+                <div>
+                  <select name="euskLevel" id="euskLevel">
+                    <option hidden disabled selected value> -- select an option -- </option>
+                    <option value="1" <%= (input.euskLevel==="1") ? 'selected=selected' : '' %>>1-Beginner </option>
+                    <option value="2" <%= (input.euskLevel==="2") ? 'selected=selected' : '' %>>2-Elementary</option>
+                    <option value="3" <%= (input.euskLevel==="3") ? 'selected=selected' : '' %>>3-Intermediate</option>
+                    <option value="4" <%= (input.euskLevel==="4") ? 'selected=selected' : '' %>>4-Advanced</option>
+                    <option value="5" <%= (input.euskLevel==="5") ? 'selected=selected' : '' %>>5-Expert</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-first">
+              <div class="form-first1">
+                <label for="age1"><b>Edad</b></label>
+              </div>
+              <div class="form-first2">
+                <input type="number" min="0" placeholder="min" class="input-number"
+                  oninvalid="this.setCustomValidity('Please enter valid value')" oninput="setCustomValidity('')"
+                  name="age1" id="age1" value="<%=input.age1%>">
+                <input type="number" min="0" placeholder="max" class="input-number"
+                  oninvalid="this.setCustomValidity('Please enter valid value')" oninput="setCustomValidity('')"
+                  name="age2" id="age2" value="<%=input.age2%>">
+              </div>
+            </div>
 
 
-      <h5>Busqueda por datos</h5>
-      <label for="gender"><b>Gender</b></label>
-      <input type="radio" name="gender" id="gender" value="male"
-        <%= (input.gender==="male") ? 'checked=checked' : '' %>>Male
-      <input type="radio" name="gender" id="gender" value="female"
-        <%= (input.gender==="female") ? 'checked=checked' : '' %>>Female<br>
-
-      <!--
-    <label for="euskLevel"><b>Euskara Level</b></label>
-    <input type="text" name="euskLevel" id="euskLevel" value="<%=input.euskLevel%>"><br>
-    -->
-
-      <label for="euskLevel"><b>Euskara Level</b></label>
-      <select name="euskLevel" id="euskLevel">
-        <option hidden disabled selected value> -- select an option -- </option>
-        <option value="1" <%= (input.euskLevel==="1") ? 'selected=selected' : '' %>>1-Beginner </option>
-        <option value="2" <%= (input.euskLevel==="2") ? 'selected=selected' : '' %>>2-Elementary</option>
-        <option value="3" <%= (input.euskLevel==="3") ? 'selected=selected' : '' %>>3-Intermediate</option>
-        <option value="4" <%= (input.euskLevel==="4") ? 'selected=selected' : '' %>>4-Advanced</option>
-        <option value="5" <%= (input.euskLevel==="5") ? 'selected=selected' : '' %>>5-Expert</option>
-      </select><br>
-
-      <label for="age1"><b>Edad</b></label>
-      <input type="number" min="0" placeholder="min" oninvalid="this.setCustomValidity('Please enter valid value')"
-        oninput="setCustomValidity('')" name="age1" id="age1" value="<%=input.age1%>">
-      <input type="number" min="0" placeholder="max" oninvalid="this.setCustomValidity('Please enter valid value')"
-        oninput="setCustomValidity('')" name="age2" id="age2" value="<%=input.age2%>"><br>
-
-      <!--
+            <!--
     <label for="birthplace"><b>Birth place</b></label>
     <input type="text" name="birthplace" id="birthplace" value="<%=input.birthplace%>"><br>
 
@@ -59,46 +93,122 @@
     <input type="text" name="livingplace" id="livingplace" value="<%=input.livingplace%>"><br>
 -->
 
-      <button type="submit" class="searchbtn">Search</button>
-    </form>
-
-
-    <!--Mostrar resultados-->
-    <% if (usersList.length > 0) { %>
-    <div class="grid">
-      <% for (let user of usersList) { %>
-      <!-- <div class="user-card">
-      <b><%= user.username %></b>
-
-    </div> -->
-
-      <% if (user.usernameNormalized != usernameNormalized) { %>
-      <div class="user-card-searchuser">
-        <% } else{ %>
-        <!--A un user le muestro a el mismo en una card,
-          pero no puede ser su propio amigo, por lo que no muestro el boton en el perfil-->
-        <div class="user-card-searchuser same-user">
-          <% } %>
-
-          <img class="img-card-1" src="/uploads/<%= user.imageURL %>" alt="">
-          <div class="container-user-data">
-            <!-- <a href="/users/u/<%= user.usernameNormalized %>"> -->
-            <p class="card-username" ><%= user.username %></p>
-            <!-- </a> -->
-            <a class="see-profile-btn" href="/users/u/<%= user.usernameNormalized %>">Ver perfil</a>
-
-            <p><b>Age: </b> <%= user.userAge %></p>
-            <p><b>Gender: </b> <%= user.gender %></p>
-            <p><b>Living in: </b> <%= user.livingPlace %></p>
-            <p><b>Born in: </b> <%= user.birthPlace %></p>
-          </div>
+            <button type="submit" class="searchuser-btn">Search</button>
+          </form>
         </div>
 
-        <% } %>
-      </div>
-      <% } else { %>
-      <h1><%= msgNoUsers %></h1>
-      <% } %>
 
-    </div>
-    <%- include('../includes/end.ejs') %>
+        <!--Mostrar resultados-->
+        <% if (usersList.length > 0) { %>
+        <div class="<%= usersList.length > 1 ? 'grid' : ''%>">
+          <% for (let user of usersList) { %>
+
+          <% let isBlocked = false %>
+          <% let isFriend = false %>
+
+          <% userFriendships.friends.forEach( f => { %>
+          <% if (user.usernameNormalized === f.usernameNormalized){ %>
+          <% isFriend = true %>
+          <% } %>
+          <% }); %>
+
+          <% userFriendships.blockedUsers.forEach( b => { %>
+          <% if (user.usernameNormalized === b.usernameNormalized){ %>
+          <% isBlocked = true %>
+          <% } %>
+          <% }); %>
+
+
+          <!-- <div class=" user-card">
+          <b><%= user.username %></b> 
+          </div> -->
+
+          <% if (user.usernameNormalized != usernameNormalized) { %>
+          <% if (isFriend){ %>
+
+          <% if (isBlocked){ %>
+          <div class="user-card-searchuser blocked-friend-user">
+            <% } else {%>
+            <div class="user-card-searchuser friend-user">
+              <% } %>
+
+              <% }else if(isBlocked){ %>
+              <div class="user-card-searchuser blocked-user">
+                <% }else{ %>
+                <div class="user-card-searchuser">
+                  <% } %>
+
+                  <% } else{ %>
+                  <!--A un user le muestro a el mismo en una card,
+          pero no puede ser su propio amigo, por lo que no muestro el boton en el perfil-->
+                  <div class="user-card-searchuser same-user">
+                    <% } %>
+
+
+                    <img class="img-card-1" src="/uploads/<%= user.imageURL %>" alt="">
+                    <div class="container-user-data">
+                      <!-- <a href="/users/u/<%= user.usernameNormalized %>"> -->
+                      <div class="username-status">
+
+                        <p class="card-username" data-usernamenormalized="<%= user.usernameNormalized %>">
+                          <%= user.username %>
+                        </p>
+                        <% if(user.status === "online"){ %>
+                        <div class="user-status user-status-online"></div>
+                        <% } else { %>
+                        <div class="user-status user-status-not-online"></div>
+                        <% } %>
+
+                        <% if(isFriend){%>
+                        <% if (isBlocked){ %>
+                        <div id="icons-container" class="icons-disabled">
+                          <% }else{ %>
+                          <div id="icons-container">
+                            <% } %>
+                            <svg class="svg-icon-card" id="card-camera-icon"
+                              onclick=" startVideoCallWithSelectedCardUser(event)" viewBox="0 0 20 20" version="1.1"
+                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                              <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
+                                <g id="icon-shape">
+                                  <path
+                                    d="M0,3.99406028 C0,2.8927712 0.894513756,2 1.99406028,2 L14.0059397,2 C15.1072288,2 16,2.89451376 16,3.99406028 L16,16.0059397 C16,17.1072288 15.1054862,18 14.0059397,18 L1.99406028,18 C0.892771196,18 0,17.1054862 0,16.0059397 L0,3.99406028 Z M8,14 C10.209139,14 12,12.209139 12,10 C12,7.790861 10.209139,6 8,6 C5.790861,6 4,7.790861 4,10 C4,12.209139 5.790861,14 8,14 Z M8,12 C9.1045695,12 10,11.1045695 10,10 C10,8.8954305 9.1045695,8 8,8 C6.8954305,8 6,8.8954305 6,10 C6,11.1045695 6.8954305,12 8,12 Z M16,7 L20,3 L20,17 L16,13 L16,7 Z">
+                                  </path>
+                                </g>
+                              </g>
+                            </svg>
+
+                            <svg class="svg-icon-card" id="card-chat-icon"
+                              onclick=" startChatWithSelectedCardUser(event)" viewBox="0 0 20 20" version="1.1"
+                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                              <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">
+                                <g id="icon-shape">
+                                  <path
+                                    d="M10,15 L18.0092049,15 C19.1017876,15 20,14.1019465 20,12.9941413 L20,3.00585866 C20,1.89706013 19.1086907,1 18.0092049,1 L1.99079514,1 C0.898212381,1 0,1.89805351 0,3.00585866 L0,12.9941413 C0,14.1029399 0.891309342,15 1.99079514,15 L6,15 L6,19 L10,15 Z M5,7 L7,7 L7,9 L5,9 L5,7 Z M9,7 L11,7 L11,9 L9,9 L9,7 Z M13,7 L15,7 L15,9 L13,9 L13,7 Z">
+                                  </path>
+                                </g>
+                              </g>
+                            </svg>
+                          </div>
+                          <% } %>
+                        </div>
+
+                        <!-- </a> -->
+                        <a class="see-profile-btn" href="/users/u/<%= user.usernameNormalized %>">Ver perfil</a>
+
+                        <p><b>Age: </b> <%= user.userAge %></p>
+                        <p><b>Gender: </b> <%= user.gender %></p>
+                        <p><b>Living in: </b> <%= user.livingPlace %></p>
+                        <p><b>Born in: </b> <%= user.birthPlace %></p>
+                      </div>
+                    </div>
+
+                    <% } %>
+                  </div>
+                  <% } %>
+
+
+                </div>
+              </div>
+
+            </div>
+            <%- include('../includes/end.ejs') %>

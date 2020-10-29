@@ -148,6 +148,19 @@ function autocomplete() {
       img.alt = "";
       b.appendChild(img);
 
+      if (users[i].isBlocked) {
+        b.setAttribute("data-blocked", "true");
+        b.classList.add("blocked-friend-user");
+      } else {
+        b.setAttribute("data-blocked", "false");
+      }
+
+      if (users[i].status === "online") {
+        b.setAttribute("data-status", "online");
+      } else {
+        b.setAttribute("data-status", "not-online");
+      }
+
       //make the matching letters bold:
       u = document.createElement("div");
       u.setAttribute("class", "search-friend-username");
@@ -1642,13 +1655,8 @@ function unblockUserBlockedUsers(e) {
     });
 }
 
-
 //***************chat
 //*****************
-//capture event svg icon in card
-function startVideocallWithSelectedCardUser() {
-  e;
-}
 
 //capture event svg icon in card
 function startChatWithSelectedCardUser(e) {
@@ -1668,6 +1676,26 @@ function startChatWithSelectedCardUser(e) {
 
   //go to page
   window.location.href = `${origin}/users/chat/${usernameNormalized}`;
+}
+
+//capture event svg icon in card
+function startVideoCallWithSelectedCardUser(e) {
+  //get username
+  //si es path subir 5 ancestors si es svg subir 2
+  var divUsernameCard;
+  if (e.target.tagName.toLowerCase() === "path") {
+    divUsernameCard =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement;
+  } else {
+    //svg
+    divUsernameCard = e.target.parentElement.parentElement;
+  }
+  var usernameNormalized = divUsernameCard.getElementsByTagName("p")[0].dataset
+    .usernamenormalized;
+
+  //go to page
+  window.location.href = `${origin}/users/call/${usernameNormalized}`;
 }
 
 //input de buscar usuario

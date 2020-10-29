@@ -8,6 +8,8 @@ const usersController = require("../controllers/users");
 const {
   validateUsername,
   validateAllButUsername,
+  validateUsernameSearchUsers,
+  validateMaxAgeIsBiggerThanMinAge,
   validateProfilePhoto,
   validateLastTime,
   validateLimit
@@ -52,7 +54,24 @@ router.post(
   "/searchusers",
   ensureAuthenticated,
   ensureProfileCreated,
+  [validateMaxAgeIsBiggerThanMinAge()],
   usersController.postSearchUsers
+);
+
+//searchusersbyusername
+router.get(
+  "/searchusersbyusername",
+  ensureAuthenticated,
+  ensureProfileCreated,
+  usersController.getSearchUsersByUsername
+);
+
+router.post(
+  "/searchusersbyusername",
+  ensureAuthenticated,
+  ensureProfileCreated,
+  [validateUsernameSearchUsers()],
+  usersController.postSearchUsersByUsername
 );
 
 //search friend
@@ -150,6 +169,14 @@ router.post(
   ensureAuthenticated,
   ensureProfileCreated,
   usersController.postGetImgName
+);
+
+//call
+router.get(
+  ["/call/:username", "/call/:opt/:username"],
+  ensureAuthenticated,
+  ensureProfileCreated,
+  usersController.getCall
 );
 
 //friends

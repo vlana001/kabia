@@ -1,6 +1,7 @@
 const {
   notLoggedInUsernameNormalized,
-  isProfileCreated
+  isProfileCreated,
+  registrationMethod
 } = require("../helpers/auth");
 
 //user: auth and not auth
@@ -8,7 +9,8 @@ exports.get404 = (req, res, next) => {
   res.status(404).render("users/error-pages/404", {
     pageTitle: "Page Not Found",
     isAuthenticated: req.isAuthenticated(),
-    isProfileCreated: isProfileCreated(req)
+    isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req)
     //usernameNormalized: notLoggedInUsernameNormalized(req)
   });
 };
@@ -17,7 +19,8 @@ exports.get500 = (req, res, next) => {
   res.status(500).render("users/error-pages/500", {
     pageTitle: "Error 500",
     isAuthenticated: req.isAuthenticated(),
-    isProfileCreated: isProfileCreated(req)
+    isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req)
     //usernameNormalized: notLoggedInUsernameNormalized(req)
   });
 };

@@ -82,6 +82,23 @@
   border: 1px solid rgb(184, 184, 184);
 }
 
+#user-profile-top-1 {
+  display: flex;
+}
+
+#profile-btns #btns {
+  margin-top: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#profile-btns #btns button {
+  margin-bottom: 20px;
+}
+
 /* #user-photo button a {
     display: block;
     max-width: 100%;
@@ -102,6 +119,7 @@
   word-break: break-all;
   word-wrap: break-word;
   height: calc(100% - 100px); /*(100% container - height h1) /* 85%;*/
+  margin-right: 40px;
 }
 
 .aboutme-empty {
@@ -166,6 +184,10 @@
   width: 100%; /*asi aunque hagas click en un lado del boton y no en el texto funciona*/
 }
 
+.align-end {
+  justify-content: flex-end !important;
+}
+
 //svg icons
 .language-level {
   width: 40px;
@@ -188,6 +210,39 @@
   vertical-align: bottom;
 }
 
+#username-status{
+  display: flex;
+  align-items: center
+}
+
+
+
+@media only screen and (max-width: 760px) {
+  #user-profile-top {
+    flex-direction: column;
+  }
+  #user-profile-top {
+    height: 100%;
+  }
+  // #user-aboutme{
+  //   width:100%;
+  //   margin-right: 40px;
+  // }
+
+  #profile-btns {
+    margin-right: 10px;
+  }
+
+   //para centrar h1
+   #user-profile-top-data h1{
+    //height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   //cambiar layout
   #user-profile-top,
@@ -200,14 +255,7 @@
     height: 150px;
   }
 
-  //para centrar h1
-  #user-profile-top-data {
-    //height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-  }
+ 
 
   //alinear a la izquierda
   #user-profile-top-data h2 {
@@ -215,7 +263,8 @@
   }
 
   #user-aboutme {
-    height: 100px;
+    height: 100%;
+    width: 97%;
     align-self: flex-start;
     word-wrap: normal;
   }

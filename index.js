@@ -7,6 +7,9 @@ const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
+//https
+// var https = require("https");
+// const fs = require("fs");
 
 const errorController = require("./controllers/error");
 
@@ -15,8 +18,22 @@ const errorController = require("./controllers/error");
 const User = require("./models/user");
 
 const app = express();
+//http
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
+
+// //https
+// const privateKey = fs.readFileSync("./ssl/server.key");
+// const certificate = fs.readFileSync("./ssl/server.cert");
+
+// const http = https.createServer(
+//   {
+//     key: privateKey,
+//     cert: certificate
+//   },
+//   app
+// );
+// var io = require("socket.io")(http);
 
 //use express behind a proxy
 app.set("trust proxy", true);
@@ -25,6 +42,7 @@ app.set("trust proxy", true);
 //middleware to attach the io instance to req object in order to be able to use socketio functions in route handlers
 app.use((req, res, next) => {
   req.io = io;
+  //res.io = io
   next();
 });
 const { ws } = require("./controllers/ws");
@@ -46,7 +64,10 @@ const keys = require("./config/keys");
 //let cookieWs = [];//{}
 global.cookieUsernameWs = new Map(); //map
 global.usernameSocketWs = new Map(); //map
+global.usernameLastOpenSocketWs = new Map(); //map
 global.usernameNotOnlineTimeoutFunction = new Map(); //map
+global.userCallStatus = new Map(); //map
+
 
 // Passport Config
 require("./config/passport").localAuthUser(passport);

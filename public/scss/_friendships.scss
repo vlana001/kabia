@@ -10,7 +10,7 @@
 
 .friendship-sent-card,
 .friendship-received-card {
-  background-color: #888877;
+  background-color: #FFDEAD;
   border: 1px solid #88668877;
   width: 90%;
   height: 120px;
@@ -33,6 +33,7 @@
   width: 100px;
   border-radius: 50%;
   border: 1px solid rgb(184, 184, 184);
+  margin-left: 5px;
 }
 
 .username-card {
@@ -66,7 +67,7 @@
 
 .unblock-btn {
   display: inline-block;
-  width: 170px;
+  width: 80%;
   height: 35px;
   display: flex;
   flex-direction: row;
@@ -74,7 +75,14 @@
   align-items: center;
 }
 
-@media only screen and (max-width: 600px) {
+.icons-disabled svg{
+  opacity: 0.5;
+  pointer-events:none;
+
+}
+
+
+@media only screen and (max-width: 880px) {
   .friendship-sent-card,
   .friendship-received-card {
     width: 90%;

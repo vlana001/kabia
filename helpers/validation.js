@@ -16,6 +16,7 @@ const { blacklistedPasswords } = require("../helpers/bannedPasswords");
 const { registrationMethod } = require("../helpers/auth");
 
 const User = require("../models/user");
+const DeletedAccount = require("../models/deletedAccount");
 
 module.exports = {
   //Create profile
@@ -39,6 +40,19 @@ module.exports = {
             }
           });
         })
+        .custom((value, { req }) => {
+          //username must be unique, check if it already exixts
+          //Dejo las mayusculas pero para comprobar que no existe comparo con el normalized de la db
+          return DeletedAccount.findOne({
+            usernameNormalized: normalizeUsername(value)
+          }).then(user => {
+            if (user) {
+              return Promise.reject(
+                "You can not use that username, please pick a different one"
+              );
+            }
+          });
+        })
         .customSanitizer(value => {
           //Normalize
           //Replace multiple whitespaces in a row by a single space
@@ -54,6 +68,44 @@ module.exports = {
         .withMessage("Username must be at least 3 chars")
         .isLength({ max: 35 })
         .withMessage("Username must be at maximum 35 chars")
+    ];
+  },
+  validateUsernameSearchUsers: function(req, res, next) {
+    return [
+      body("username")
+        .trim() //para que no pueda tener solo whitespaces
+        .not()
+        .isEmpty()
+        .withMessage("Provide a username")
+        .customSanitizer(value => {
+          //Normalize
+          //Replace multiple whitespaces in a row by a single space
+          return value.replace(/[\s]{1,}/gm, " ");
+        })
+        .matches(/^[a-z0-9 ]+$/i)
+        //puede contener solo letras (min y may), numeros y space " ", no es necesario que contenga las 3, puede tener solo letras o numeros
+        // /i case insensitive
+        .withMessage(
+          "Username must be contain only letters (a-z), numbers and whitespaces"
+        )
+        .isLength({ min: 3 }) //se comprueba despues de normalize varios whitespaces seguidos contaran como uno solo
+        .withMessage("Username must be at least 3 chars")
+        .isLength({ max: 35 })
+        .withMessage("Username must be at maximum 35 chars")
+    ];
+  },
+  validateMaxAgeIsBiggerThanMinAge: function(req, res, next) {
+    return [
+      body("age1")
+        .trim() //para que no pueda tener solo whitespaces
+        .custom((value, { req }) => {
+          if (value && req.body.age2) {
+            if (parseInt(value) > parseInt(req.body.age2)) {
+              return Promise.reject("Age1 can not be bigger than age2");
+            }
+          }
+          return true;
+        })
     ];
   },
   //Create/Edit profile

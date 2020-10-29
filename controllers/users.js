@@ -35,6 +35,7 @@ const {
   calculateAgeYears,
   formatRegistrationDate,
   subtractYearsToTodayDate,
+  subtractYearsYearIncludedToTodayDate,
   getCurrentTimeUTC,
   convertDateStringToObject
 } = require("../helpers/moment");
@@ -43,83 +44,193 @@ const errorMessagesValidator = require("../helpers/errorsMessagesValidator");
 const { messageErrorShow, messageSuccessShow } = require("../helpers/messages");
 const { ws } = require("../controllers/ws");
 
+const keys = require("../config/keys");
+
+//Search users by username
+exports.getSearchUsersByUsername = (req, res, next) => {
+  res.render("users/searchusersbyusername", {
+    pageTitle: "Search users by username",
+    isAuthenticated: req.isAuthenticated(),
+    isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
+    usernameNormalized: req.user.usernameNormalized,
+    errorMessage: messageErrorShow(req.flash("error")), //
+    user: null,
+    msgNoUsers: "", //Si no hace una busqueda, no muestro mensaje 'No Users Found'
+    input: {
+      username: ""
+    }
+  });
+};
+
+exports.postSearchUsersByUsername = async (req, res, next) => {
+  const username = req.body.username;
+
+  const errors = validationResult(req);
+  let errorsMessages = [];
+  if (!errors.isEmpty()) {
+    errorsMessages = errorMessagesValidator.getErrorsMessages(errors.mapped());
+  }
+
+  if (errorsMessages.length != 0) {
+    return res.status(422).render("users/searchusersbyusername", {
+      pageTitle: "Search users by username",
+      isAuthenticated: req.isAuthenticated(),
+      isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
+      usernameNormalized: req.user.usernameNormalized,
+      errorMessage: errorsMessages,
+      user: null,
+      msgNoUsers: "", //Si no hace una busqueda, no muestro mensaje 'No Users Found'
+      input: {
+        username: ""
+      }
+    });
+  }
+
+  let query = {};
+  if (username !== "") {
+    //Busqueda por username
+    query["usernameNormalized"] = normalizeUsername(username);
+    query["status"] = { $ne: "profile_not_created" };
+    query["role"] = "user";
+  }
+
+  try {
+    let user = await User.findOne(query);
+
+    //console.log(users);
+    //if (users) {
+    //existe algun user que satisfaga la busqueda
+    //devolver resultado de las cards en la misma pagina
+    //dejar parametros de busqueda en los inputs
+
+    let msg = "";
+    if (!user) {
+      msg = "No Users Found!";
+    } else {
+      msg = "";
+      user.userAge = calculateAgeYears(user.birthDate);
+    }
+
+    return res.render("users/searchusersbyusername", {
+      pageTitle: "Search users by username",
+      isAuthenticated: req.isAuthenticated(),
+      isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
+      usernameNormalized: req.user.usernameNormalized,
+      errorMessage: messageErrorShow(req.flash("error")),
+      user: user,
+      userFriendships: req.user,
+      msgNoUsers: msg,
+      input: {
+        username: req.body.username
+      }
+    });
+    // } else {
+    //no existe
+    //dejar parametros de busqueda en los inputs
+    // req.flash(
+    //   "message",
+    //   "No existe ningún usuario que coincida con los parámetros de la búsqueda"
+    // );
+    //res.redirect("/users/searchusers");
+    // }
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};
+
 //Search users
 exports.getSearchUsers = (req, res, next) => {
   res.render("users/searchusers", {
     pageTitle: "Search users",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     usernameNormalized: req.user.usernameNormalized,
     errorMessage: messageErrorShow(req.flash("error")), //
     usersList: [],
     msgNoUsers: "", //Si no hace una busqueda, no muestro mensaje 'No Users Found'
     input: {
-      username: "",
-      mChecked: false,
-      fChecked: false,
+      gender: "",
       euskLevel: "",
       age1: "",
-      age2: "",
-      birthplace: "",
-      livingplace: ""
+      age2: ""
     }
   });
 };
 
-exports.postSearchUsers = (req, res, next) => {
-  //const
-  //validar datos
-  let query = {};
-  const username = req.body.username;
-  console.log(username);
-  if (username !== "") {
-    //Busqueda por username
-    query["username"] = username;
-    query["status"] = { $ne: "profile_not_created" };
-    query["role"] = "user";
-  } else {
-    console.log(2);
-    //Busqueda por datos (no por username)
-    const gender = req.body.gender;
-    if (gender) {
-      query["gender"] = gender;
-    }
-
-    const euskLevel = req.body.euskLevel;
-    if (euskLevel) {
-      query["euskLevel"] = euskLevel;
-    }
-
-    query["status"] = { $ne: "profile_not_created" };
-    query["role"] = "user";
-
-    //edad
-    const age1 = req.body.age1;
-    const age2 = req.body.age2;
-
-    if (age1 !== "" || age2 !== "") {
-      query["birthDate"] = {};
-    }
-
-    if (age1) {
-      //min age
-      query["birthDate"].$lte = subtractYearsToTodayDate(age1);
-    }
-    if (age2) {
-      //max age
-      query["birthDate"].$gte = subtractYearsToTodayDate(age2);
-    }
-
-    // const birthplace = req.body.birthplace;
-    // if (birthplace) {
-    //   query["birthPlace"] = birthplace;
-    // }
-
-    // const livingplace = req.body.livingplace;
-    // if (livingplace) {
-    //   query["livingPlace"] = livingplace;
-    // }
+exports.postSearchUsers = async (req, res, next) => {
+  const errors = validationResult(req);
+  let errorsMessages = [];
+  if (!errors.isEmpty()) {
+    errorsMessages = errorMessagesValidator.getErrorsMessages(errors.mapped());
   }
+
+  if (errorsMessages.length != 0) {
+    return res.status(422).render("users/searchusers", {
+      pageTitle: "Search users",
+      isAuthenticated: req.isAuthenticated(),
+      isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
+      usernameNormalized: req.user.usernameNormalized,
+      errorMessage: errorsMessages,
+      usersList: [],
+      msgNoUsers: "", //Si no hace una busqueda, no muestro mensaje 'No Users Found'
+      input: {
+        gender: req.body.gender,
+        euskLevel: req.body.euskLevel,
+        age1: req.body.age1,
+        age2: req.body.age2
+      }
+    });
+  }
+
+  let query = {};
+
+  //Busqueda por datos (no por username)
+  const gender = req.body.gender;
+  if (gender) {
+    query["gender"] = gender;
+  }
+
+  const euskLevel = req.body.euskLevel;
+  if (euskLevel) {
+    query["euskLevel"] = euskLevel;
+  }
+
+  query["status"] = { $ne: "profile_not_created" };
+  query["role"] = "user";
+
+  //edad
+  const age1 = req.body.age1;
+  const age2 = req.body.age2;
+
+  if (age1 !== "" || age2 !== "") {
+    query["birthDate"] = {};
+  }
+
+  if (age1) {
+    //min age
+    query["birthDate"].$lte = subtractYearsToTodayDate(age1);
+  }
+  if (age2) {
+    //max age
+    query["birthDate"].$gte = subtractYearsYearIncludedToTodayDate(age2);
+  }
+
+  // const birthplace = req.body.birthplace;
+  // if (birthplace) {
+  //   query["birthPlace"] = birthplace;
+  // }
+
+  // const livingplace = req.body.livingplace;
+  // if (livingplace) {
+  //   query["livingPlace"] = livingplace;
+  // }
 
   //
   // console.log(req.body.gender);
@@ -132,59 +243,56 @@ exports.postSearchUsers = (req, res, next) => {
   //   femaleChecked = true;
   // }
 
-  User.find(query)
-    .then(users => {
-      //console.log(users);
-      //if (users) {
-      //existe algun user que satisfaga la busqueda
-      //devolver resultado de las cards en la misma pagina
-      //dejar parametros de busqueda en los inputs
+  try {
+    let users = await User.find(query);
 
+    //console.log(users);
+    //if (users) {
+    //existe algun user que satisfaga la busqueda
+    //devolver resultado de las cards en la misma pagina
+    //dejar parametros de busqueda en los inputs
+
+    let msg = "";
+    if (users.length == 0) {
+      msg = "No Users Found!";
+    } else {
+      msg = "";
       users.forEach(function(user) {
         user.userAge = calculateAgeYears(user.birthDate);
       });
+    }
 
-      let msg = "";
-      if (users.length == 0) {
-        msg = "No Users Found!";
-      } else {
-        msg = "";
+    return res.render("users/searchusers", {
+      pageTitle: "Search users",
+      isAuthenticated: req.isAuthenticated(),
+      isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
+      usernameNormalized: req.user.usernameNormalized,
+      errorMessage: messageErrorShow(req.flash("error")),
+      usersList: users,
+      msgNoUsers: msg,
+      userFriendships: req.user,
+      input: {
+        gender: req.body.gender,
+        euskLevel: req.body.euskLevel,
+        age1: req.body.age1,
+        age2: req.body.age2
       }
-
-      console.log(users);
-      return res.render("users/searchusers", {
-        pageTitle: "Search users",
-        isAuthenticated: req.isAuthenticated(),
-        isProfileCreated: isProfileCreated(req),
-        usernameNormalized: req.user.usernameNormalized,
-        errorMessage: messageErrorShow(req.flash("error")),
-        usersList: users,
-        msgNoUsers: msg,
-        input: {
-          username: req.body.username,
-          gender: req.body.gender,
-          euskLevel: req.body.euskLevel,
-          age1: req.body.age1,
-          age2: req.body.age2,
-          birthplace: req.body.birthplace,
-          livingplace: req.body.livingplace
-        }
-      });
-      // } else {
-      //no existe
-      //dejar parametros de busqueda en los inputs
-      // req.flash(
-      //   "message",
-      //   "No existe ningún usuario que coincida con los parámetros de la búsqueda"
-      // );
-      //res.redirect("/users/searchusers");
-      // }
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
     });
+    // } else {
+    //no existe
+    //dejar parametros de busqueda en los inputs
+    // req.flash(
+    //   "message",
+    //   "No existe ningún usuario que coincida con los parámetros de la búsqueda"
+    // );
+    //res.redirect("/users/searchusers");
+    // }
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 //Edit profile
@@ -358,11 +466,14 @@ exports.getMenuUsers = async (req, res, next) => {
     const users = await getAllUsers();
     const friendships = await getUserFriendshipsStatus(req);
 
+    console.log(users);
+
     //pasar array al template y en el template con un loop mostrar en la UI
     res.render("users/menu", {
       pageTitle: "Menu",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       username: req.user.username,
       usernameNormalized: req.user.usernameNormalized,
       usersList: users,
@@ -411,9 +522,10 @@ exports.getOnlineUsers = async (req, res, next) => {
     const friendships = await getUserFriendshipsStatus(req);
 
     res.render("users/menu", {
-      pageTitle: "Menu",
+      pageTitle: "Online users",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       username: req.user.username,
       usernameNormalized: req.user.usernameNormalized,
       usersList: users,
@@ -444,6 +556,7 @@ exports.getCreateProfileUser = (req, res, next) => {
     pageTitle: "Create Profile",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     //usernameNormalized: req.user.usernameNormalized,
     errorMessage: messageErrorShow(req.flash("error_message")),
     todayDate: calculateTodayDate(),
@@ -481,6 +594,7 @@ exports.postCreateProfileUser = async (req, res, next) => {
       pageTitle: "Create Profile",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       //usernameNormalized: req.user.usernameNormalized,
       errorMessage: errorsMessages,
       todayDate: calculateTodayDate(),
@@ -531,6 +645,7 @@ exports.postCreateProfileUser = async (req, res, next) => {
       });
     })
     .then(result => {
+      console.log(result);
       cookieUsernameWs.set(req.session.id, normalizeUsername(username)); //map sessionId with username
       req.flash("success_message", "Your profile has been created correctly");
       res.redirect("/users/menu");
@@ -545,7 +660,7 @@ exports.postCreateProfileUser = async (req, res, next) => {
 exports.getMyProfile = async (req, res, next) => {
   //Uso un redirect
   const usernameNormalized = req.user.usernameNormalized;
-  res.redirect(`/users/u/${usernameNormalized}`);
+  return res.redirect(`/users/u/${usernameNormalized}`);
 
   //Esta seria la manera de mayor performance porque no hace redirect,
   //pero como quiero que en la URL aparezca igual que todas /u/:user
@@ -590,6 +705,7 @@ exports.getUserProfile = async (req, res, next) => {
         pageTitle: `Profile ${username}`,
         isAuthenticated: req.isAuthenticated(),
         isProfileCreated: isProfileCreated(req),
+        registrationMethod: registrationMethod(req),
         currentUser: req.user.usernameNormalized,
         isBlockedByCurrentUser: blocked,
         isFriendOfCurrentUser: friend,
@@ -606,14 +722,16 @@ exports.getUserProfile = async (req, res, next) => {
         userAboutMe: user.aboutMe,
         numberFriends: numberFriends,
         userSince: formatRegistrationDate(user.date),
-        userEuskLevel: user.euskLevel
+        userEuskLevel: user.euskLevel,
+        status: user.status
       });
     } else {
       //Si no existe el user mostrar mensaje
-      return res.render("error", {
+      return res.render("users/error-pages/error", {
         pageTitle: `Error - No existe el usuario ${username}`,
         isAuthenticated: req.isAuthenticated(),
         isProfileCreated: isProfileCreated(req),
+        registrationMethod: registrationMethod(req),
         usernameNormalized: req.user.usernameNormalized,
         errorMessage: [`No existe el usuario ${username}`]
       });
@@ -631,6 +749,7 @@ exports.getSearchFriend = (req, res, next) => {
     pageTitle: "Search friend",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     usernameNormalized: req.user.usernameNormalized,
     errorMessage: ""
   });
@@ -677,16 +796,37 @@ exports.postSearchFriend = async (req, res, next) => {
       let user = await User.findOne({
         usernameNormalized: value.usernameNormalized
       })
-        .select("imageURL -_id")
+        .select("imageURL status -_id")
         .lean();
 
-      //add image url to the array object
+      //add image url and status to the array object
       let objUser = value;
       objUser["imageURL"] = user.imageURL.toString();
+      if (user.status.toString() === "online") {
+        objUser["status"] = user.status.toString();
+      } else {
+        objUser["status"] = "";
+      }
       friendsMatchingWithImage.push(objUser);
     }
 
-    res.json(friendsMatchingWithImage);
+    let friendsMachingWithBlockedUsers = [];
+    for (const value of friendsMatchingWithImage) {
+      const result = await User.findOne({
+        _id: req.user.id,
+        "blockedUsers.usernameNormalized": value.usernameNormalized
+      });
+
+      let objUser1 = value;
+      if (result) {
+        objUser1["isBlocked"] = true;
+      } else {
+        objUser1["isBlocked"] = false;
+      }
+      friendsMachingWithBlockedUsers.push(objUser1);
+    }
+
+    res.json(friendsMachingWithBlockedUsers);
   } catch (err) {
     console.log(err);
   }
@@ -730,10 +870,11 @@ exports.getMyFriends = async (req, res, next) => {
     pageTitle: "My friends",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     friendsList: friends,
     blockedUsersList: userfr.blockedUsers,
     usernameNormalized: req.user.usernameNormalized,
-    optionLateralMenu: 2
+    optionLateralMenu: 1
     //errorMessage: ""
   });
 };
@@ -769,10 +910,11 @@ exports.getMyFriendsOnline = async (req, res, next) => {
     pageTitle: "My friends online",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     friendsList: friendsOnline,
     blockedUsersList: friendsList.blockedUsers,
     usernameNormalized: req.user.usernameNormalized,
-    optionLateralMenu: 1
+    optionLateralMenu: 2
     //errorMessage: ""
   });
 };
@@ -998,6 +1140,7 @@ exports.getFriendshipRequests = async (req, res, next) => {
       pageTitle: "Friendship requests",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       usernameNormalized: req.user.usernameNormalized,
       errorMessage: "",
       option: "send",
@@ -1031,6 +1174,7 @@ exports.getFriendshipRequests = async (req, res, next) => {
       pageTitle: "Friendship requests",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       usernameNormalized: req.user.usernameNormalized,
       errorMessage: "",
       option: "received",
@@ -1043,12 +1187,13 @@ exports.getFriendshipRequests = async (req, res, next) => {
       pageTitle: "Page Not Found",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       usernameNormalized: req.user.usernameNormalized
     });
   }
 };
 
-exports.postAcceptFriendshipRequest = (req, res, next) => {
+exports.postAcceptFriendshipRequest = async (req, res, next) => {
   const usernameNormalized = req.body.usernameNormalized;
   //const userDoer = req.user;
   console.log("u" + usernameNormalized);
@@ -1056,76 +1201,84 @@ exports.postAcceptFriendshipRequest = (req, res, next) => {
   //Si modifican el username y pasan uno que no existe:
   //si no existe ese user en la db o no le ha mandado ese una request de amistad,
   //en ambos casos no se encontrara en el array de sent, asi que no se hace ningun update de document
+  try {
+    const result = await checkOperationIsValid(req, 3, usernameNormalized);
+    if (result !== "") {
+      //no permitir realizar operacion
+      return res.json({ requestSend: "operationNotAllowed", msg: result });
+    } else {
+      //6 chained then block containing each one an async coperation
+      //pasar de sent a friends
 
-  checkOperationIsValid(req, 3, usernameNormalized)
-    .then(result => {
-      if (result !== "") {
-        //no permitir realizar operacion
-        return res.json({ requestSend: "operationNotAllowed", msg: result });
-      } else {
-        //6 chained then block containing each one an async coperation
-        //pasar de sent a friends
-        let userRequester;
-        User.updateOne(
-          { usernameNormalized: usernameNormalized },
-          { $pull: { friendshipRequestSent: { userId: req.user.id } } }
-        )
-          .then(result => {
-            if (result.nModified === 1) {
-              return User.findOne({ usernameNormalized: usernameNormalized });
-            }
-          })
-          .then(user => {
-            console.log("u2" + user);
-            if (user) {
-              userRequester = user;
-              let resetUser = user;
-              resetUser.friends.push({
-                userId: req.user.id,
-                username: req.user.username,
-                usernameNormalized: req.user.usernameNormalized
-              });
-              return resetUser.save();
-            }
-          })
-          //pasar de received a friends
-          .then(user => {
-            if (user) {
-              return User.updateOne(
-                { _id: req.user.id },
-                { $pull: { friendshipRequestReceived: { userId: user.id } } }
-              );
-            }
-          })
-          .then(result => {
-            if (result.nModified === 1) {
-              return User.findById(req.user.id);
-            }
-          })
-          .then(user => {
-            if (user) {
-              let resetUser = user;
-              resetUser.friends.push({
-                userId: userRequester.id,
-                username: userRequester.username,
-                usernameNormalized: userRequester.usernameNormalized
-              });
-              return resetUser.save();
-            }
-          })
-          .then(user => {
-            if (user) {
-              //send response a quien ha hecho la HTTP req JSON para quitar del DOM la card
-              res.json({
-                requestSend: "OK",
-                msg: "La solicitud de amistad se ha aceptado con exito"
-              });
-            }
-          })
-          .catch(err => {});
+      let userRequester;
+
+      const result1 = await User.updateOne(
+        { usernameNormalized: usernameNormalized },
+        { $pull: { friendshipRequestSent: { userId: req.user.id } } }
+      );
+
+      if (result1.nModified === 1) {
+        const user1 = await User.findOne({
+          usernameNormalized: usernameNormalized
+        });
+
+        if (user1) {
+          userRequester = user1;
+          let resetUser1 = user1;
+          resetUser1.friends.push({
+            userId: req.user.id,
+            username: req.user.username,
+            usernameNormalized: req.user.usernameNormalized
+          });
+          await resetUser1.save();
+
+          //if both user chatted before (they were friends, stopped being friends, and now the become friends again)
+          await User.updateOne(
+            {
+              usernameNormalized: usernameNormalized,
+              "chatConversationsList.usernameNormalizedFriend":
+                req.user.usernameNormalized
+            },
+            { "chatConversationsList.$.isFriendCurrently": true }
+          );
+        }
+
+        //pasar de received a friends
+        const result2 = await User.updateOne(
+          { _id: req.user.id },
+          { $pull: { friendshipRequestReceived: { userId: user1.id } } }
+        );
+
+        if (result2.nModified === 1) {
+          const user2 = await User.findById(req.user.id);
+
+          if (user2) {
+            let resetUser2 = user2;
+            resetUser2.friends.push({
+              userId: userRequester.id,
+              username: userRequester.username,
+              usernameNormalized: userRequester.usernameNormalized
+            });
+            await resetUser2.save();
+
+            await User.updateOne(
+              {
+                usernameNormalized: req.user.usernameNormalized,
+                "chatConversationsList.usernameNormalizedFriend": usernameNormalized
+              },
+              { "chatConversationsList.$.isFriendCurrently": true }
+            );
+
+            //send response a quien ha hecho la HTTP req JSON para quitar del DOM la card
+            return res.json({
+              requestSend: "OK",
+              msg: "La solicitud de amistad se ha aceptado con exito"
+            });
+          }
+        }
       }
-    })
-    .catch(err => {});
+    }
+  } catch (err) {}
 };
 
 exports.postRejectFriendshipRequest = (req, res, next) => {
@@ -1182,12 +1335,13 @@ exports.getBlockedUsers = async (req, res, next) => {
       let user = await User.findOne({
         usernameNormalized: value.usernameNormalized
       })
-        .select("imageURL -_id")
+        .select("imageURL status -_id")
         .lean();
 
       //add image url to the array object
       let objUser = value;
       objUser["imageURL"] = user.imageURL.toString();
+      objUser["status"] = user.status;
       blockedUsers.push(objUser);
     }
     console.log(blockedUsers);
@@ -1196,6 +1350,7 @@ exports.getBlockedUsers = async (req, res, next) => {
       pageTitle: "Blocked Users",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       usernameNormalized: req.user.usernameNormalized,
       //registrationMethod: registrationMethod(req),
       friends: friendship.friends,
@@ -1252,6 +1407,17 @@ exports.postBlockUser = async (req, res, next) => {
               usernameNormalized: user1.usernameNormalized
             }
           }
+        }
+      );
+
+      await User.updateOne(
+        {
+          usernameNormalized: userDoer.usernameNormalized,
+          "chatConversationsList.usernameNormalizedFriend":
+            user1.usernameNormalized
+        },
+        {
+          "chatConversationsList.$.isBlocked": true
         }
       );
 
@@ -1358,6 +1524,17 @@ exports.postUnblockUser = async (req, res, next) => {
         }
       );
 
+      await User.updateOne(
+        {
+          usernameNormalized: userDoer.usernameNormalized,
+          "chatConversationsList.usernameNormalizedFriend":
+            user1.usernameNormalized
+        },
+        {
+          "chatConversationsList.$.isBlocked": false
+        }
+      );
+
       if (user2) {
         return res.json({ requestSend: "OK", msg: "Usuario desbloqueado" });
       }
@@ -1416,6 +1593,16 @@ exports.postEndFriendship = async (req, res, next) => {
             }
           }
         );
+
+        await User.updateOne(
+          {
+            usernameNormalized: userDoer.usernameNormalized,
+            "chatConversationsList.usernameNormalizedFriend":
+              user.usernameNormalized
+          },
+          { "chatConversationsList.$.isFriendCurrently": false }
+        );
+
         const user2Update = await User.updateOne(
           { _id: user.id },
           {
@@ -1427,6 +1614,15 @@ exports.postEndFriendship = async (req, res, next) => {
               }
             }
           }
+        );
+
+        await User.updateOne(
+          {
+            usernameNormalized: user.usernameNormalized,
+            "chatConversationsList.usernameNormalizedFriend":
+              userDoer.usernameNormalized
+          },
+          { "chatConversationsList.$.isFriendCurrently": false }
         );
 
         if (user1Update && user2Update) {
@@ -1494,6 +1690,19 @@ exports.postEndFriendshipBlock = async (req, res, next) => {
             }
           }
         );
+
+        await User.updateOne(
+          {
+            usernameNormalized: userDoer.usernameNormalized,
+            "chatConversationsList.usernameNormalizedFriend":
+              user.usernameNormalized
+          },
+          {
+            "chatConversationsList.$.isFriendCurrently": false,
+            "chatConversationsList.$.isBlocked": true
+          }
+        );
+
         const user2Update = await User.updateOne(
           { _id: user.id },
           {
@@ -1504,6 +1713,17 @@ exports.postEndFriendshipBlock = async (req, res, next) => {
                 usernameNormalized: userDoer.usernameNormalized
               }
             }
+          }
+        );
+
+        await User.updateOne(
+          {
+            usernameNormalized: user.usernameNormalized,
+            "chatConversationsList.usernameNormalizedFriend":
+              userDoer.usernameNormalized
+          },
+          {
+            "chatConversationsList.$.isFriendCurrently": false
           }
         );
 
@@ -1545,6 +1765,7 @@ exports.getUserChat = async (req, res, next) => {
   let startChatWithUserUsername = "";
   let startChatWithUserUsernameNormalized = "";
   let startChatWithUserImageUrl = "";
+  let startChatWithUserStatus = "";
 
   try {
     //throw new Error("Error!");
@@ -1590,7 +1811,7 @@ exports.getUserChat = async (req, res, next) => {
       const userFriend = await User.findOne({
         usernameNormalized: usernameNormalizedFriend
       })
-        .select("username imageURL -_id")
+        .select("username imageURL status -_id")
         .lean();
       //ya esta puesto de cuando compruebo si es friend
       //startChatWithUserUsernameNormalized = usernameNormalizedFriend;
@@ -1598,25 +1819,28 @@ exports.getUserChat = async (req, res, next) => {
       if (userFriend) {
         startChatWithUserImageUrl = userFriend.imageURL;
         startChatWithUserUsername = userFriend.username;
+        startChatWithUserStatus = userFriend.status;
       }
     }
 
-    //para todos los users con los que ha chateado obtener su foto
+    //para todos los users con los que ha chateado obtener su foto y su estado
     if (userChat) {
       for (const value of userChat.chatConversationsList) {
         //para cada user con los que ha chateado, obtengo su img
         let user = await User.findOne({
           usernameNormalized: value.usernameNormalizedFriend
         })
-          .select("imageURL -_id")
+          .select("imageURL status -_id")
           .lean();
 
         //add image url to the array object
         let objUser = value;
         if (user) {
           objUser["imageURL"] = user.imageURL.toString();
+          objUser["status"] = user.status;
         } else {
           objUser["imageURL"] = "";
+          objUser["status"] = "";
         }
         friendsChated.push(objUser);
       }
@@ -1632,11 +1856,13 @@ exports.getUserChat = async (req, res, next) => {
     pageTitle: "Chat",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     usernameNormalized: req.user.usernameNormalized,
     chatConversations: friendsChated.reverse(), //req.user.friends,
     startChatWithUserUsernameNormalized: startChatWithUserUsernameNormalized,
     startChatWithUserUsername: startChatWithUserUsername,
-    startChatWithUserImageUrl: startChatWithUserImageUrl
+    startChatWithUserImageUrl: startChatWithUserImageUrl,
+    startChatWithUserStatus: startChatWithUserStatus
     //errorMessage: ""
   });
 };
@@ -1695,8 +1921,8 @@ exports.postLoadChat = async (req, res, next) => {
   //Si he enviado un msg, significa que he leido los anteriores msg que he recibo antes de ese msg
   //Es decir, hasta que haya uno que haya enviado yo
   const numMessagesForMeUnread = await Chat.countDocuments({
-    sender: receiver,
-    receiver: sender,
+    "sender.usernameNormalized": receiver,
+    "receiver.usernameNormalized": sender,
     read: false,
     date: { $lt: t }
   });
@@ -1720,16 +1946,34 @@ exports.postLoadChat = async (req, res, next) => {
 
   //pagination
   const messages = await Chat.find({
-    sender: { $in: [sender, receiver] },
-    receiver: { $in: [sender, receiver] },
+    "sender.usernameNormalized": { $in: [sender, receiver] },
+    "receiver.usernameNormalized": { $in: [sender, receiver] },
+    $or: [
+      { showOnlyToSender: false },
+      { showOnlyToSender: true, "sender.usernameNormalized": sender } //the user who wants to load the message is the user who sent that message
+    ],
     date: { $lt: t }
   })
-    .select("msgText sender receiver date read -_id")
+    .select(
+      "msgText sender.usernameNormalized receiver.usernameNormalized date read -_id"
+    )
     .limit(limitMsg) //si no hay tantos, coge los que haya
     //.skip(startIndex)
     .sort({ date: -1 });
 
-  res.status(200).json(messages);
+  let msgList = [];
+  messages.forEach(msg => {
+    const obj = {
+      sender: msg.sender.usernameNormalized,
+      receiver: msg.receiver.usernameNormalized,
+      read: msg.read,
+      msgText: msg.msgText,
+      date: msg.date
+    };
+    msgList.push(obj);
+  });
+
+  res.status(200).json(msgList);
 };
 
 exports.postSetUserMsgRead = async (req, res, next) => {
@@ -1737,10 +1981,27 @@ exports.postSetUserMsgRead = async (req, res, next) => {
   const usernameReceiver = req.user.usernameNormalized;
   //pongo todos los msg que tengan ese receiver y ese sender como leidos
   const result = await Chat.updateMany(
-    { sender: usernameSender, receiver: usernameReceiver, read: false },
+    {
+      "sender.usernameNormalized": usernameSender,
+      "receiver.usernameNormalized": usernameReceiver,
+      read: false
+    },
     { read: true }
   );
   //console.log("r " + result.n);
+
+  //send msg read confirmation to msg sender
+  const wsMsgSender = usernameSocketWs.get(usernameSender);
+  console.log(wsMsgSender);
+  if (wsMsgSender) {
+    req.io
+      .to(wsMsgSender.id)
+      .emit(
+        "confirmMsgHasBeenRead",
+        JSON.stringify({ msgText: "confirm", msgReceiver: usernameReceiver })
+      );
+  }
+
   return res.json({ msg: "operacion realizada" });
 };
 
@@ -1749,9 +2010,38 @@ exports.postGetImgName = async (req, res, next) => {
   //pongo todos los msg que tengan ese receiver y ese sender como leidos
   const result = await User.findOne({
     usernameNormalized: usernameNormalized
-  }).select("imageURL  -_id");
+  }).select("imageURL status -_id");
 
-  return res.json({ imageName: result.imageURL });
+  let status = "not-online";
+  if (result.status === "online") {
+    status = "online";
+  }
+  return res.json({ imageName: result.imageURL, status: status });
+};
+
+//call
+exports.getCall = async (req, res, next) => {
+  const usernameNormalizedFriend = req.params.username;
+  const opt = req.params.opt;
+  console.log(usernameNormalizedFriend);
+  console.log(opt);
+
+  //get image
+  const userImage = await User.findOne({
+    usernameNormalized: usernameNormalizedFriend
+  }).select("imageURL -_id");
+
+  return res.render("users/call", {
+    pageTitle: "Call",
+    isAuthenticated: req.isAuthenticated(),
+    isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
+    usernameNormalized: req.user.usernameNormalized,
+    opt: opt,
+    usernameNormalizedFriend: usernameNormalizedFriend,
+    userImage: userImage.imageURL,
+    stunTurnServers: JSON.stringify(keys.stunTurnServers)
+  });
 };
 
 //Notifications
@@ -1760,6 +2050,7 @@ exports.getNotifications = (req, res, next) => {
     pageTitle: "Notifications",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     usernameNormalized: req.user.usernameNormalized
     //errorMessage: ""
   });

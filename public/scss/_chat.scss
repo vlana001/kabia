@@ -68,6 +68,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
+  background-color: white;
+  min-width: 220px;
 
   display: flex;
   flex-direction: column;
@@ -85,20 +87,37 @@
   border-bottom: 2px solid black;
   background-color: white;
   z-index: 1;
+  background-color: darkturquoise;
 }
 
 .no-friend {
   // pointer-events: none;
   /* for "disabled" effect */
   opacity: 0.5;
-  background: #ccc;
+  background: white;
+}
+
+.no-friend-blocked{
+  opacity: 0.5;
+  background-color: indianred;
 }
 
 .blocked {
   // pointer-events: none;
   /* for "disabled" effect */
   opacity: 0.5;
-  background: red;
+  background: crimson;
+}
+
+.deleted{
+  opacity: 0.5;
+  background:  #a2836e;
+}
+
+.deleted-user-message{
+  font-style: oblique;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .friend-photo {
@@ -114,12 +133,14 @@
   width: 84px;
   border-radius: 50%;
   border: 1px solid rgb(184, 184, 184);
+  margin-left: 3px;
 }
 
 .friend-username {
   flex: 3;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   margin-left: 6px;
 }
@@ -177,6 +198,7 @@
 
 #chat-header {
   visibility: inherit;
+  max-height: 70px;
   width: 100%;
   //height: 60px;
   flex: 1;
@@ -235,7 +257,7 @@
   white-space: pre-line; /*normal*/
 
   min-width: 200px;
-  max-width: 600px; /* si el msg es muy largo se pone en varias lineas*/
+  max-width: 350px; /* si el msg es muy largo se pone en varias lineas*/
   /*si pongo max-width 80% y una palabra es muy larga se hace un scroll x*/
 
   display: flex;
@@ -459,6 +481,7 @@ msgtext::-webkit-input-placeholder {
   height: 80px;
   display: flex;
   align-items: center;
+  background-color: darkturquoise;
 }
 
 .search-friend-img {
@@ -483,7 +506,7 @@ msgtext::-webkit-input-placeholder {
 .friends-list div {
   padding: 10px;
   cursor: pointer;
-  background-color: #fff;
+  // background-color: #fff;
 }
 
 /*when hovering an item:*/
@@ -545,7 +568,8 @@ msgtext::-webkit-input-placeholder {
 }
 
 //media queries
-@media only screen and (max-width: 440px) {
+@media only screen and (max-width: 600px) {
+  //same max-width as footer
   .content {
     /* flex:1; */
     height: calc(100% - 3em);
@@ -566,11 +590,24 @@ msgtext::-webkit-input-placeholder {
     top: 50px;
   }
 
-  #messages {
+  // #messages {
+  //   height: calc(100% - 50px - 80px);
+  //   /*100% - show-users - footer*/
+  //   /* top: 3em; */
+  //   position: relative;
+  // }
+
+  .messages1 {
     height: calc(100% - 50px - 80px);
     /*100% - show-users - footer*/
     /* top: 3em; */
     position: relative;
+  }
+
+  .messages2{
+    height: calc(100% - 50px);
+    position: relative;
+
   }
 
   #chat-header {

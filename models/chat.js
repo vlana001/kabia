@@ -8,21 +8,31 @@ const chatSchema = new Schema({
     required: true
   },
   sender: {
-    type: String, //username normalized
-    // type: Schema.Types.ObjectId,
-    // ref: "User",
-    required: true
+    // type: String, //username normalized
+    // // type: Schema.Types.ObjectId,
+    // // ref: "User",
+    // required: true
+    //
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    usernameNormalized: { type: String, required: true }
   },
   receiver: {
-    type: String, //username normalized
-    // type: Schema.Types.ObjectId,
-    // ref: "User",
-    required: true
+    // type: String, //username normalized
+    // // type: Schema.Types.ObjectId,
+    // // ref: "User",
+    // required: true
+    //
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    usernameNormalized: { type: String, required: true }
   },
   //   receiver: {
   //     type: String, //ref
   //     required: true
   //   },
+  showOnlyToSender: {
+    type: Boolean,
+    required: true
+  },
   date: {
     // type: Date,
     // default: Date.now,

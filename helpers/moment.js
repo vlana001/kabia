@@ -198,7 +198,7 @@ let self = {
       .tz(req.user.timezone)
       .format("YYYY-MM-DD HH:mm:ss");
     console.log(dateTz);
-    
+
     return dateTz;
   },
   isValidBirthdateDate: function(date) {
@@ -227,6 +227,19 @@ let self = {
       .utc()
       .subtract(age, "years")
       .format("YYYY-MM-DD");
+  },
+  subtractYearsYearIncludedToTodayDate: function(age) {
+    let age1 = parseInt(age) + 1;
+    const dateYearsSubstracted = moment()
+      .utc()
+      .subtract(age1, "years")
+      .format("YYYY-MM-DD");
+
+    const dateDayAdded = moment(dateYearsSubstracted)
+      .add(1, "days")
+      .format("YYYY-MM-DD");
+
+    return dateDayAdded;
   },
   getCurrentTimeUTC: function() {
     const currentDate = moment()

@@ -119,7 +119,7 @@ module.exports.googleAuth = function(passport) {
       {
         clientID: keys.GOOGLE_CLIENT_ID,
         clientSecret: keys.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/google/callback",
+        callbackURL: `${keys.domain}/google/callback`,
         proxy: true
       },
       (accessToken, refreshToken, profile, done) => {
@@ -208,7 +208,7 @@ module.exports.facebookAuth = function(passport) {
       {
         clientID: keys.FACEBOOK_APP_ID,
         clientSecret: keys.FACEBOOK_APP_SECRET,
-        callbackURL: "/facebook/callback",
+        callbackURL: `${keys.domain}/facebook/callback`,
         profileFields: ["id", "displayName", "email"],
         proxy: true
       },

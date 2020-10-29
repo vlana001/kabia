@@ -1,0 +1,353 @@
+/* video container */
+.flex{
+  display: flex;
+}
+
+.flex1{
+  flex:1;
+  min-height: 100%;
+}
+
+#page-content.containerVideo {
+  margin-top:0;
+}
+
+.containerVideo {
+  /* padding: 5% 0; */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /*flex-start*/
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+  min-width: 300px;
+}
+
+.call-page {
+  position: relative;
+  /* display: block; */
+  width: 80%;
+ // min-height: 80%;
+  max-height: 90%;
+  height: 90%;
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* videos */
+video {
+  border: 2px solid gray;
+  /*con 1px se ve bien en movil?*/
+  background: #6f1c36;
+  /*black*/
+  object-fit: cover;
+  /* es la opcion que mejor va */
+}
+
+#localVideo {
+  display: block;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  /* background-color: blue; */
+  z-index: 1;
+}
+
+#remoteVideo {
+  padding: 0;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  top:0;
+  height: 100%;
+}
+
+
+/* btns over video */
+#video-buttons {
+  position: absolute;
+  left: 0;
+  bottom: 20px;
+}
+
+#call-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  position: absolute;
+  bottom: 8px;
+  margin: 0 auto;
+}
+
+#callIcon {
+  border: 1px solid white;
+  border-radius: inherit;
+  width: inherit;
+  height: inherit;
+  background-color: limegreen;
+  opacity: 0.9;
+}
+
+#hangupIcon {
+  border: 1px solid white;
+  border-radius: inherit;
+  width: inherit;
+  height: inherit;
+  background-color: red;
+  opacity: 0.9;
+  display: none;
+}
+
+#mute-audio-btn,
+#mute-video-btn,
+#screen-btn {
+  width: 50px;
+  height: 50px;
+  /* background-color: red; */
+  opacity: 0.8;
+  border: 1px solid white;
+  border-radius: 50%;
+  margin: 8px;
+}
+
+#remoteuser-image{
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+  top:40%;
+  bottom:40%;
+}
+
+.call{
+  animation-name: resizeImage;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes resizeImage {
+  0%   {transform: scale(1,1);}
+  50%  {transform: scale(1.3,1.3);}
+  100% {transform: scale(1.7,1.7);}
+}
+
+//dialog
+#dialog-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+#dialog-photo{
+  width: 45px;
+  height: 45px;
+  margin-left: 10px;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+#dialog-username{
+  margin-left: 20px;
+}
+
+.incoming-call-dialog-question{
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.incoming-call-dialog-button-group{
+  display: flex;
+  justify-content: center;
+}
+
+.incoming-call-dialog-button-group button{
+  width: 70px;
+  margin-top: 10px;
+  margin-right: 5px;
+  margin-left:5px;
+  padding: 5px;
+}
+
+/* para que cuando esta en modo mobile y quito la clase 'active', se cambien los estilos, 
+sino, si pongo hover para todas las dimensiones de pantalla, en mobile, es necesario hacer click fuera del icono
+para que se quite el background de ese color*/
+
+@media (hover: hover) {
+  #mute-audio-btn:hover,
+  #mute-video-btn:hover,
+  #screen-btn:hover {
+    opacity: 1;
+    background-color: #a9cada;
+  }
+}
+
+.active {
+  opacity: 1;
+  background-color: #a9cada;
+}
+
+/* 
+ @media only screen and (max-width: 450px) {
+    .call-page {
+       width: 100%;
+       min-height: 100%;
+       max-height: 100%;
+       /* flex: 1 0 100%; 
+
+    }
+
+    /* #localVideo {
+       width: 150px;
+       height: 150px;
+    } 
+
+    .row {
+       display: none;
+    }
+ } */
+
+@media only screen and (max-width: 600px) {
+  .containerVideo {
+    position: fixed;
+    width:100%;
+    height: calc(100% - 3.1em);
+  }
+
+  #remoteVideo {
+    height: 100%;
+    max-height: none;
+  }
+  #page-content.containerVideo {
+    margin-top: 0px;
+  }
+}
+
+/* para modo portrait y landscape */
+@media only screen and (max-width: 823px) {
+  /*and (orientation: landscape)*/
+  .call-page {
+    width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+  }
+
+  /* hide */
+  .row {
+    /* display: none; */
+  }
+
+  video {
+    border: none;
+  }
+
+  #localVideo {
+    border-top: 2px solid gray;
+    border-left: 2px solid gray;
+  }
+}
+
+svg.svg-video {
+  width: 40px;
+  height: 40px;
+  transform: scale(2);
+  fill: white;
+}
+
+/*icons*/
+#enter-fullscreen-icon {
+  display: block;
+}
+
+#exit-fullscreen-icon {
+  display: none;
+}
+
+#muted-audio-icon {
+  display: none;
+}
+
+#unmuted-audio-icon {
+  display: block;
+}
+
+#muted-video-icon {
+  display: none;
+}
+
+#unmuted-video-icon {
+  display: block;
+}
+
+svg.phone-call-icon {
+  width: 40px;
+  height: 40px;
+  fill: white;
+}
+
+/* Dialog */
+.incoming-call-dialog {
+  width: 300px;
+  height: 200px;
+  border: 1px solid black;
+  position: fixed;
+  // position: absolute;
+  top: 3.1em;
+  right: 8px;
+  display: none;
+  z-index: 6;
+  background-color: white;
+}
+
+/* mostrar mensajes */
+#show-msg {
+  height: 0px;
+  /*100px*/
+  width: 100%;
+  background-color: #c42b5c;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+  transition: height ease 0.5s;
+  -moz-transition: height ease 0.5s;
+  /* Firefox 4 */
+  -webkit-transition: height ease 0.5s;
+  /* Safari and Chrome */
+  -o-transition: height ease 0.5s;
+  /* Opera */
+  overflow-y: hidden;
+}
+
+#show-msg p {
+  padding: 10px;
+  text-align: center;
+  padding-top: 30px;
+}
+
+#incoming-call-dialog.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 3s, opacity 3s linear;
+}
+
+/* popup */
+#call-canceled {
+  display: none;
+  background-color: #FA8072;
+  height: 100%;
+}
+
+#incoming-call-dialog-action {
+  display: block;
+}

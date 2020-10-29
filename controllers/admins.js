@@ -698,6 +698,7 @@ exports.getLogoutAdmin = (req, res, next) => {
         isProfileCreated: false,
         errorMessage: "", ////poner error, no poner error-message, si no los msg de passport no se muestran
         successMessage: ["You are logged out"],
+        logout: true,
         oldInput: {
           email: "",
           password: ""

@@ -6,16 +6,28 @@
 
     <%- include('../includes/navigation.ejs') %>
     <div class="content">
+        <div id="container-page">
 
-        <% if (errorMessage) { %>
-        <div class="msg msg-error">
-            <% for (let error of errorMessage) { %>
-            <p class="msg-indiv"><%= error %></p>
-            <% } %>
+            <div id="lateral-menu">
+                <%- include('../includes/lateral-menu-friends.ejs', {currentLink: 4}) %>
+            </div>
+
+            <div id="page-content" class="searchuser-div">
+
+                <% if (errorMessage) { %>
+                <div class="msg msg-error">
+                    <% for (let error of errorMessage) { %>
+                    <p class="msg-indiv"><%= error %></p>
+                    <% } %>
+                </div>
+                <% } %>
+
+                <div id="searchuser-container">
+                    <%- include('./search-friend-username.ejs', {userType: "Friend", userTypeL:"friend"}) %>
+                </div>
+
+            </div>
         </div>
-        <% } %>
-
-        <%- include('./search-friend-username.ejs', {userType: "Friend", userTypeL:"friend"}) %>
 
     </div>
     <%- include('../includes/end.ejs') %>

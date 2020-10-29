@@ -8,12 +8,11 @@
   //align-items: flex-start;
   //grid
   display: grid;
-  grid-template-columns:  repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   justify-items: center;
   align-items: center;
-
 }
 
 // .grid::after {
@@ -57,10 +56,11 @@
   width: 200px;
   height: 310px; /*para que entre el texto*/
   border: 1px solid black;
-  margin: 10px 5px;
+  //margin: 10px 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 10px auto;
 }
 
 /* .user-card img,*/
@@ -105,7 +105,17 @@
 }
 
 .user-status-not-online {
-  background-color: red;
+  background-color: inherit;
+  display: none;
+}
+
+//not online
+div.username-status
+  div.user-status-not-online
+  + div#icons-container
+  svg#card-camera-icon {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .img-card-1 {
@@ -147,19 +157,29 @@
   display: inline-block; //none
 }
 
-@media only screen and (max-width: 540px) {
+@media only screen and (max-width: 700px) {
+  .user-card {
+    width: 150px;
+    height: 240px;
+  }
+
   .grid{
-      //flexbox
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .grid {
+    //flexbox
     // display: flex;
     // flex-direction: row;
     // flex-wrap: wrap;
     // justify-content: flex-start;//space-between
     //align-items: flex-start;
     //grid
-   
+
     //grid-template-columns:  repeat(auto-fill, minmax(200px, 1fr));
     grid-template-columns: repeat(3, 1fr);
-  
   }
 
   .user-card {
@@ -168,22 +188,19 @@
   }
 }
 
-@media only screen and (max-width: 400px) {
-  .grid{
-      //flexbox
+@media only screen and (max-width: 500px) {
+  .grid {
+    //flexbox
     // display: flex;
     // flex-direction: row;
     // flex-wrap: wrap;
     // justify-content: flex-start;//space-between
     //align-items: flex-start;
     //grid
-   
+
     //grid-template-columns:  repeat(auto-fill, minmax(200px, 1fr));
     grid-template-columns: repeat(2, 1fr);
-  
   }
-
-
 
   .user-card {
     width: 150px;

@@ -15,29 +15,100 @@
 
             <!-- profile top -->
             <div class="" id="user-profile-top">
+                <div id="user-profile-top-1">
+                    <div id="user-photo">
+                        <img id="photo" src="/uploads/<%=userProfilePhoto%>" alt="">
 
-                <div id="user-photo">
-                    <img id="photo" src="/uploads/<%=userProfilePhoto%>" alt="">
-
-                    <!-- <form action="/users/editprofile" method="GET">
+                        <!-- <form action="/users/editprofile" method="GET">
                     <input type="submit" value="Editar">
                 </form> -->
-                    <!-- <button>
+                        <!-- <button>
                         <a href="/users/editprofile">Editar</a>
                     </button> -->
+                    </div>
+
+                    <div id="profile-btns">
+
+                        <% if( currentUser !== usernameNormalized){ %>
+                        <!-- envias a quien solictas amistad en el param, coges req.user quien eres -->
+                        <div id="btns">
+                            <input type="hidden" name="username" id="username" value="<%= usernameNormalized %>">
+
+                            <% if(isFriendOfCurrentUser){%>
+                            <button id="ff-btn" class="friendship-actions-btn">
+                                <span class="btn-text">Finalizar amistad</span>
+                                <span id="btn-ff-spinner" class=""></span>
+                            </button>
+
+
+                            <% if(!isBlockedByCurrentUser){ %>
+                            <button id="ffb-btn" class="friendship-actions-btn">
+                                <span class="btn-text">Finalizar amistad y bloquear</span>
+                                <span id="btn-ffb-spinner" class=""></span>
+                            </button>
+                            <%} %>
+
+                            <%}else{%>
+
+                            <% if(!isPendingAction){ %>
+                            <button id="rf-btn" class="friendship-actions-btn">
+                                <span class="btn-text">Solicitar amistad</span>
+                                <span id="btn-rf-spinner" class=""></span>
+                            </button>
+                            <%}else{%>
+                            <button id="cfr-btn" class="friendship-actions-btn">
+                                <span class="btn-text">Cancelar Solicitud de amistad</span>
+                                <span id="btn-cfr-spinner" class=""></span>
+                            </button>
+                            <%} %>
+
+                            <%}%>
+    
+    
+                    <% if(!isBlockedByCurrentUser){ %>
+                            <button id="blockunblock-btn" value="unblocked" class="friendship-actions-btn">
+                                <span class="btn-text">Block user</span>
+                                <span id="btn-bu-spinner" class=""></span>
+                            </button>
+                            <%}else{%>
+                            <button id="blockunblock-btn" value="blocked" class="friendship-actions-btn">
+                                <span class="btn-text">Unblock user</span>
+                                <span id="btn-uu-spinner" class=""></span>
+                            </button>
+                            <%}%>
+    
                 </div>
+                <%}else {%>
+                            <div id="btns" class="align-end">
+                                <button id="editprofile-btn" class="editprofile-btn friendship-actions-btn">
+                                    <a id="editprofile-link" href="/users/editprofile">Edit profile</a>
+                                </button>
+                            </div>
+                            <% } %>
 
-                <div class="" id="user-profile-top-data">
-                    <h1 id="user-username"><%= username %></h1>
-                    <p><strong> </strong></p>
-                    <h2 class="underline"><strong>Sobre mi:</strong></h2>
+                        </div>
+                    </div>
 
-                    <div id="user-aboutme">
-                        <% if(userAboutMe.length===0){ %>
-                        <div class="aboutme-empty">Este user no ha escrito nada sobre el</div>
-                        <%}else{%>
-                        <div><%= userAboutMe %></div>
-                        <%}%>
+                    <div class="" id="user-profile-top-data">
+                        <div id="username-status">
+                            <div>
+                                <h1 id="user-username"><%= username %></h1>
+                            </div>
+                            <% if(status === "online"){ %>
+                            <div class="user-status user-status-online"></div>
+                            <% } else { %>
+                            <div class="user-status user-status-not-online"></div>
+                            <% } %>
+                        </div>
+                        <p><strong> </strong></p>
+                        <h2 class="underline"><strong>Sobre mi:</strong></h2>
+
+                        <div id="user-aboutme">
+                            <% if(userAboutMe.length===0){ %>
+                            <div class="aboutme-empty">Este user no ha escrito nada sobre el</div>
+                            <%}else{%>
+                            <div><%= userAboutMe %></div>
+                            <%}%>
                     </div>
 
                 </div>
@@ -53,128 +124,73 @@
                     <div class="user-data">
                         <strong> Nacido en: </strong> 
                         <% if(userBirthPlace === ""){%>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="no-location-icon">
-                            <path
-                                d="M192 0C86 0 0 214 0 320s86 192 192 192 192-86 192-192S298 0 192 0zm0 464c-79.4 0-144-64.6-144-144 0-117.41 90.58-272 144-272s144 154.59 144 272c0 79.4-64.6 144-144 144z"
-                                class="">
-                            </path>
-                        </svg>
-
-                        <% }else {%>
-                        <%= userBirthPlace %>
-                        <% }%>
-                    </div>
-
-                    <div class="user-data">
-                        <strong> Vive en: </strong>
-                        <% if(userLivingPlace === ""){%>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" class="no-location-icon2">
-                            <g transform="translate(-35,100) scale(0.100000,-0.100000)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="no-location-icon">
                                 <path
-                                    d="M488 900 c-133 -24 -234 -74 -263 -130 -9 -18 -15 -48 -13 -73 3 -40 6 -43 68 -79 35 -21 101 -51 145 -67 78 -28 85 -29 166 -20 179 21 343 65 463 126 68 34 68 35 63 69 -12 72 -79 124 -208 160 -63 18 -348 28 -421 14z m400 -63 c102 -29 151 -75 130 -122 -49 -108 -478 -137 -659 -45 -104 54 -54 138 101 169 30 6 64 13 75 15 42 10 302 -3 353 -17z">
+                                    d="M192 0C86 0 0 214 0 320s86 192 192 192 192-86 192-192S298 0 192 0zm0 464c-79.4 0-144-64.6-144-144 0-117.41 90.58-272 144-272s144 154.59 144 272c0 79.4-64.6 144-144 144z"
+                                    class="">
                                 </path>
-                                <path
-                                    d="M1002 603 c-97 -40 -244 -79 -340 -90 l-67 -7 50 -7 c28 -4 108 -8 179 -8 124 -1 132 0 167 24 45 32 123 127 102 124 -4 0 -45 -17 -91 -36z">
-                                </path>
-                                <path d="M291 545 c18 -18 34 -26 51 -23 22 3 19 6 -26 26 l-51 23 26 -26z"></path>
-                                <path
-                                    d="M391 491 c-22 -6 -19 -9 35 -33 32 -15 87 -32 122 -39 75 -14 230 -7 287 13 39 15 37 15 -90 21 -72 4 -172 16 -224 27 -52 11 -97 20 -100 19 -3 -1 -17 -4 -30 -8z">
-                                </path>
-                            </g>
-                        </svg>
-                        <% }else {%>
-                        <%= userLivingPlace %>
-                        <% }%>
-                    </div>
+                            </svg>
 
-                    <div class="user-data">
-                        <strong> Cumpleaños: </strong>
-                        <%= userBirthDate %> (<%= userAge %>)
-                    </div>
-                    <div class="user-data">
-                        <strong> Gender: </strong>
-                        <%= userGender %>
+                            <% }else {%>
+                            <%= userBirthPlace %>
+                            <% }%>
+                        </div>
+
+                        <div class="user-data">
+                            <strong> Vive en: </strong>
+                            <% if(userLivingPlace === ""){%>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" class="no-location-icon2">
+                                <g transform="translate(-35,100) scale(0.100000,-0.100000)">
+                                    <path
+                                        d="M488 900 c-133 -24 -234 -74 -263 -130 -9 -18 -15 -48 -13 -73 3 -40 6 -43 68 -79 35 -21 101 -51 145 -67 78 -28 85 -29 166 -20 179 21 343 65 463 126 68 34 68 35 63 69 -12 72 -79 124 -208 160 -63 18 -348 28 -421 14z m400 -63 c102 -29 151 -75 130 -122 -49 -108 -478 -137 -659 -45 -104 54 -54 138 101 169 30 6 64 13 75 15 42 10 302 -3 353 -17z">
+                                    </path>
+                                    <path
+                                        d="M1002 603 c-97 -40 -244 -79 -340 -90 l-67 -7 50 -7 c28 -4 108 -8 179 -8 124 -1 132 0 167 24 45 32 123 127 102 124 -4 0 -45 -17 -91 -36z">
+                                    </path>
+                                    <path d="M291 545 c18 -18 34 -26 51 -23 22 3 19 6 -26 26 l-51 23 26 -26z"></path>
+                                    <path
+                                        d="M391 491 c-22 -6 -19 -9 35 -33 32 -15 87 -32 122 -39 75 -14 230 -7 287 13 39 15 37 15 -90 21 -72 4 -172 16 -224 27 -52 11 -97 20 -100 19 -3 -1 -17 -4 -30 -8z">
+                                    </path>
+                                </g>
+                            </svg>
+                            <% }else {%>
+                            <%= userLivingPlace %>
+                            <% }%>
+                        </div>
+
+                        <div class="user-data">
+                            <strong> Cumpleaños: </strong>
+                            <%= userBirthDate %> (<%= userAge %>)
+                        </div>
+                        <div class="user-data">
+                            <strong> Gender: </strong>
+                            <%= userGender %>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!--user friends-->
-            <div class="" id="user-friends">
-                <h2 class="underline"><strong>Datos</strong></h2>
-                <div class="user-data-flex-container">
-                    <div class="user-data">
-                        <strong> Euskera level: </strong>
-                        <%- include('./language-levels.ejs', {userEuskLevel: userEuskLevel}) %>
+                <!--user friends-->
+                <div class="" id="user-friends">
+                    <h2 class="underline"><strong>Datos</strong></h2>
+                    <div class="user-data-flex-container">
+                        <div class="user-data">
+                            <strong> Euskera level: </strong>
+                            <%- include('./language-levels.ejs', {userEuskLevel: userEuskLevel}) %>
+                        </div>
+                        <div class="user-data">
+                            <strong> Friends: </strong>
+                            <%= numberFriends %>
+                        </div>
+                        <div class="user-data">
+                            <strong> Usuario desde: </strong>
+                            <%= userSince %> </div>
+                        <div id="padding-div"></div>
                     </div>
-                    <div class="user-data">
-                        <strong> Friends: </strong>
-                        <%= numberFriends %>
-                    </div>
-                    <div class="user-data">
-                        <strong> Usuario desde: </strong>
-                        <%= userSince %> </div>
-                    <div id="padding-div"></div>
                 </div>
+
             </div>
 
         </div>
-
-    </div>
-
-    <% if( currentUser !== usernameNormalized){ %>
-    <!-- envias a quien solictas amistad en el param, coges req.user quien eres -->
-    <div id="btns">
-        <input type="hidden" name="username" id="username" value="<%= usernameNormalized %>">
-
-        <% if(isFriendOfCurrentUser){%>
-        <button id="ff-btn" class="friendship-actions-btn">
-            <span class="btn-text">Finalizar amistad</span>
-            <span id="btn-ff-spinner" class=""></span>
-        </button>
-
-
-        <% if(!isBlockedByCurrentUser){ %>
-        <button id="ffb-btn" class="friendship-actions-btn">
-            <span class="btn-text">Finalizar amistad y bloquear</span>
-            <span id="btn-ffb-spinner" class=""></span>
-        </button>
-        <%} %>
-
-        <%}else{%>
-
-        <% if(!isPendingAction){ %>
-        <button id="rf-btn" class="friendship-actions-btn">
-            <span class="btn-text">Solicitar amistad</span>
-            <span id="btn-rf-spinner" class=""></span>
-        </button>
-        <%}else{%>
-        <button id="cfr-btn" class="friendship-actions-btn">
-            <span class="btn-text">Cancelar Solicitud de amistad</span>
-            <span id="btn-cfr-spinner" class=""></span>
-        </button>
-        <%} %>
-
-        <%}%>
-
-
-                <% if(!isBlockedByCurrentUser){ %>
-        <button id="blockunblock-btn" value="unblocked" class="friendship-actions-btn">
-            <span class="btn-text">Block user</span>
-            <span id="btn-bu-spinner" class=""></span>
-        </button>
-        <%}else{%>
-        <button id="blockunblock-btn" value="blocked" class="friendship-actions-btn">
-            <span class="btn-text">Unblock user</span>
-            <span id="btn-uu-spinner" class=""></span>
-        </button>
-        <%}%>
-
-            </div>
-            <%}else {%>
-        <button id="editprofile-btn" class="editprofile-btn">
-            <a id="editprofile-link" href="/users/editprofile">Edit profile</a>
-        </button>
-        <% } %>
 
     </div>
     <%- include('../includes/end.ejs') %>

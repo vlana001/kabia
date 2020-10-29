@@ -63,12 +63,14 @@
                             </svg>
                         </div>
                         <input type="hidden" id="timezone" name="timezone" value="">
-
+                        <% if (closeSessionInput) { %>
+                        <input type="hidden" id="closeSession" name="closeSession" value="true">
+                        <% } %>
                         <a id="forgotPassword" class="link-login" onclick="getEmailFromLogin();"
                             href="/forgotpassword">Has
                             olvidado la
                             contraseña?</a><br>
-                        <button type="submit" id="login-email-btn">Login</button>
+                        <button type="submit" id="login-email-btn"><%=loginMsg%></button>
 
                         <a id="register" class="link-login" href="/register">Registrate con email</a>
                     </form>
@@ -76,6 +78,17 @@
             </div>
         </div>
     </div>
+
+    <% if(logout) {%>
+    <script>
+        history.pushState(null, null, location.href);
+        history.back();
+        history.forward();
+        window.onpopstate = function () {
+            history.go(1);
+        };
+    </script>
+    <% } %>
 
     <!-- Modal -->
     <div id="termsPrivacyModalLogin" class="modal">

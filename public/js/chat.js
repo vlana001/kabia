@@ -32,6 +32,7 @@ function sendChatMsg(e) {
     for (i = 0; i < aMsg.length; i++) {
       sendMsg(aMsg[i]); //send msg
       hideMsgThereAreNoChats();
+      setTodayDateElementIfItIsTodaysFirstMessage();
       createMsgDOM(aMsg[i], "send"); //create msg in DOM
       moveScrollWithNewMsg();
     }
@@ -41,6 +42,56 @@ function sendChatMsg(e) {
     sendMsgIcon.style.opacity = "0.3";
   }
   return false;
+}
+
+function setTodayDateElementIfItIsTodaysFirstMessage() {
+  var firstDateElemMsgText = document.getElementsByClassName(
+    "chat-message-text"
+  );
+
+  if (firstDateElemMsgText.length > 0) {
+    var firstDate = firstDateElemMsgText[
+      firstDateElemMsgText.length - 1
+    ].nextElementSibling.children.item(1).value;
+    console.log(firstDate);
+    if (firstDate != "") {
+      //si es "" es que acabo de poner ahora el msg (no lo he cargado de la db)
+      var r = isDateTodayDate(firstDate);
+      console.log(r);
+      if (!r) {
+        createDateMsgInDOM2();
+      }
+    }
+  } else {
+    createDateMsgInDOM2();
+  }
+}
+
+function isDateTodayDate(firstDate) {
+  //compare date with today's date
+  console.log(firstDate);
+  console.log(moment(firstDate).format("DD-MM-YYYY"));
+  console.log(moment().format("DD-MM-YYYY"));
+  if (
+    moment(firstDate).format("DD-MM-YYYY") === moment().format("DD-MM-YYYY")
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function createDateMsgInDOM2() {
+  var divNewDateText = document.createElement("div");
+  divNewDateText.classList.add("chat-message-info");
+  divNewDateText.classList.add("chat-message-date");
+  divNewDateText.classList.add("chat-message");
+
+  var todayDate = moment().format("DD-MM-YYYY");
+  divNewDateText.innerHTML += todayDate;
+
+  var msgContainer = document.getElementById("chatmessages");
+  msgContainer.appendChild(divNewDateText);
 }
 
 //validation
@@ -55,13 +106,14 @@ function validateIsText(msgText) {
   }
 }
 
-function isFriendAndNotBlocked() {
+function isFriendAndNotBlockedOrDeleted() {
   var friendDiv = document.getElementById(currentFriendUsernameNormalized)
     .parentElement;
   var isNotFriend = friendDiv.querySelector("#nofriend") != null;
   var isBlocked = friendDiv.querySelector("#blocked") != null;
+  var isDeleted = friendDiv.querySelector("#deleted") != null;
 
-  if (isNotFriend || isBlocked) {
+  if (isNotFriend || isBlocked || isDeleted) {
     return false;
   } else {
     return true;
@@ -121,10 +173,14 @@ function createMsgDOM(msg, msgType) {
 
   var time;
   var msgText;
+  var divMsgStatus;
   if (msgType === "send") {
     divMsg.classList.add("chat-message-send");
-    time = nowTime();
+    timeHour = moment().format("HH:mm:ss");
+    timeDate = ""; //tengo que poner igual que en la bd
     msgText = msg;
+    divMsgStatus = document.createElement("div");
+    divMsgStatus.classList.add("msg-status-unread");
   }
 
   if (msgType === "receive") {
@@ -132,7 +188,8 @@ function createMsgDOM(msg, msgType) {
     divMsg.classList.add("chat-message-received");
     msgText = msgReceived.msgText;
     // time = calculateTime(msgReceived.msgTime);
-    time = msgReceived.msgTime;
+    timeDate = msgReceived.msgTime;
+    timeHour = moment(msgReceived.msgTime).format("HH:mm:ss");
   }
 
   var divMsgText = document.createElement("div");
@@ -143,13 +200,22 @@ function createMsgDOM(msg, msgType) {
 
   var divMsgTime = document.createElement("div");
   divMsgTime.classList.add("chat-message-hour");
-  var spanMsgTime = document.createElement("span");
-  spanMsgTime.innerText = time;
+  var spanMsgTimeHour = document.createElement("span");
+  spanMsgTimeHour.innerText = timeHour;
   var inputMsgTime = document.createElement("input");
   inputMsgTime.setAttribute("type", "hidden");
-  inputMsgTime.setAttribute("value", time);
-  divMsgTime.appendChild(spanMsgTime);
+  inputMsgTime.setAttribute("value", timeDate);
+  divMsgTime.appendChild(spanMsgTimeHour);
   divMsgTime.appendChild(inputMsgTime);
+  if (divMsgStatus) {
+    divMsgTime.appendChild(divMsgStatus);
+    //add blue circle in users list
+    var receiverName = document.getElementById("username-receiver").value;
+    var nameElem = document.getElementById(receiverName);
+    var unreadMsgNumber = nameElem.parentElement.nextElementSibling;
+    var unreadMsgStatus = unreadMsgNumber.children[1];
+    unreadMsgStatus.style.display = "inline-block";
+  }
 
   divMsg.appendChild(divMsgText);
   divMsg.appendChild(divMsgTime);
@@ -174,7 +240,9 @@ function createLoadedMsgDOM(msg, i, numMsgLoaded, msgType, loadFromCase) {
     var msgSend = JSON.parse(msg);
     divMsg.classList.add("chat-message-send");
     msgText = msgSend.msgText;
-    time = msgSend.msgTime;
+    timeDate = msgSend.msgTime;
+    timeHour = moment(msgSend.msgTime).format("HH:mm:ss");
+
     if (msgSend.msgReadStatus === false) {
       divMsgStatus = document.createElement("div");
       divMsgStatus.classList.add("msg-status-unread");
@@ -187,7 +255,8 @@ function createLoadedMsgDOM(msg, i, numMsgLoaded, msgType, loadFromCase) {
     msgStatus = msgReceived.msgReadStatus;
     divMsg.classList.add("chat-message-received");
     msgText = msgReceived.msgText;
-    time = msgReceived.msgTime;
+    timeDate = msgReceived.msgTime;
+    timeHour = moment(msgReceived.msgTime).format("HH:mm:ss");
   }
 
   var divMsgText = document.createElement("div");
@@ -198,12 +267,12 @@ function createLoadedMsgDOM(msg, i, numMsgLoaded, msgType, loadFromCase) {
 
   var divMsgTime = document.createElement("div");
   divMsgTime.classList.add("chat-message-hour");
-  var spanMsgTime = document.createElement("span");
-  spanMsgTime.innerText = time;
+  var spanMsgTimeHour = document.createElement("span");
+  spanMsgTimeHour.innerText = timeHour;
   var inputMsgTime = document.createElement("input");
   inputMsgTime.setAttribute("type", "hidden");
-  inputMsgTime.setAttribute("value", time);
-  divMsgTime.appendChild(spanMsgTime);
+  inputMsgTime.setAttribute("value", timeDate);
+  divMsgTime.appendChild(spanMsgTimeHour);
   divMsgTime.appendChild(inputMsgTime);
 
   if (msgType === "send") {
@@ -310,9 +379,20 @@ function moveScrollUp() {
       })
       .then(msgLoaded => {
         if (msgLoaded.length < 10) {
+          console.log(msgLoaded.length);
+          if (msgLoaded.length === 0) {
+            setDateIfExactlyTotally10MultipleMsgInTheSameDay();
+          }
           msgBeginningOfChat();
         }
       });
+  }
+}
+
+function setDateIfExactlyTotally10MultipleMsgInTheSameDay() {
+  var dateMsgs = document.getElementsByClassName("chat-message-date");
+  if (dateMsgs.length === 0) {
+    createDateMsgInDOM(undefined);
   }
 }
 
@@ -472,6 +552,7 @@ function addMsgLoadedDOM(msgLoaded, loadFromCase) {
   //el segundo mas reciente encima del primero mas reciente y asi
 
   var numMsgLoaded = msgLoaded.length;
+  var datePrevMsg;
   msgLoaded.forEach((msg, i) => {
     var me = userRole(msg.sender, msg.receiver);
 
@@ -480,6 +561,32 @@ function addMsgLoadedDOM(msgLoaded, loadFromCase) {
       msgTime: msg.date,
       msgReadStatus: msg.read
     });
+
+    //get date without time
+    var dateMsg = moment(msg.date).format("DD-MM-YYYY");
+    console.log(dateMsg);
+
+    //if between 2 blocks of messages the dates are different I add a date element
+    if (i === 0) {
+      console.log(0);
+      var r = areDatesOfLastElementOfBlockAndFirstOfAnotherBlockEqual(dateMsg);
+      console.log(r);
+      if (r !== undefined && !r) {
+        createDateMsgInDOM(undefined);
+      }
+    }
+
+    //add date element in dom
+    // console.log("p" + datePrevMsg);
+    // if (datePrevMsg === undefined) {
+    //   console.log(2)
+    // }
+    if (datePrevMsg !== undefined && dateMsg != datePrevMsg) {
+      console.log("dif");
+      //add element in dom
+      createDateMsgInDOM(datePrevMsg);
+    }
+    datePrevMsg = dateMsg;
 
     if (me === 2) {
       //yo lo he enviado
@@ -493,9 +600,64 @@ function addMsgLoadedDOM(msgLoaded, loadFromCase) {
     // if (i === 9) {
     //   scrollToPreviousPosition();
     // }
+
+    if (i === numMsgLoaded - 1 && numMsgLoaded < 20) {
+      createDateMsgInDOM(undefined);
+    }
   });
 
   scrollToPreviousPosition();
+}
+
+function createDateMsgInDOM(dateMsg) {
+  console.log(dateMsg);
+
+  var divNewDateText = document.createElement("div");
+  divNewDateText.classList.add("chat-message-info");
+  divNewDateText.classList.add("chat-message-date");
+  divNewDateText.classList.add("chat-message");
+
+  if (dateMsg === undefined) {
+    var date = getDateOfLastMsgInDOM();
+    divNewDateText.innerHTML += date;
+  } else {
+    divNewDateText.innerHTML += dateMsg;
+  }
+
+  //cojo elements chat-message
+  var lastMsg = document.getElementsByClassName("chat-message")[0];
+  var parentNode = lastMsg.parentElement;
+  var insertedNode = parentNode.insertBefore(divNewDateText, lastMsg);
+}
+
+function getDateOfLastMsgInDOM() {
+  var lastDateElemMsgText = document.getElementsByClassName(
+    "chat-message-text"
+  )[0];
+  var lastDate;
+  if (lastDateElemMsgText) {
+    lastDate = lastDateElemMsgText.nextSibling.children.item(1).value;
+    console.log(lastDate);
+    var lastDateFormated = moment(lastDate).format("DD-MM-YYYY");
+    return lastDateFormated;
+  }
+  return undefined;
+}
+
+function areDatesOfLastElementOfBlockAndFirstOfAnotherBlockEqual(dateMsg) {
+  var lastDateFormated = getDateOfLastMsgInDOM();
+  console.log(lastDateFormated);
+  if (lastDateFormated) {
+    console.log(lastDateFormated);
+    console.log(dateMsg);
+    if (dateMsg !== lastDateFormated) {
+      return false;
+    } else {
+      return true;
+    }
+  } else {
+    return undefined;
+  }
 }
 
 function userRole(sender, receiver) {
@@ -525,6 +687,9 @@ socket.on("chatReceive", function(data) {
     if (msgReceived.msgSenderNormalized === currentFriendUsernameNormalized) {
       //poner msg como leido en la db
       socket.emit("setMsgRead", { from: msgReceived.msgSenderNormalized });
+
+      setTodayDateElementIfItIsTodaysFirstMessage();
+
       //mostrar msg en el dom
       createMsgDOM(data, "receive");
       moveScrollWithNewMsg();
@@ -535,12 +700,20 @@ socket.on("chatReceive", function(data) {
       //si no existe un div para ese user crearlo (no ha hablado antes con el)
       if (!pUsername) {
         //get msg sender image name
-        getImageName(msgReceived.msgSenderNormalized).then(function(imageName) {
+        getImageNameAndStatus(msgReceived.msgSenderNormalized).then(function(
+          imageNameAndStatus
+        ) {
+          var statusSender = false;
+          if (imageNameAndStatus[1] == "online") {
+            statusSender = true;
+          }
+
           //create div
           divUser = createDivForUser(
             msgReceived.msgSender,
             msgReceived.msgSenderNormalized,
-            imageName
+            imageNameAndStatus[0],
+            statusSender
           );
 
           //esto esta dentro de la promise, no puedo poner solo una vez,
@@ -575,7 +748,7 @@ socket.on("chatReceive", function(data) {
   }
 });
 
-function getImageName(usernameNormalized) {
+function getImageNameAndStatus(usernameNormalized) {
   return fetch(`${origin}/users/get-image-name`, {
     method: "POST",
     headers: {
@@ -590,7 +763,7 @@ function getImageName(usernameNormalized) {
       return response.json();
     })
     .then(function(data) {
-      return data.imageName;
+      return [data.imageName, data.status];
     });
 }
 
@@ -629,8 +802,38 @@ function sendMsg(msgText) {
   setUserDivFirst(divUserReceiver.parentElement.parentElement);
 }
 
+//sender recibe confirmacion de que el receiver ha leido sus mensajes
+socket.on("confirmMsgHasBeenRead", function(data) {
+  var msg = JSON.parse(data);
+  console.log(msg);
+  //miro si esta en /chat
+  if (pathName === "/users/chat") {
+    //quitar circulo azul de lista de users
+    var nameElem = document.getElementById(msg.msgReceiver);
+    var unreadMsgNumber = nameElem.parentElement.nextElementSibling;
+    var unreadMsgStatus = unreadMsgNumber.children[1];
+    unreadMsgStatus.style.display = "none";
+    //miro si tiene el chat de ese user abierto
+    if (msg.msgReceiver == currentFriendUsernameNormalized) {
+      //quitar circulo azul de los msg de chat que ha enviado a ese user
+      var msgWithUnreadIcon = document.querySelectorAll(
+        "#chatmessages .chat-message-send .msg-status-unread"
+      );
+
+      console.log(msgWithUnreadIcon.length);
+      for (var i = 0; i < msgWithUnreadIcon.length; i++) {
+        var elem = window.getComputedStyle(msgWithUnreadIcon[i]).display;
+        console.log(elem);
+        if (elem == "inline-block") {
+          msgWithUnreadIcon[i].style.display = "none";
+        }
+      }
+    }
+  }
+});
+
 //Si no se ha hablado con ese user antes necesitara que se le cree un div en el DOM
-function createDivForUser(username, usernameNormalized, image) {
+function createDivForUser(username, usernameNormalized, image, setOnline) {
   var divContainerUser = document.createElement("div");
   divContainerUser.classList.add("friend");
 
@@ -647,6 +850,12 @@ function createDivForUser(username, usernameNormalized, image) {
   userUsernameP.id = usernameNormalized;
   userUsernameP.innerText = username;
 
+  var divContainerUserStatus = document.createElement("div");
+  divContainerUserStatus.classList.add("user-status");
+  if (setOnline) {
+    divContainerUserStatus.classList.add("user-status-online");
+  }
+
   var input1 = document.createElement("input");
   input1.type = "hidden";
   input1.name = "username";
@@ -656,6 +865,7 @@ function createDivForUser(username, usernameNormalized, image) {
   input2.name = "imageURL";
   input2.value = image;
   divContainerUserUsername.appendChild(userUsernameP);
+  divContainerUserUsername.appendChild(divContainerUserStatus);
   divContainerUserUsername.appendChild(input1);
   divContainerUserUsername.appendChild(input2);
 
@@ -802,7 +1012,9 @@ function selectCurrentFriend(e) {
   if (elemTag === "DIV") {
     if (
       elem.id === "user-unread-msg-number" ||
-      elem.id === "user-unread-msg-status"
+      elem.id === "user-unread-msg-status" ||
+      elemClass === "user-status user-status-online" ||
+      elemClass === "user-status"
     ) {
       elemParent = elem.parentElement.parentElement;
     } else if (
@@ -824,21 +1036,36 @@ function selectCurrentFriend(e) {
     "p"
   )[0];
   currentFriendUsernameNormalized = currentFriendUsernameNormalizedElement.id;
-
   document.getElementById(
     "username-receiver"
   ).value = currentFriendUsernameNormalized;
   //
 
-  var currentFriendUsername =
-    currentFriendUsernameNormalizedElement.nextElementSibling;
+  var currentFriendUsername;
+  if (elemParent.getElementsByClassName("deleted-user-message").length == 0) {
+    currentFriendUsername =
+      currentFriendUsernameNormalizedElement.nextElementSibling
+        .nextElementSibling;
+  } else {
+    currentFriendUsername =
+      currentFriendUsernameNormalizedElement.nextElementSibling
+        .nextElementSibling.nextElementSibling;
+  }
+
+  //ssr
+  var currentFriendImageURL = currentFriendUsername.nextElementSibling;
 
   //enable/disable input
-  var inputText = document.getElementById("msgtext");
-  if (isFriendAndNotBlocked()) {
-    inputText.disabled = false;
+  var inputTextContainer = document.getElementById("writemessage");
+  var messagesDiv = document.getElementById("messages");
+  if (isFriendAndNotBlockedOrDeleted()) {
+    inputTextContainer.style.display = "block";
+    messagesDiv.classList.remove("messages2");
+    messagesDiv.classList.add("messages1");
   } else {
-    inputText.disabled = true;
+    inputTextContainer.style.display = "none";
+    messagesDiv.classList.remove("messages1");
+    messagesDiv.classList.add("messages2");
   }
 
   //create div
@@ -849,11 +1076,10 @@ function selectCurrentFriend(e) {
 
   // var currentFriendImageURL = imgRelativeURL;
 
-  //ssr
-  var currentFriendImageURL = currentFriendUsername.nextElementSibling;
-
   //set unread msg from that user to 0
-  var msgElem = elemParent.getElementsByTagName("div")[2];
+  var divMsgUnread =
+    parseInt(elemParent.getElementsByTagName("div").length) - 3;
+  var msgElem = elemParent.getElementsByTagName("div")[divMsgUnread];
   var msgElemNum = msgElem.getElementsByTagName("div")[0];
   var numMsgUnreadUser = parseInt(msgElemNum.innerText);
   msgElemNum.style.display = "none";
@@ -956,7 +1182,11 @@ function displayUserMessages(
 ) {
   //add image and username to header
   var imgCurrentUser = document.getElementById("current-chat-user-image");
-  imgCurrentUser.src = "/uploads/" + currentFriendImageURL;
+  if (currentFriendImageURL === "/img/deleted.png") {
+    imgCurrentUser.src = currentFriendImageURL;
+  } else {
+    imgCurrentUser.src = "/uploads/" + currentFriendImageURL;
+  }
   var usernameCurrentUser = document.getElementById(
     "current-chat-user-username"
   );
@@ -1071,21 +1301,20 @@ function nowDateTime() {
   var now = mm + "/" + dd + "/" + yyyy + "-" + hours + ":" + minutes;
 }
 
-function nowTime() {
-  // var today = new Date();
-  // var hours = today.getHours();
-  // var minutes = today.getMinutes();
-  // if (minutes < 10) {
-  //   minutes = "0" + minutes;
-  // }
-  // var now = hours + ":" + minutes;
-  // return now;
-  var currentDate = moment()
-    .utc()
-    .toDate();
+// function nowTime() {
+//   // var today = new Date();
+//   // var hours = today.getHours();
+//   // var minutes = today.getMinutes();
+//   // if (minutes < 10) {
+//   //   minutes = "0" + minutes;
+//   // }
+//   // var now = hours + ":" + minutes;
+//   // return now;
+//   var currentDate =
+//   //.toDate();
 
-  return currentDate;
-}
+//   return currentDate;
+// }
 
 // function calculateTime(time) {
 //   //split
@@ -1269,7 +1498,7 @@ window.onclick = function(event) {
 function startNewChat(elem) {
   //get data to create div
   var usernameNormalized = elem.getElementsByTagName("input")[0].value;
-
+  var isBlocked = elem.dataset.blocked;
   var pUsername = document.getElementById(usernameNormalized);
   var divUser;
   // var userFoundInUsersChated = false;
@@ -1278,20 +1507,37 @@ function startNewChat(elem) {
     divUser = pUsername.parentElement.parentElement;
     //userFoundInUsersChated = true;
   } else {
-    //si no ha chateado antes con ese user
-    //get data to create div
-    var username = elem.getElementsByTagName("input")[1].value;
-    var image = elem.getElementsByTagName("img")[0].src;
-    var imageRelativeURL = image.split("/")[4];
-    //create div
-    divUser = createDivForUser(username, usernameNormalized, imageRelativeURL);
+    //if it is blocked I dont open a chat with him
+    if (isBlocked == "false") {
+      //si no ha chateado antes con ese user
+      //get data to create div
+      var username = elem.getElementsByTagName("input")[1].value;
+      var image = elem.getElementsByTagName("img")[0].src;
+      var imageRelativeURL = image.split("/")[4];
+
+      var status = elem.dataset.status;
+      var statusB = false;
+      if (status === "online") {
+        statusB = true;
+      }
+
+      //create div
+      divUser = createDivForUser(
+        username,
+        usernameNormalized,
+        imageRelativeURL,
+        statusB
+      );
+    } else {
+      return;
+    }
   }
 
   //close modal
   friendsModal.style.display = "none";
 
   //aparte de añadir la card del user a users list, abro dicha lista (si es mobile)
-  //ver si nos encontramos en al version de pantalla mobile
+  //ver si nos encontramos en la version de pantalla mobile
   var friendsListDivIcon = document.getElementById("container-icon");
   var friendsListDivIconDisplay = window.getComputedStyle(friendsListDivIcon)
     .display;
@@ -1435,7 +1681,6 @@ if (startChatWithUsernameNormalized) {
   if (startChatWithUsernameNormalized.value) {
     //viene de la card de un friend
 
-    console.log(2);
     var pUsername = document.getElementById(
       startChatWithUsernameNormalized.value
     );
@@ -1453,10 +1698,17 @@ if (startChatWithUsernameNormalized) {
         "start-chat-with-imgurl"
       );
 
+      var elemStatus = document.getElementById("start-chat-with-status");
+      var statusUser = false;
+      if (elemStatus) {
+        statusUser = true;
+      }
+
       divUser = createDivForUser(
         startChatWithUsername.value,
         startChatWithUsernameNormalized.value,
-        startChatWithUsernameImgUrl.value
+        startChatWithUsernameImgUrl.value,
+        statusUser
       );
     }
 
@@ -1498,3 +1750,29 @@ function dontHideKeyboard(event) {
   document.getElementById("msgtext").click();
   // }
 }
+
+//blur
+socket.on("connectionAlreadyExists", function(data) {
+  var msg = JSON.parse(data);
+  if (msg.msgText == "blur") {
+    var bodyElem = document.getElementsByTagName("body")[0];
+    bodyElem.classList.add("blur");
+    // adds it to the DOM
+    var div = document.createElement("div");
+    var divMsg = document.createElement("div");
+    divMsg.id = "msgNotBlurred";
+    divMsg.innerText += "Solo puedes tener una ventana abierta";
+    divMsg.classList.add("divMsgBlur");
+    div.appendChild(divMsg);
+    div.className += "overlay";
+    document.body.appendChild(div);
+    bodyElem.parentNode.insertBefore(div, bodyElem.nextSibling);
+
+    history.pushState(null, null, location.href);
+    history.back();
+    history.forward();
+    window.onpopstate = function() {
+      history.go(1);
+    };
+  }
+});

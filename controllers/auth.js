@@ -1,6 +1,7 @@
 //core modules
 const crypto = require("crypto");
 const fs = require("fs");
+const { promisify } = require("util");
 
 //3rd party modules
 const bcrypt = require("bcryptjs");
@@ -41,6 +42,7 @@ exports.getRegisterUser = (req, res, next) => {
     pageTitle: "Register",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     errorMessage: messageErrorShow(req.flash("error_message")),
     oldInput: {
       email: "",
@@ -74,6 +76,7 @@ exports.postRegisterUser = (req, res, next) => {
       pageTitle: "Register",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       errorMessage: messageErrorShow(errorsMessages), //errors.array(), //errors.mapped()
       oldInput: {
         email: email,
@@ -147,7 +150,7 @@ exports.postRegisterUser = (req, res, next) => {
               html: `
             <p>Welcome to app Euskara</p>
             <p>This link will be valid for 2 days, if expired request a new one trying to login</p>
-            <p>Click this <a href="http://${keys.domain}/confirmemail/${token}/${email}">link</a> to confirm your email address</p>
+            <p>Click this <a href="${keys.domain}/confirmemail/${token}/${email}">link</a> to confirm your email address</p>
             <p>If you didn't request this email, please ignore it</p>`,
               ses: {}
             });
@@ -241,7 +244,7 @@ exports.getResendEmailConfirmationEmail = (req, res, next) => {
               html: `
       <p>Verify your email address</p>
       <p>This link will be valid for 2 days, if expired request a new one trying to login</p>
-      <p>Click this <a href="http://${keys.domain}/confirmemail/${token}/${email}">link</a> to confirm your email address</p>
+      <p>Click this <a href="${keys.domain}/confirmemail/${token}/${email}">link</a> to confirm your email address</p>
       <p>If you didn't request this email, please ignore it</p>`,
               ses: {}
             });
@@ -274,8 +277,12 @@ exports.getLoginUser = (req, res, next) => {
     pageTitle: "Login",
     isAuthenticated: req.isAuthenticated(),
     isProfileCreated: isProfileCreated(req),
+    registrationMethod: registrationMethod(req),
     errorMessage: messageErrorShow(req.flash("error")), ////poner error, no poner error-message, si no los msg de passport no se muestran
     successMessage: messageSuccessShow(req.flash("success_message")),
+    loginMsg: "Login",
+    closeSessionInput: false,
+    logout: false,
     oldInput: {
       email: "",
       password: ""
@@ -286,6 +293,7 @@ exports.getLoginUser = (req, res, next) => {
 exports.postLoginUser = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+  const closeSession = req.body.closeSession;
   const timezone = req.body.timezone;
 
   const errors = validationResult(req);
@@ -328,10 +336,14 @@ exports.postLoginUser = (req, res, next) => {
 
       return res.render("auth/login", {
         pageTitle: "Login",
-        isAuthenticated: req.isAuthenticated(),
+        isAuthenticated: false,
         isProfileCreated: isProfileCreated(req),
+        registrationMethod: registrationMethod(req),
         errorMessage: messageErrorShow(errorsMessages), //
         successMessage: "",
+        loginMsg: "Login",
+        closeSessionInput: false,
+        logout: false,
         oldInput: {
           email: email,
           password: password
@@ -339,11 +351,59 @@ exports.postLoginUser = (req, res, next) => {
       });
     }
 
+    //get all sessions
+    const sessions = req.sessionStore.sessions;
+
     req.logIn(user, async function(err) {
       //successful login
       //establish a session
       if (err) {
         return next(err);
+      }
+
+      const passportSession = req.session.passport.user;
+      if (closeSession === "true") {
+        keysSessions = Object.keys(sessions);
+        keysSessions.forEach(key => {
+          const valueSession = JSON.parse(sessions[key]);
+          if (
+            valueSession.passport &&
+            valueSession.passport.user == passportSession
+          ) {
+            //close user old session (open session in another browser)
+            req.sessionStore.destroy(key);
+          }
+        });
+      } else {
+        for (let [key, value] of Object.entries(sessions)) {
+          const objValue = JSON.parse(value);
+          if (objValue.passport) {
+            if (passportSession === objValue.passport.user) {
+              //close user new session
+              req.session.destroy();
+
+              //send login page with popup o flash message
+              return res.render("auth/login", {
+                pageTitle: "Login",
+                isAuthenticated: false,
+                isProfileCreated: false,
+                registrationMethod: registrationMethod(req),
+                errorMessage: [
+                  "A session already exists for that user",
+                  "If you login that session wil be closed"
+                ],
+                successMessage: "",
+                loginMsg: "Login de todas formas",
+                closeSessionInput: true,
+                logout: false,
+                oldInput: {
+                  email: email,
+                  password: password
+                }
+              });
+            }
+          }
+        }
       }
 
       const action = new UserAction({
@@ -420,8 +480,12 @@ exports.getLogoutUser = async (req, res, next) => {
         pageTitle: "Login",
         isAuthenticated: false,
         isProfileCreated: false,
+        registrationMethod: registrationMethod(req),
         errorMessage: "", ////poner error, no poner error-message, si no los msg de passport no se muestran
         successMessage: ["You are logged out"],
+        loginMsg: "Login",
+        closeSessionInput: false,
+        logout: true,
         oldInput: {
           email: "",
           password: ""
@@ -459,7 +523,7 @@ exports.getDeleteAccount = (req, res, next) => {
   });
 };
 
-exports.postDeleteAccount = (req, res, next) => {
+exports.postDeleteAccount = async (req, res, next) => {
   //coger de la session el email (no pasar como param)
 
   const password = req.body.password;
@@ -497,50 +561,110 @@ exports.postDeleteAccount = (req, res, next) => {
   // identifyLoginMethod(req, query);
 
   if (req.user.password) {
-    //delete db object
-    User.findByIdAndDelete(req.user.id)
-      .then(user => {
-        //delete profile photo if there is one (user created profile)
-        //if user registered but did not created profile, it will have not photo
-        if (user) {
-          if (user.imageURL !== undefined) {
-            fs.unlink("./public/uploads/" + user.imageURL, err => {
-              if (err) {
-                console.log(err);
-                return;
-              }
-            });
+    try {
+      //delete db object
+      const user = await User.findByIdAndDelete(req.user.id);
+
+      //delete profile photo if there is one (user created profile)
+      //if user registered but did not created profile, it will have not photo
+      if (user) {
+        if (user.imageURL !== undefined) {
+          await promisify(fs.unlink)(`./public/uploads/${user.imageURL}`);
+
+          // fs.unlink("./public/uploads/" + user.imageURL, err => {
+          //   if (err) {
+          //     console.log(err);
+          //     return;
+          //   }
+          // });
+        }
+
+        //save action
+        const action = new UserAction({
+          userIdActionDoer: req.user._id,
+          actionType: "account_deletion",
+          actionDoer: "user",
+          strategy: registrationMethod(req)
+        });
+        await action.save();
+
+        //change isDeletedAccount to all the users who chatted with him
+        if (
+          user.chatConversationsList &&
+          user.chatConversationsList.length > 0
+        ) {
+          for (const conv of user.chatConversationsList) {
+            await User.updateOne(
+              {
+                _id: conv.userId,
+                "chatConversationsList.usernameNormalizedFriend":
+                  req.user.usernameNormalized
+              },
+              { "chatConversationsList.$.isDeletedAccount": true }
+            );
+            //
           }
         }
-        return user;
-      })
-      .then(user => {
-        if (user) {
-          //save action
-          const action = new UserAction({
-            userIdActionDoer: req.user._id,
-            actionType: "account_deletion",
-            actionDoer: "user",
-            strategy: registrationMethod(req)
-          });
-          action.save();
+
+        //users who were the deleted user's friends
+        if (user.friends.length > 0) {
+          for (const f of user.friends) {
+            await User.updateOne(
+              {
+                _id: f.userId,
+                "friends.userId": req.user.id
+              },
+              { $pull: { friends: { userId: req.user.id } } }
+            );
+          }
         }
-        return user;
-      })
-      .then(user => {
+
+        //users who had sent the deleted user a friendship request
+        if (user.friendshipRequestReceived.length > 0) {
+          for (const fr of user.friendshipRequestReceived) {
+            await User.updateOne(
+              {
+                _id: fr.userId,
+                "friendshipRequestSent.userId": req.user.id
+              },
+              { $pull: { friendshipRequestSent: { userId: req.user.id } } }
+            );
+          }
+        }
+
+        //users whom the the deleted user had sent a friendship request
+        if (user.friendshipRequestSent.length > 0) {
+          for (const fr of user.friendshipRequestSent) {
+            await User.updateOne(
+              {
+                _id: fr.userId,
+                "friendshipRequestReceived.userId": req.user.id
+              },
+              { $pull: { friendshipRequestReceived: { userId: req.user.id } } }
+            );
+          }
+        }
+
+        //users who have the deleted user blocked
+        await User.updateMany(
+          {
+            "blockedUsers.userId": req.user.id
+          },
+          {
+            $pull: { blockedUsers: { userId: req.user.id } }
+          }
+        );
+
         //save username in deletedAccounts model
-        if (user) {
-          const userDeleted = new DeletedAccount({
-            username: user.username,
-            usernameNormalized: user.usernameNormalized,
-            deletingDate: calculateTodayDate(),
-            actionDoer: "user"
-          });
-          userDeleted.save();
-        }
-        return user;
-      })
-      .then(user => {
+        const userDeleted = new DeletedAccount({
+          username: user.username,
+          usernameNormalized: user.usernameNormalized,
+          deletingDate: calculateTodayDate(),
+          actionDoer: "user"
+        });
+        await userDeleted.save();
+
+        //send response
         req.flash("success_message", "Your account has been deleted");
         res.redirect("/");
 
@@ -555,13 +679,13 @@ exports.postDeleteAccount = (req, res, next) => {
             ses: {}
           });
         }
-      })
-      .catch(err => {
-        // console.log(err);
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
-      });
+      }
+    } catch (err) {
+      // console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    }
   }
 };
 
@@ -628,7 +752,7 @@ exports.postDeleteAccountGFSendEmail = (req, res, next) => {
               <p>You requested an account deletion</p>
               <p>This link will be valid for 1 hour</p>
               <p><strong>You must be signed in to delete your account</strong></p>
-              <p>Click this <a href="http://${keys.domain}/delete-account-gf-email/${token}/${email}/${regMethod}">link</a> to delete your account.</p>
+              <p>Click this <a href="${keys.domain}/delete-account-gf-email/${token}/${email}/${regMethod}">link</a> to delete your account.</p>
             `,
             ses: {}
           });
@@ -692,7 +816,7 @@ exports.getDeleteAccountGFEmail = (req, res, next) => {
 };
 
 //confirm delete
-exports.postDeleteAccountGF = (req, res, next) => {
+exports.postDeleteAccountGF = async (req, res, next) => {
   const userEmail = req.body.userEmail;
   const deleteToken = req.body.deleteToken;
   const acceptDelete = req.body.acceptDelete;
@@ -723,82 +847,137 @@ exports.postDeleteAccountGF = (req, res, next) => {
     });
   }
 
-  //si le pasan parametros no validos, no existira el user
-  //y se ejecutara el then pero user sera null y dara error al asignar campos a un objeto null
-  User.findOneAndDelete({
-    _id: req.user.id,
-    deleteAccountToken: deleteToken,
-    deleteAccountTokenExpiration: { $gt: Date.now() },
-    email: userEmail
-    //regMethod
-  })
-    .then(user => {
-      //delete profile photo if there is one (user created profile)
-      //if user registered but did not created profile, it will have not photo
-      if (user) {
-        if (user.imageURL !== undefined) {
-          fs.unlink("./public/uploads/" + user.imageURL, err => {
-            if (err) {
-              console.log(err);
-              return;
-            }
-          });
+  try {
+    //si le pasan parametros no validos, no existira el user
+    //y se ejecutara el then pero user sera null y dara error al asignar campos a un objeto null
+    const user = await User.findOneAndDelete({
+      _id: req.user.id,
+      deleteAccountToken: deleteToken,
+      deleteAccountTokenExpiration: { $gt: Date.now() },
+      email: userEmail
+      //regMethod
+    });
+
+    //delete profile photo if there is one (user created profile)
+    //if user registered but did not created profile, it will have not photo
+    if (user) {
+      if (user.imageURL !== undefined) {
+        await promisify(fs.unlink)(`./public/uploads/${user.imageURL}`);
+
+        // fs.unlink("./public/uploads/" + user.imageURL, err => {
+        //   if (err) {
+        //     console.log(err);
+        //     return;
+        //   }
+        // });
+      }
+
+      //save action
+      const action = new UserAction({
+        userIdActionDoer: req.user._id,
+        actionType: "account_deletion",
+        actionDoer: "user",
+        strategy: registrationMethod(req)
+      });
+      await action.save();
+
+      //change isDeletedAccount to all the users who chatted with him
+      if (user.chatConversationsList && user.chatConversationsList.length > 0) {
+        for (const conv of user.chatConversationsList) {
+          await User.updateOne(
+            {
+              _id: conv.userId,
+              "chatConversationsList.usernameNormalizedFriend":
+                req.user.usernameNormalized
+            },
+            { "chatConversationsList.$.isDeletedAccount": true }
+          );
+          //
         }
       }
-      return user;
-    })
-    .then(user => {
-      if (user) {
-        const action = new UserAction({
-          userIdActionDoer: req.user._id,
-          actionType: "account_deletion",
-          actionDoer: "user",
-          strategy: registrationMethod(req)
-        });
-        action.save();
-      }
-      return user;
-    })
-    .then(user => {
-      //save username in deletedAccounts model
-      if (user) {
-        const userDeleted = new DeletedAccount({
-          username: user.username,
-          usernameNormalized: user.usernameNormalized,
-          deletingDate: calculateTodayDate(),
-          actionDoer: "user"
-        });
-        userDeleted.save();
-      }
-      return user;
-    })
-    .then(user => {
-      if (user) {
-        req.flash("success_message", "Your account has been deleted");
-        res.redirect("/");
 
-        if (keys.send_email_allowed) {
-          transporter.sendMail({
-            from: "appeuskara@gmail.com",
-            to: user.email,
-            subject: `Bye Bye ${user.username}`,
-            html: `
+      //users who were the deleted user's friends
+      if (user.friends.length > 0) {
+        for (const f of user.friends) {
+          await User.updateOne(
+            {
+              _id: f.userId,
+              "friends.userId": req.user.id
+            },
+            { $pull: { friends: { userId: req.user.id } } }
+          );
+        }
+      }
+
+      //users who had sent the deleted user a friendship request
+      if (user.friendshipRequestReceived.length > 0) {
+        for (const fr of user.friendshipRequestReceived) {
+          await User.updateOne(
+            {
+              _id: fr.userId,
+              "friendshipRequestSent.userId": req.user.id
+            },
+            { $pull: { friendshipRequestSent: { userId: req.user.id } } }
+          );
+        }
+      }
+
+      //users whom the the deleted user had sent a friendship request
+      if (user.friendshipRequestSent.length > 0) {
+        for (const fr of user.friendshipRequestSent) {
+          await User.updateOne(
+            {
+              _id: fr.userId,
+              "friendshipRequestReceived.userId": req.user.id
+            },
+            { $pull: { friendshipRequestReceived: { userId: req.user.id } } }
+          );
+        }
+      }
+
+      //users who have the deleted user blocked
+      await User.updateMany(
+        {
+          "blockedUsers.userId": req.user.id
+        },
+        {
+          $pull: { blockedUsers: { userId: req.user.id } }
+        }
+      );
+
+      //save username in deletedAccounts model
+      const userDeleted = new DeletedAccount({
+        username: user.username,
+        usernameNormalized: user.usernameNormalized,
+        deletingDate: calculateTodayDate(),
+        actionDoer: "user"
+      });
+      await userDeleted.save();
+
+      req.flash("success_message", "Your account has been deleted");
+      res.redirect("/");
+
+      if (keys.send_email_allowed) {
+        transporter.sendMail({
+          from: "appeuskara@gmail.com",
+          to: user.email,
+          subject: `Bye Bye ${user.username}`,
+          html: `
             <p>We hope to see you back</p>
             <p>App Euskara</p>`,
-            ses: {}
-          });
-        }
-      } else {
-        req.flash("error", "El token no es válido o ha expirado");
-        return res.redirect("/delete-account-gf");
+          ses: {}
+        });
       }
-    })
-    .catch(err => {
-      // console.log(err);
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+    } else {
+      req.flash("error", "El token no es válido o ha expirado");
+      return res.redirect("/delete-account-gf");
+    }
+  } catch (err) {
+    // console.log(err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 //Forgot password
@@ -814,6 +993,7 @@ exports.getForgotPassword = (req, res, next) => {
       pageTitle: "Forgot password",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       inputEmailLoginForm: inputEmailLoginForm,
       errorMessage: messageErrorShow(req.flash("error")),
       successMessage: messageSuccessShow(req.flash("success_message"))
@@ -838,6 +1018,7 @@ exports.postForgotPassword = async (req, res, next) => {
       pageTitle: "Forgot password",
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       inputEmailLoginForm: email, //oldInput
       errorMessage: messageErrorShow(errorsMessages),
       successMessage: ""
@@ -900,7 +1081,7 @@ exports.postForgotPassword = async (req, res, next) => {
               html: `
               <p>You requested a password reset</p>
               <p>This link will be valid for 2 hours</p>
-              <p>Click this <a href="http://${keys.domain}/resetpassword/${token}/${email}">link</a> to set a new password.</p>
+              <p>Click this <a href="${keys.domain}/resetpassword/${token}/${email}">link</a> to set a new password.</p>
             `,
               ses: {}
             });
@@ -941,6 +1122,7 @@ exports.getResetPasswordNewPassword = (req, res, next) => {
         pageTitle: "New Password",
         isAuthenticated: req.isAuthenticated(),
         isProfileCreated: isProfileCreated(req),
+        registrationMethod: registrationMethod(req),
         //errorMessage: errorMsg,
         userEmail: user.email.toString(),
         passwordToken: token,
@@ -977,6 +1159,7 @@ exports.postResetPasswordNewPassword = (req, res, next) => {
       errorMessage: messageErrorShow(errorsMessages),
       isAuthenticated: req.isAuthenticated(),
       isProfileCreated: isProfileCreated(req),
+      registrationMethod: registrationMethod(req),
       userEmail: userEmail,
       passwordToken: passwordToken,
       oldInput: {
@@ -1056,8 +1239,12 @@ exports.getGoogleAuthCallback = function(req, res, next) {
         pageTitle: "Login",
         isAuthenticated: false,
         isProfileCreated: isProfileCreated(req),
+        registrationMethod: registrationMethod(req),
         errorMessage: messageErrorShow(errorsMessages), //
         successMessage: "",
+        loginMsg: "Login",
+        closeSessionInput: false,
+        logout: false,
         oldInput: {
           email: "",
           password: ""
@@ -1136,8 +1323,12 @@ exports.getFacebookAuthCallback = function(req, res, next) {
         pageTitle: "Login",
         isAuthenticated: false,
         isProfileCreated: isProfileCreated(req),
+        registrationMethod: registrationMethod(req),
         errorMessage: messageErrorShow(errorsMessages), //
         successMessage: "",
+        loginMsg: "Login",
+        closeSessionInput: false,
+        logout: false,
         oldInput: {
           email: "",
           password: ""
@@ -1291,6 +1482,7 @@ exports.getAdminLogin = (req, res, next) => {
     isAuthenticated: req.isAuthenticated(),
     errorMessage: "",
     successMessage: "",
+    logout: false,
     oldInput: {
       email: "",
       password: ""
@@ -1325,6 +1517,7 @@ exports.postAdminLogin = (req, res, next) => {
         isAuthenticated: req.isAuthenticated(),
         errorMessage: messageErrorShow(errorsMessages), //
         successMessage: "",
+        logout: false,
         oldInput: {
           email: email,
           password: password

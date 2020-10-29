@@ -47,7 +47,6 @@ body {
 #container-page {
   display: flex;
   flex-direction: row;
-  height: 100%;
   align-items: flex-start; }
 
 #page-content {
@@ -58,6 +57,35 @@ body {
 #noscript-msg,
 #noscript-msg2 {
   background-color: yellow; }
+
+/*blur*/
+.blur {
+  filter: blur(4px); }
+
+.overlay {
+  background-color: #EFEFEF;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  top: 0px;
+  left: 0px;
+  opacity: .6;
+  /* in FireFox */
+  filter: alpha(opacity=60);
+  /* in IE */ }
+
+.divMsgBlur {
+  width: 70%;
+  height: 200px;
+  border: 1px solid black;
+  margin: 0 auto;
+  z-index: 5;
+  margin-top: 80px;
+  background-color: rgba(31, 5, 15, 0.5);
+  font-size: 26px;
+  text-align: center;
+  padding-top: 20px; }
 
 @media only screen and (max-width: 600px) {
   .footer {
@@ -167,7 +195,7 @@ button::-moz-focus-inner {
 #chat-icon,
 #friendship-icon,
 #users-messages-icon {
-  display: inline-block;
+  display: none;
   /* inline-block para mostrar nuevos msg*/
   height: 20px;
   width: 20px;
@@ -175,6 +203,9 @@ button::-moz-focus-inner {
   margin-left: 5px;
   text-align: center;
   background-color: #f45566; }
+
+.home-link-createprofile {
+  flex: 3; }
 
 #home-link-button {
   color: white;
@@ -293,6 +324,14 @@ button::-moz-focus-inner {
     display: none; }
   #hamburger-icon {
     display: inline-block; }
+  #dropbtn-friendship-requests a.navbar-link,
+  #dropbtn-chats a.navbar-link {
+    display: flex;
+    min-height: 100%;
+    align-items: flex-start; }
+  #dropbtn-friendship-requests #friendship-icon,
+  #dropbtn-chats #chat-icon {
+    margin-right: 3px; }
   /*el logo ocupara toda la navbar, por lo que si clickas en cualquier parte
   de la navbar, salvo la hamburger, ira a home, pero esta bien asi*/
   .navbar-text {
@@ -303,6 +342,10 @@ button::-moz-focus-inner {
     flex: 2; }
   .dropdown:hover button.dropbtn {
     background-color: inherit; } }
+
+@media only screen and (max-width: 360px) {
+  .dropdown #home-link-button .navbar-svg-icon {
+    display: none; } }
 
 @media only screen and (min-width: 601px) {
   #hamburger-icon,
@@ -373,6 +416,8 @@ button::-moz-focus-inner {
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
+  background-color: white;
+  min-width: 220px;
   display: flex;
   flex-direction: column; }
 
@@ -387,17 +432,31 @@ button::-moz-focus-inner {
   /* para que se ponga scroll */
   border-bottom: 2px solid black;
   background-color: white;
-  z-index: 1; }
+  z-index: 1;
+  background-color: darkturquoise; }
 
 .no-friend {
   /* for "disabled" effect */
   opacity: 0.5;
-  background: #ccc; }
+  background: white; }
+
+.no-friend-blocked {
+  opacity: 0.5;
+  background-color: indianred; }
 
 .blocked {
   /* for "disabled" effect */
   opacity: 0.5;
-  background: red; }
+  background: crimson; }
+
+.deleted {
+  opacity: 0.5;
+  background: #a2836e; }
+
+.deleted-user-message {
+  font-style: oblique;
+  font-size: 12px;
+  white-space: nowrap; }
 
 .friend-photo {
   flex: 2;
@@ -410,12 +469,14 @@ button::-moz-focus-inner {
   height: 84px;
   width: 84px;
   border-radius: 50%;
-  border: 1px solid #b8b8b8; }
+  border: 1px solid #b8b8b8;
+  margin-left: 3px; }
 
 .friend-username {
   flex: 3;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   margin-left: 6px; }
 
@@ -466,6 +527,7 @@ button::-moz-focus-inner {
 
 #chat-header {
   visibility: inherit;
+  max-height: 70px;
   width: 100%;
   flex: 1;
   background-color: blue;
@@ -509,7 +571,7 @@ button::-moz-focus-inner {
   white-space: pre-line;
   /*normal*/
   min-width: 200px;
-  max-width: 600px;
+  max-width: 350px;
   /* si el msg es muy largo se pone en varias lineas*/
   /*si pongo max-width 80% y una palabra es muy larga se hace un scroll x*/
   display: flex;
@@ -686,7 +748,8 @@ msgtext::-webkit-input-placeholder {
 .friend-card {
   height: 80px;
   display: flex;
-  align-items: center; }
+  align-items: center;
+  background-color: darkturquoise; }
 
 .search-friend-img {
   height: 60px;
@@ -708,8 +771,7 @@ msgtext::-webkit-input-placeholder {
 
 .friends-list div {
   padding: 10px;
-  cursor: pointer;
-  background-color: #fff; }
+  cursor: pointer; }
 
 /*when hovering an item:*/
 .friends-list div:hover {
@@ -746,7 +808,7 @@ msgtext::-webkit-input-placeholder {
   width: 36px;
   height: 30px; }
 
-@media only screen and (max-width: 440px) {
+@media only screen and (max-width: 600px) {
   .content {
     /* flex:1; */
     height: calc(100% - 3em);
@@ -760,10 +822,13 @@ msgtext::-webkit-input-placeholder {
   #chat {
     height: 100%;
     top: 50px; }
-  #messages {
+  .messages1 {
     height: calc(100% - 50px - 80px);
     /*100% - show-users - footer*/
     /* top: 3em; */
+    position: relative; }
+  .messages2 {
+    height: calc(100% - 50px);
     position: relative; }
   #chat-header {
     height: 60px;
@@ -804,6 +869,305 @@ msgtext::-webkit-input-placeholder {
     display: none; }
   #send-msg-icon {
     padding: 0 6px; } }
+
+/* video container */
+.flex {
+  display: flex; }
+
+.flex1 {
+  flex: 1;
+  min-height: 100%; }
+
+#page-content.containerVideo {
+  margin-top: 0; }
+
+.containerVideo {
+  /* padding: 5% 0; */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /*flex-start*/
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+  min-width: 300px; }
+
+.call-page {
+  position: relative;
+  /* display: block; */
+  width: 80%;
+  max-height: 90%;
+  height: 90%;
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; }
+
+/* videos */
+video {
+  border: 2px solid gray;
+  /*con 1px se ve bien en movil?*/
+  background: #6f1c36;
+  /*black*/
+  object-fit: cover;
+  /* es la opcion que mejor va */ }
+
+#localVideo {
+  display: block;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  /* background-color: blue; */
+  z-index: 1; }
+
+#remoteVideo {
+  padding: 0;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  height: 100%; }
+
+/* btns over video */
+#video-buttons {
+  position: absolute;
+  left: 0;
+  bottom: 20px; }
+
+#call-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 8px;
+  margin: 0 auto; }
+
+#callIcon {
+  border: 1px solid white;
+  border-radius: inherit;
+  width: inherit;
+  height: inherit;
+  background-color: limegreen;
+  opacity: 0.9; }
+
+#hangupIcon {
+  border: 1px solid white;
+  border-radius: inherit;
+  width: inherit;
+  height: inherit;
+  background-color: red;
+  opacity: 0.9;
+  display: none; }
+
+#mute-audio-btn,
+#mute-video-btn,
+#screen-btn {
+  width: 50px;
+  height: 50px;
+  /* background-color: red; */
+  opacity: 0.8;
+  border: 1px solid white;
+  border-radius: 50%;
+  margin: 8px; }
+
+#remoteuser-image {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  top: 40%;
+  bottom: 40%; }
+
+.call {
+  animation-name: resizeImage;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite; }
+
+@keyframes resizeImage {
+  0% {
+    transform: scale(1, 1); }
+  50% {
+    transform: scale(1.3, 1.3); }
+  100% {
+    transform: scale(1.7, 1.7); } }
+
+#dialog-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid black; }
+
+#dialog-photo {
+  width: 45px;
+  height: 45px;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
+#dialog-username {
+  margin-left: 20px; }
+
+.incoming-call-dialog-question {
+  margin-top: 10px;
+  margin-left: 5px; }
+
+.incoming-call-dialog-button-group {
+  display: flex;
+  justify-content: center; }
+
+.incoming-call-dialog-button-group button {
+  width: 70px;
+  margin-top: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: 5px; }
+
+/* para que cuando esta en modo mobile y quito la clase 'active', se cambien los estilos, 
+sino, si pongo hover para todas las dimensiones de pantalla, en mobile, es necesario hacer click fuera del icono
+para que se quite el background de ese color*/
+@media (hover: hover) {
+  #mute-audio-btn:hover,
+  #mute-video-btn:hover,
+  #screen-btn:hover {
+    opacity: 1;
+    background-color: #a9cada; } }
+
+.active {
+  opacity: 1;
+  background-color: #a9cada; }
+
+/* 
+ @media only screen and (max-width: 450px) {
+    .call-page {
+       width: 100%;
+       min-height: 100%;
+       max-height: 100%;
+       /* flex: 1 0 100%; 
+
+    }
+
+    /* #localVideo {
+       width: 150px;
+       height: 150px;
+    } 
+
+    .row {
+       display: none;
+    }
+ } */
+@media only screen and (max-width: 600px) {
+  .containerVideo {
+    position: fixed;
+    width: 100%;
+    height: calc(100% - 3.1em); }
+  #remoteVideo {
+    height: 100%;
+    max-height: none; }
+  #page-content.containerVideo {
+    margin-top: 0px; } }
+
+/* para modo portrait y landscape */
+@media only screen and (max-width: 823px) {
+  /*and (orientation: landscape)*/
+  .call-page {
+    width: 100%;
+    min-height: 100%;
+    max-height: 100%; }
+  /* hide */
+  .row {
+    /* display: none; */ }
+  video {
+    border: none; }
+  #localVideo {
+    border-top: 2px solid gray;
+    border-left: 2px solid gray; } }
+
+svg.svg-video {
+  width: 40px;
+  height: 40px;
+  transform: scale(2);
+  fill: white; }
+
+/*icons*/
+#enter-fullscreen-icon {
+  display: block; }
+
+#exit-fullscreen-icon {
+  display: none; }
+
+#muted-audio-icon {
+  display: none; }
+
+#unmuted-audio-icon {
+  display: block; }
+
+#muted-video-icon {
+  display: none; }
+
+#unmuted-video-icon {
+  display: block; }
+
+svg.phone-call-icon {
+  width: 40px;
+  height: 40px;
+  fill: white; }
+
+/* Dialog */
+.incoming-call-dialog {
+  width: 300px;
+  height: 200px;
+  border: 1px solid black;
+  position: fixed;
+  top: 3.1em;
+  right: 8px;
+  display: none;
+  z-index: 6;
+  background-color: white; }
+
+/* mostrar mensajes */
+#show-msg {
+  height: 0px;
+  /*100px*/
+  width: 100%;
+  background-color: #c42b5c;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+  transition: height ease 0.5s;
+  -moz-transition: height ease 0.5s;
+  /* Firefox 4 */
+  -webkit-transition: height ease 0.5s;
+  /* Safari and Chrome */
+  -o-transition: height ease 0.5s;
+  /* Opera */
+  overflow-y: hidden; }
+
+#show-msg p {
+  padding: 10px;
+  text-align: center;
+  padding-top: 30px; }
+
+#incoming-call-dialog.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 3s, opacity 3s linear; }
+
+/* popup */
+#call-canceled {
+  display: none;
+  background-color: #FA8072;
+  height: 100%; }
+
+#incoming-call-dialog-action {
+  display: block; }
 
 /* login */
 #login-page {
@@ -948,6 +1312,21 @@ msgtext::-webkit-input-placeholder {
   justify-content: center;
   align-items: center; }
 
+@media only screen and (max-width: 960px) {
+  #login-container {
+    display: flex;
+    width: 75%; } }
+
+@media only screen and (max-width: 850px) {
+  #login-container {
+    display: flex;
+    width: 80%; } }
+
+@media only screen and (max-width: 700px) {
+  #login-container {
+    display: flex;
+    width: 90%; } }
+
 @media only screen and (max-width: 600px) {
   #login-container {
     height: 550px;
@@ -1065,6 +1444,32 @@ img#img {
 #img-form-group-img-selector {
   display: flex; }
 
+#aboutme {
+  width: 100%;
+  border: 2px solid #aaa;
+  border-radius: 4px; }
+
+#birthdate, #euskLevel {
+  padding: 5px 4px;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  width: 150px; }
+
+input[name~="gender"] {
+  margin-top: 10px;
+  padding-left: 3px; }
+
+label[for~="gender"] {
+  margin-top: 10px; }
+
+label {
+  font-size: 16px; }
+
+div#profile-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
 /*modal*/
 #modal-img-container {
   display: flex;
@@ -1094,7 +1499,7 @@ input[type="range"]::-moz-focus-outer {
 
 /*submit form button*/
 .btn1 {
-  margin: 10px 0 10px 10px;
+  margin: 0px 0 10px 10px;
   padding: 5px 10px; }
 
 #change-password-container {
@@ -1118,7 +1523,7 @@ input[type="range"]::-moz-focus-outer {
 
 .friendship-sent-card,
 .friendship-received-card {
-  background-color: #888877;
+  background-color: #FFDEAD;
   border: 1px solid #88668877;
   width: 90%;
   height: 120px;
@@ -1136,7 +1541,8 @@ input[type="range"]::-moz-focus-outer {
   height: 100px;
   width: 100px;
   border-radius: 50%;
-  border: 1px solid #b8b8b8; }
+  border: 1px solid #b8b8b8;
+  margin-left: 5px; }
 
 .username-card {
   padding-left: 30px;
@@ -1165,14 +1571,18 @@ input[type="range"]::-moz-focus-outer {
 
 .unblock-btn {
   display: inline-block;
-  width: 170px;
+  width: 80%;
   height: 35px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center; }
 
-@media only screen and (max-width: 600px) {
+.icons-disabled svg {
+  opacity: 0.5;
+  pointer-events: none; }
+
+@media only screen and (max-width: 880px) {
   .friendship-sent-card,
   .friendship-received-card {
     width: 90%; }
@@ -1266,6 +1676,20 @@ h2#usernameTitle {
   height: 240px;
   border: 1px solid #b8b8b8; }
 
+#user-profile-top-1 {
+  display: flex; }
+
+#profile-btns #btns {
+  margin-top: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+#profile-btns #btns button {
+  margin-bottom: 20px; }
+
 /* #user-photo button a {
     display: block;
     max-width: 100%;
@@ -1283,7 +1707,8 @@ h2#usernameTitle {
   word-break: break-all;
   word-wrap: break-word;
   height: calc(100% - 100px);
-  /*(100% container - height h1) /* 85%;*/ }
+  /*(100% container - height h1) /* 85%;*/
+  margin-right: 40px; }
 
 .aboutme-empty {
   font-style: italic; }
@@ -1330,6 +1755,9 @@ h2#usernameTitle {
   width: 100%;
   /*asi aunque hagas click en un lado del boton y no en el texto funciona*/ }
 
+.align-end {
+  justify-content: flex-end !important; }
+
 .language-level {
   width: 40px;
   height: 30px;
@@ -1348,6 +1776,23 @@ h2#usernameTitle {
   display: inline-block;
   vertical-align: bottom; }
 
+#username-status {
+  display: flex;
+  align-items: center; }
+
+@media only screen and (max-width: 760px) {
+  #user-profile-top {
+    flex-direction: column; }
+  #user-profile-top {
+    height: 100%; }
+  #profile-btns {
+    margin-right: 10px; }
+  #user-profile-top-data h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px; } }
+
 @media only screen and (max-width: 600px) {
   #user-profile-top,
   #user-profile-bottom {
@@ -1355,15 +1800,11 @@ h2#usernameTitle {
   #photo {
     width: 150px;
     height: 150px; }
-  #user-profile-top-data {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px; }
   #user-profile-top-data h2 {
     align-self: flex-start; }
   #user-aboutme {
-    height: 100px;
+    height: 100%;
+    width: 97%;
     align-self: flex-start;
     word-wrap: normal; }
   .underline,
@@ -1455,6 +1896,32 @@ input[type="password"] {
   box-sizing: border-box;
   /* transition: 0.3s; */ }
 
+#password-field,
+#password-field-confirm,
+#new-password-field,
+#new-password-field-confirm {
+  padding-right: 45px; }
+
+.searchuser-div {
+  display: flex;
+  flex-direction: column; }
+
+#searchuser-container {
+  width: 80%;
+  border: 1px solid black;
+  padding: 20px;
+  margin: auto; }
+
+.input-number {
+  width: 60px;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  padding: 5px 4px;
+  margin-right: 5px; }
+
+.searchuser-btn {
+  padding: 5px 20px 5px 20px; }
+
 /* .inputWithIcon input[type="text"],
   .inputWithIcon input[type="password"] {
     
@@ -1492,7 +1959,8 @@ input[type="password"] {
   /* altura icon */
   /*53 - 38 : 15px*/
   /*(8+8+2+1)*2 = 38 (margin_arriba + border_arriba + padding_arriba + border_left_icon) * 2, lo de debajo)
-       border_left_icon coge 1 px de arriba y abajo*/ }
+       border_left_icon coge 1 px de arriba y abajo*/
+  width: 45px; }
 
 .inputWithIcon input[type="text"]:focus + i {
   color: dodgerBlue; }
@@ -1533,6 +2001,26 @@ textarea {
 
 #search-loading {
   display: none; }
+
+.form-first {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin-bottom: 20px; }
+
+.form-first .form-first1 {
+  width: 120px;
+  min-height: 100%;
+  display: flex;
+  align-items: center; }
+
+.form-first .form-first2 {
+  display: flex;
+  align-items: center;
+  min-height: 100%; }
+
+.form-first2 div {
+  margin-right: 10px; }
 
 /* Terms modal */
 .modal-content {
@@ -1658,10 +2146,10 @@ textarea {
   height: 310px;
   /*para que entre el texto*/
   border: 1px solid black;
-  margin: 10px 5px;
   display: flex;
   flex-direction: column;
-  align-items: center; }
+  align-items: center;
+  margin: 10px auto; }
 
 /* .user-card img,*/
 .card-username {
@@ -1701,7 +2189,15 @@ textarea {
   background-color: green; }
 
 .user-status-not-online {
-  background-color: red; }
+  background-color: inherit;
+  display: none; }
+
+div.username-status
+div.user-status-not-online
++ div#icons-container
+svg#card-camera-icon {
+  opacity: 0.5;
+  pointer-events: none; }
 
 .img-card-1 {
   width: 130px;
@@ -1735,14 +2231,21 @@ textarea {
   margin-left: 3px;
   display: inline-block; }
 
-@media only screen and (max-width: 540px) {
+@media only screen and (max-width: 700px) {
+  .user-card {
+    width: 150px;
+    height: 240px; }
+  .grid {
+    grid-template-columns: repeat(2, 1fr); } }
+
+@media only screen and (max-width: 600px) {
   .grid {
     grid-template-columns: repeat(3, 1fr); }
   .user-card {
     width: 150px;
     height: 240px; } }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 500px) {
   .grid {
     grid-template-columns: repeat(2, 1fr); }
   .user-card {
